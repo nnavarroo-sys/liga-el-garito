@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Liga El Garito · Ranking Clausura 2026</title>
-<meta name="description" content="Ranking individual, fechas y resultados de la Liga El Garito.">
+<meta name="description" content="Ranking individual, fechas con su torneo, jugadores y estadísticas de la Liga El Garito.">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#040e23">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Liga El Garito · Ranking Clausura 2026">
-<meta property="og:description" content="Ranking individual, fechas y resultados de la Liga El Garito.">
+<meta property="og:description" content="Ranking individual, fechas con su torneo, jugadores y estadísticas de la Liga El Garito.">
 <meta property="og:image" content="https://nnavarroo-sys.github.io/liga-el-garito/logo.png">
 <meta property="og:url" content="https://nnavarroo-sys.github.io/liga-el-garito/">
 <link rel="icon" type="image/png" href="logo.png">
@@ -278,21 +278,247 @@ button.pl-row:hover{background:var(--surface-2)}
 .modal-c{background:var(--surface);border-radius:14px;padding:16px;width:min(560px,100%);display:flex;flex-direction:column;gap:10px}
 .modal textarea{width:100%;min-height:240px;font:13px/1.45 ui-monospace,Menlo,monospace;background:var(--surface-2)}
 @media (prefers-reduced-motion: reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+
+/* Torneos: additions on top of the Ranking stylesheet (same tokens, same components) */
+:root{--carton:#5a5a24;--carton-soft:#ececd2}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--carton:#d2d28f;--carton-soft:#292918}}
+:root[data-theme="dark"]{--carton:#d2d28f;--carton-soft:#292918}
+.c-carton{background:var(--carton-soft);color:var(--carton)}
+.groups4{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:10px}
+.matches.m4{grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr))}
+.copas.c4{grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr))}
+.sec-t{font:600 13px/1 var(--f-body);letter-spacing:0;text-transform:none;color:var(--muted);margin-left:6px;white-space:nowrap}
+.match.wait{border-style:dashed;background:transparent}
+.match.wait .mh{background:transparent}
+.gt th,.gt td{padding-inline:3px}
+.gt td b{font-weight:700}
+.why{font-size:12.5px;color:var(--muted);line-height:1.35}
+.seeds li{flex-wrap:wrap;align-items:baseline;gap:2px 8px}
+.sd-p{flex:1 1 10rem;min-width:0}
+.sd-o{font-size:12px;color:var(--muted);white-space:nowrap}
+.fchip.add{border-style:dashed;background:transparent}
+.fchip.add b{font-size:21px}
+.fchip.add.sel{background:var(--court);border-style:solid}
+.fmeta .toolbar{flex:1 1 auto}
+.ni.sm{width:3.6rem;font-size:16px;padding:8px 4px}
+.prog{width:100%;border-collapse:collapse;font-size:13px;min-width:420px}
+.prog th,.prog td{padding:6px 4px;border-top:1px solid var(--line);text-align:center;white-space:nowrap}
+.prog thead th{border-top:0;font:600 10.5px/1 var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.prog tbody th{font:700 16px/1 var(--f-display)}
+.prog td:nth-child(2){color:var(--muted)}
+.prog-c{text-align:left!important;color:var(--muted)}
+.champ{background:var(--court);color:#fff;border-radius:var(--r);border-bottom:3px solid var(--ball);padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+.champ .lab{color:rgba(255,255,255,.82)}
+.champ-n{font:800 clamp(22px,5.5vw,30px)/1.05 var(--f-display);text-transform:uppercase;letter-spacing:.01em;color:var(--ball);text-wrap:balance}
+.hl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media (min-width:720px){.hl{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.hl .val{font-size:18px}
+.podio{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:14px}
+.podio li{display:grid;grid-template-columns:2rem minmax(0,1fr);gap:6px;align-items:baseline;padding-top:6px;border-top:1px solid var(--line)}
+.podio b{font:700 17px/1 var(--f-display)}
+.st{width:100%;border-collapse:collapse;font-size:13.5px;min-width:600px}
+.st th{font:600 10.5px/1 var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;padding:9px 6px;background:var(--surface-2)}
+.st td{padding:8px 6px;border-top:1px solid var(--line);vertical-align:middle}
+.st .r{text-align:right}
+.st td:first-child,.st th:first-child{padding-left:12px}
+.st td:last-child,.st th:last-child{padding-right:12px}
+.st.rec{min-width:640px}
+.rc{display:inline-block;font:600 12.5px/1 var(--f-body);padding:4px 6px;border-radius:5px;white-space:nowrap;background:var(--surface-2);font-variant-numeric:tabular-nums}
+.rc.w{color:var(--up)}
+.rc.l{color:var(--down)}
+.pl-ed{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:8px 12px;border-top:1px solid var(--line)}
+.plist .pl-ed:first-child{border-top:0}
+.quick{min-width:0;max-width:100%}
+.quick .btn{flex:none}
+/* v2: step flow, courts, brackets */
+:root{--pitch:#1f4f8f;--pitch-wall:#143766;--pitch-line:rgba(255,255,255,.55)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--pitch:#1b467f;--pitch-wall:#0f2a52}}
+:root[data-theme="dark"]{--pitch:#1b467f;--pitch-wall:#0f2a52}
+.steps{display:flex;gap:6px;overflow-x:auto;margin-inline:-16px;padding:2px 16px 4px;scrollbar-width:none}
+.steps::-webkit-scrollbar{display:none}
+.step{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:6px 12px 6px 6px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 14px/1.1 var(--f-body);cursor:pointer;text-align:left}
+.step b{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:999px;background:var(--surface-2);color:var(--muted);font:700 15px/1 var(--f-display)}
+.step span{display:flex;flex-direction:column;gap:2px;white-space:nowrap}
+.step i{font-style:normal;font-weight:500;font-size:11.5px;color:var(--muted)}
+.step.done b{background:var(--accent-soft);color:var(--accent)}
+.step.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.step.on b{background:var(--accent);color:var(--on-primary)}
+.stepbody{display:flex;flex-direction:column;gap:14px}
+.sec-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 12px}
+.sec-row .sec{margin-top:0}
+.btns.center{justify-content:center;margin-top:12px}
+.rounds .seg-b{padding-inline:2px}
+/* registro */
+.reg{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.reg-r{display:grid;grid-template-columns:2rem minmax(0,1fr);gap:8px 10px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px}
+.reg-i{font:700 19px/1 var(--f-display);color:var(--muted)}
+.reg-p{display:grid;gap:6px;min-width:0}
+.reg-p select{width:100%}
+.reg-names{display:flex;flex-direction:column;font-weight:600;line-height:1.3;min-width:0}
+.reg-t{grid-column:2;display:flex;align-items:flex-end;gap:12px}
+.reg-t .fld select{width:8.5rem}
+.reg-g{display:flex;flex-direction:column;align-items:flex-end;gap:3px;margin-left:auto;text-align:right}
+.reg-g b{font:700 24px/1 var(--f-display)}
+.reg-g i{font-style:normal;font-size:12px;color:var(--muted)}
+.reg-num{display:flex;flex-direction:column;gap:3px}
+.reg-num b{font:700 22px/1 var(--f-display)}
+@media (min-width:720px){
+  .reg-r{grid-template-columns:2rem minmax(0,1fr) auto}
+  .reg-p{grid-template-columns:1fr 1fr}
+  .reg-t{grid-column:auto}
+  .reg-r.ro{grid-template-columns:2rem minmax(0,1fr) auto}
+}
+/* grupos */
+.grp-p{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.grp-p li{display:grid;grid-template-columns:2.3rem minmax(0,1fr) auto;gap:8px;align-items:center;padding-top:6px;border-top:1px solid var(--line)}
+.grp-p .slot{display:grid;place-items:center;width:2.1rem;height:2.1rem;border-radius:6px;background:var(--surface-2);font:700 16px/1 var(--f-display)}
+.grp-n{display:flex;flex-direction:column;font-weight:600;line-height:1.25;min-width:0}
+.fx{list-style:none;margin:0;padding:0}
+.fx li{display:grid;grid-template-columns:minmax(0,1fr) auto 2.6rem;gap:8px;align-items:center;padding:7px 0;border-top:1px solid var(--line)}
+.fx-m{font-size:12.5px;color:var(--muted)}
+.fx-v{font-size:14px;white-space:nowrap}
+.fx-s{font:700 16px/1 var(--f-display);text-align:right}
+.pc{display:grid;grid-template-columns:1.9rem minmax(0,1fr);gap:4px;align-items:start}
+.pc .slot{font:700 14px/1.3 var(--f-display);color:var(--muted)}
+.pn{display:block;min-width:0}
+/* canchas */
+.courts{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr));gap:10px}
+.courts.c8{grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr))}
+.court{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
+.court.wait{border-style:dashed}
+.court-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:10px 12px 0}
+.court-h b{font:700 19px/1 var(--f-display);text-transform:uppercase;letter-spacing:.02em}
+.court-h span{font:600 11.5px/1.2 var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:right}
+.pitch{position:relative;margin:8px 12px 10px;aspect-ratio:2/1;min-height:128px;background:var(--pitch);border:3px solid var(--pitch-wall);border-radius:4px;display:grid;grid-template-columns:1fr 1fr;color:#fff;overflow:hidden}
+.court.wait .pitch{opacity:.72}
+.pitch .lines{position:absolute;top:0;bottom:0;left:15.25%;right:15.25%;border-left:2px solid var(--pitch-line);border-right:2px solid var(--pitch-line);background:linear-gradient(var(--pitch-line),var(--pitch-line)) center/100% 2px no-repeat}
+.pitch .net{position:absolute;top:0;bottom:0;left:50%;width:3px;margin-left:-1.5px;background:#fff}
+.half{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;gap:1px;padding:8px 10px;font-size:13px;line-height:1.2;font-weight:500;min-width:0;overflow-wrap:anywhere;text-shadow:0 1px 2px rgba(0,0,0,.45)}
+.half span{display:block}
+.half.a{padding-right:38px}
+.half.b{padding-left:38px;align-items:flex-end;text-align:right}
+.half .slot{font:700 14px/1 var(--f-display);letter-spacing:.04em;color:var(--ball);margin-bottom:4px}
+.half.win{font-weight:700}
+.half.lose{opacity:.8}
+.half .ph{font-style:italic;opacity:.9}
+.pg{position:absolute;top:50%;transform:translateY(-50%);min-width:28px;padding:5px 6px;border-radius:6px;background:rgba(255,255,255,.2);font:700 19px/1 var(--f-display);text-align:center;text-shadow:none;color:#fff}
+.half.a .pg{right:7px}
+.half.b .pg{left:7px}
+.pg.w{background:var(--ball);color:var(--ball-ink)}
+.pg small{font-size:11px;margin-left:2px}
+.court-f{padding:0 12px 10px;margin-top:-2px;font-size:12.5px;color:var(--muted)}
+.st.where{min-width:420px}
+.st.where.w5{min-width:640px}
+.st.where td{white-space:nowrap}
+.st.where td.gt-p{white-space:normal;min-width:9rem}
+.st.where .cur{background:var(--accent-soft)}
+.st.where tr.gsep td{border-top:2px solid var(--line-strong)}
+/* tablas */
+.gt-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.gt td.gt-p{min-width:0}
+/* copas */
+.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:10px}
+.tier{padding:12px 12px 6px;display:flex;flex-direction:column;gap:6px}
+.tt-c{white-space:nowrap}
+.tt-c .n{margin-left:4px;font:700 14px/1 var(--f-display)}
+.brk{gap:12px}
+.br{display:grid;gap:8px}
+.br-link{display:none}
+.bm{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface)}
+.bm.wait{border-style:dashed;background:transparent}
+.bm-h{display:flex;justify-content:space-between;gap:8px;padding:6px 10px;background:var(--surface-2);font:600 11px/1.2 var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.bm.wait .bm-h{background:transparent}
+.bm-r{display:grid;grid-template-columns:1.1rem minmax(0,1fr) auto;gap:8px;align-items:center;padding:7px 10px;border-top:1px solid var(--line);font-size:14px;line-height:1.25}
+.bm-h + .bm-r{border-top:0}
+.bm-sd{font:700 14px/1 var(--f-display);color:var(--muted)}
+.bm-slot{font:700 13px/1 var(--f-display);color:var(--muted)}
+.bm-g{font:700 19px/1 var(--f-display);min-width:1.9rem;text-align:center;border-radius:5px;padding:3px 4px}
+.bm-r.win{font-weight:700}
+.bm-r.win .bm-g{background:var(--ball);color:var(--ball-ink)}
+.bm-g small{font-size:11px;margin-left:2px}
+.br-champ{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;font-weight:700}
+@media (min-width:720px){
+  .br{grid-template-columns:minmax(0,1fr) 34px minmax(0,1fr);column-gap:0;row-gap:10px}
+  .br-semis{grid-column:1;grid-row:1;display:grid;gap:10px}
+  .br-link{display:block;grid-column:2;grid-row:1;position:relative}
+  .br-link::before{content:"";position:absolute;left:0;width:17px;top:25%;bottom:25%;border:2px solid var(--line-strong);border-left:0;border-radius:0 8px 8px 0}
+  .br-link::after{content:"";position:absolute;left:17px;right:0;top:50%;border-top:2px solid var(--line-strong)}
+  .br-fin{grid-column:3;grid-row:1;align-self:center}
+  .br-third{grid-column:3;grid-row:2}
+}
+.br-semis{display:grid;gap:8px}
+.half{text-shadow:none;align-items:flex-start}
+.half .who{display:flex;flex-direction:column;gap:1px;max-width:100%;padding:5px 8px;border-radius:6px;background:rgba(4,14,35,.6)}
+.half.b .who{align-items:flex-end}
+.half .who span{display:block}
+.tier h4{margin:0}
+.stepbody h4.lab{margin:4px 0 -4px}
+/* Liga unificada: ranking + torneos */
+.tab{padding:15px 10px 12px}
+button.sum{font:inherit;color:inherit;text-align:left;cursor:pointer}
+button.sum:hover,button.pf:hover,.chf:hover{border-color:var(--line-strong)}
+button.pf{font:inherit;font-size:12.5px;color:inherit;cursor:pointer}
+button.fin-nm{appearance:none;border:0;background:none;padding:0;color:inherit;font:inherit;font-weight:600;text-align:left;cursor:pointer}
+button.fin-nm:hover,.link.tl:hover{text-decoration:underline;text-underline-offset:3px}
+.link.tl{padding:0;font:inherit;font-weight:600;color:inherit;text-decoration:none;text-align:left}
+.ht{min-width:540px}
+.ht td .copa{margin-left:4px}
+.champs{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:8px}
+.chf{width:100%;display:grid;grid-template-columns:2.6rem minmax(0,1fr);gap:3px 8px;align-items:baseline;padding:10px 12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);font:inherit;color:inherit;text-align:left;cursor:pointer}
+.chf b{font:700 21px/1 var(--f-display);grid-row:span 2;align-self:center}
+.chf-m{font-size:12px;color:var(--muted)}
+.chf-n{font-weight:600;line-height:1.3}
+.sec-row input[type=search]{flex:0 1 240px}
+.st.pairs{min-width:460px}
+.st td .link.tl{font-weight:600}
+.courts.c8{grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr))}
+.half{overflow-wrap:break-word}
+.ht td .muted.small{display:block}
 </style>
 </head>
 <body>
 <div id="app"></div>
-<script type="application/json" id="liga-data">{"v":1,"league":{"name":"Liga El Garito","season":"Clausura 2026","web":"https://nnavarroo-sys.github.io/liga-el-garito/"},"settings":{"bonus60":20,"cap":4,"qualify":24},"cats":["Challenger","Open","Master","Master Finals","Open Special"],"tables":{"Challenger":[150,130,110,90,80,70,60,50,40,30,20,10],"Open":[240,200,180,160,140,120,100,80,60,50,30,20],"Master":[320,280,250,230,210,190,170,140,100,80,60,40],"Master Finals":[640,500,420,360,290,260,220,200,160,140,100,80],"Open Special":[280,240,210,190,170,150,130,115,100,85,70,60,50,40,30,20]},"players":[{"id":"j1","name":"Rodrigo Nuñez","side":"AM"},{"id":"j2","name":"Rodrigo Rosas","side":""},{"id":"j3","name":"Amaro Taucan","side":"DR"},{"id":"j4","name":"Arturo Fuenzalida","side":"RV"},{"id":"j5","name":"Diego Garces","side":"RV"},{"id":"j6","name":"Aaron Encina","side":"DR"},{"id":"j7","name":"Alvaro Pérez","side":"DR"},{"id":"j9","name":"Jaime Gómez","side":"RV"},{"id":"j10","name":"Diego Díaz","side":"DR"},{"id":"j11","name":"Nelson Navarro","side":"RV"},{"id":"j12","name":"Jose Manuel Valencia","side":"DR"},{"id":"j13","name":"Esteban Ayala","side":"AM"},{"id":"j14","name":"Martin Carroz","side":"RV"},{"id":"j15","name":"Rodolfo Guajardo","side":"AM"},{"id":"j16","name":"Patricio Lobos","side":""},{"id":"j17","name":"Gustavo Isea","side":"RV"},{"id":"j18","name":"Daniel Bolados","side":"DR"},{"id":"j19","name":"Guillermo Tudezca (Memo)","side":"DR"},{"id":"j20","name":"Patricio Catalan","side":""},{"id":"j21","name":"Mauricio Perez","side":"DR"},{"id":"j22","name":"Seba Yañez","side":""},{"id":"j23","name":"Tomas Polloni","side":"DR"},{"id":"j24","name":"Pablo Aguayo","side":""},{"id":"j25","name":"Seba Quezada","side":""},{"id":"j26","name":"Ivan Neira","side":"DR"},{"id":"j27","name":"David Neira","side":"RV"},{"id":"j28","name":"Vicente Ramirez","side":""},{"id":"j29","name":"Camilo Fontova","side":"DR"},{"id":"j30","name":"Nico Guerra","side":""},{"id":"j31","name":"Daniel Belmar","side":"DR"},{"id":"j32","name":"Cristobal","side":"RV"},{"id":"j33","name":"Boris Morales","side":"AM"},{"id":"j34","name":"Seba Ogas","side":"RV"},{"id":"j35","name":"Miguel Partner de Seba","side":""},{"id":"j36","name":"Mauro Bouquet","side":"DR"},{"id":"j37","name":"Luis Reyes","side":"DR"},{"id":"j38","name":"Jorge Casas","side":"DR"},{"id":"j39","name":"Mirko Posavac","side":""},{"id":"j40","name":"Ale K","side":"DR"},{"id":"j41","name":"Vincenzo","side":""},{"id":"j42","name":"Jona Cooper","side":"RV"},{"id":"j43","name":"Alex Flores","side":"DR"},{"id":"j44","name":"Gonzalo Torres","side":"RV"},{"id":"j45","name":"Tomy Latorre","side":"RV"},{"id":"j46","name":"Nene","side":""},{"id":"j47","name":"Byron","side":"DR"},{"id":"j48","name":"Jorge Alvarado","side":""},{"id":"j49","name":"Benja Cabrera","side":""},{"id":"j50","name":"Juan Javia","side":"RV"},{"id":"j51","name":"Martin El Bueno","side":""},{"id":"j52","name":"Alfredo Viola","side":"DR"},{"id":"j53","name":"Lautaro Rodriguez","side":""},{"id":"j54","name":"Nico Moreno","side":""},{"id":"j55","name":"Carlos Amaro","side":"RV"},{"id":"j56","name":"Nico D","side":""},{"id":"j57","name":"Mauricio Encina","side":""},{"id":"j58","name":"Felipe O","side":""},{"id":"j59","name":"Carlos Barrera","side":"DR"},{"id":"j60","name":"Jota","side":"RV"},{"id":"j61","name":"Hector","side":"RV"},{"id":"j62","name":"Coke Castro","side":"RV"},{"id":"j63","name":"Rene Tobar (Coto)","side":"RV"},{"id":"j64","name":"Maldonado","side":"DR"},{"id":"j65","name":"Jose E","side":""},{"id":"j66","name":"Diego Rosales","side":"RV"},{"id":"j67","name":"Lucas Troya","side":""},{"id":"j69","name":"Joaquin Alegria","side":"RV"},{"id":"j70","name":"Alexis Gonzalez","side":"AM"},{"id":"j72","name":"Berti","side":"DR"},{"id":"j73","name":"Gonzalo Benavente","side":"RV"},{"id":"j75","name":"Mati C","side":""},{"id":"j76","name":"Cesar Jorquera","side":"DR"},{"id":"j77","name":"Nico Vega","side":""},{"id":"j78","name":"Seba B","side":""},{"id":"j79","name":"Rodrigo SC","side":""},{"id":"j80","name":"Byron Maipu","side":"RV"},{"id":"j81","name":"Gonza","side":"RV"},{"id":"j82","name":"Alex Marambio","side":"DR"},{"id":"j83","name":"Roy","side":""},{"id":"j84","name":"Carlos Villar","side":"RV"},{"id":"j85","name":"Martinoski","side":""},{"id":"j86","name":"Nico Campo","side":""},{"id":"j87","name":"Claudio Arce","side":"DR"},{"id":"j88","name":"Daniel Retuert","side":"DR"},{"id":"j89","name":"Nacho Rojo","side":""},{"id":"j90","name":"Super Jona","side":"DR"},{"id":"j91","name":"Pablo Muñoz","side":"DR"},{"id":"j92","name":"Fonck","side":"RV"},{"id":"j93","name":"German F","side":"RV"},{"id":"j94","name":"Joan Guzman","side":"RV"},{"id":"j95","name":"Nico Vilches","side":""},{"id":"j96","name":"Nico Fernandez","side":""},{"id":"j97","name":"Diego Rebolledo","side":"RV"},{"id":"j98","name":"Jaca","side":"RV"},{"id":"j99","name":"Alonso","side":"DR"},{"id":"j100","name":"Mario","side":""},{"id":"j101","name":"Juan Pablo","side":""},{"id":"j102","name":"Sandrino","side":""},{"id":"j103","name":"Seba Z","side":""},{"id":"j104","name":"Sziklai","side":""},{"id":"j105","name":"Marcelo","side":""},{"id":"j106","name":"Nico Makuc","side":""},{"id":"j107","name":"Seba Delmar","side":""},{"id":"j108","name":"Matias E","side":"DR"},{"id":"j109","name":"Felipe de Amaro","side":"RV"}],"fechas":[{"n":1,"date":"2026-08-04","cat":"Open","status":"cerrada","mode":"manual","imp":true,"results":[{"p":"j66","pl":1,"b":240,"a":0,"n":""},{"p":"j31","pl":1,"b":240,"a":0,"n":""},{"p":"j19","pl":2,"b":200,"a":0,"n":""},{"p":"j63","pl":2,"b":200,"a":0,"n":""},{"p":"j50","pl":3,"b":180,"a":0,"n":""},{"p":"j85","pl":3,"b":180,"a":0,"n":""},{"p":"j27","pl":4,"b":160,"a":0,"n":""},{"p":"j67","pl":4,"b":160,"a":0,"n":""},{"p":"j3","pl":5,"b":140,"a":20,"n":"Bonificación 6–0"},{"p":"j109","pl":5,"b":140,"a":20,"n":"Bonificación 6–0"},{"p":"j46","pl":6,"b":120,"a":0,"n":""},{"p":"j83","pl":6,"b":120,"a":0,"n":""},{"p":"j22","pl":7,"b":100,"a":0,"n":""},{"p":"j21","pl":7,"b":100,"a":0,"n":""},{"p":"j82","pl":8,"b":80,"a":-20,"n":"Penalización simple"},{"p":"j84","pl":8,"b":80,"a":-20,"n":"Penalización simple"},{"p":"j23","pl":9,"b":60,"a":0,"n":""},{"p":"j62","pl":9,"b":60,"a":0,"n":""},{"p":"j15","pl":10,"b":50,"a":0,"n":""},{"p":"j4","pl":10,"b":50,"a":0,"n":""},{"p":"j34","pl":11,"b":30,"a":0,"n":""},{"p":"j45","pl":11,"b":30,"a":0,"n":""},{"p":"j43","pl":12,"b":20,"a":0,"n":""},{"p":"j42","pl":12,"b":20,"a":0,"n":""}]},{"n":2,"date":"2026-08-11","cat":"Challenger","status":"cerrada","mode":"manual","imp":true,"results":[{"p":"j61","pl":1,"b":150,"a":0,"n":""},{"p":"j13","pl":1,"b":150,"a":0,"n":""},{"p":"j31","pl":2,"b":130,"a":0,"n":""},{"p":"j66","pl":2,"b":130,"a":0,"n":""},{"p":"j50","pl":3,"b":110,"a":0,"n":""},{"p":"j64","pl":3,"b":110,"a":0,"n":""},{"p":"j14","pl":4,"b":90,"a":20,"n":"Bonificación 6–0"},{"p":"j37","pl":4,"b":90,"a":20,"n":"Bonificación 6–0"},{"p":"j33","pl":5,"b":80,"a":0,"n":""},{"p":"j46","pl":5,"b":80,"a":0,"n":""},{"p":"j15","pl":6,"b":70,"a":0,"n":""},{"p":"j86","pl":6,"b":70,"a":0,"n":""},{"p":"j3","pl":7,"b":60,"a":20,"n":"Bonificación 6–0"},{"p":"j62","pl":7,"b":60,"a":20,"n":"Bonificación 6–0"},{"p":"j108","pl":8,"b":50,"a":0,"n":""},{"p":"j87","pl":8,"b":50,"a":0,"n":""},{"p":"j63","pl":9,"b":40,"a":-20,"n":"Penalización simple"},{"p":"j1","pl":9,"b":40,"a":-20,"n":"Penalización simple"},{"p":"j30","pl":10,"b":30,"a":20,"n":"Bonificación 6–0"},{"p":"j34","pl":10,"b":30,"a":20,"n":"Bonificación 6–0"},{"p":"j21","pl":11,"b":20,"a":0,"n":""},{"p":"j22","pl":11,"b":20,"a":0,"n":""},{"p":"j88","pl":12,"b":10,"a":-40,"n":"Penalización doble"},{"p":"j45","pl":12,"b":10,"a":-40,"n":"Penalización doble"}]},{"n":3,"date":"2026-08-18","cat":"Open","status":"cerrada","mode":"manual","imp":true,"results":[{"p":"j55","pl":1,"b":240,"a":20,"n":"Bonificación 6–0"},{"p":"j66","pl":1,"b":240,"a":20,"n":"Bonificación 6–0"},{"p":"j86","pl":2,"b":200,"a":0,"n":""},{"p":"j15","pl":2,"b":200,"a":0,"n":""},{"p":"j108","pl":3,"b":180,"a":20,"n":"Bonificación 6–0"},{"p":"j87","pl":3,"b":180,"a":20,"n":"Bonificación 6–0"},{"p":"j13","pl":4,"b":160,"a":0,"n":""},{"p":"j37","pl":4,"b":160,"a":-20,"n":"Atraso"},{"p":"j26","pl":5,"b":140,"a":-20,"n":"Penalización simple"},{"p":"j62","pl":5,"b":140,"a":-20,"n":"Penalización simple"},{"p":"j46","pl":6,"b":120,"a":0,"n":""},{"p":"j33","pl":6,"b":120,"a":0,"n":""},{"p":"j34","pl":7,"b":100,"a":0,"n":""},{"p":"j50","pl":7,"b":100,"a":0,"n":""},{"p":"j29","pl":8,"b":80,"a":0,"n":""},{"p":"j22","pl":8,"b":80,"a":0,"n":""},{"p":"j89","pl":9,"b":60,"a":0,"n":""},{"p":"j21","pl":9,"b":60,"a":0,"n":""},{"p":"j19","pl":10,"b":50,"a":20,"n":"Bonificación 6–0"},{"p":"j63","pl":10,"b":50,"a":20,"n":"Bonificación 6–0"},{"p":"j3","pl":11,"b":30,"a":0,"n":""},{"p":"j4","pl":11,"b":30,"a":0,"n":""},{"p":"j18","pl":12,"b":20,"a":-40,"n":"Penalización doble"},{"p":"j1","pl":12,"b":20,"a":-40,"n":"Penalización doble"}]},{"n":4,"date":"2026-08-25","cat":"Master","status":"cerrada","mode":"manual","imp":true,"results":[{"p":"j13","pl":1,"b":320,"a":0,"n":""},{"p":"j61","pl":1,"b":320,"a":0,"n":""},{"p":"j90","pl":2,"b":280,"a":0,"n":""},{"p":"j70","pl":2,"b":280,"a":0,"n":""},{"p":"j50","pl":3,"b":250,"a":0,"n":""},{"p":"j64","pl":3,"b":250,"a":0,"n":""},{"p":"j15","pl":4,"b":230,"a":0,"n":""},{"p":"j86","pl":4,"b":230,"a":0,"n":""},{"p":"j66","pl":5,"b":210,"a":0,"n":""},{"p":"j55","pl":5,"b":210,"a":0,"n":""},{"p":"j46","pl":6,"b":190,"a":0,"n":""},{"p":"j83","pl":6,"b":190,"a":0,"n":""},{"p":"j31","pl":7,"b":170,"a":0,"n":""},{"p":"j14","pl":7,"b":170,"a":0,"n":""},{"p":"j19","pl":8,"b":140,"a":0,"n":""},{"p":"j63","pl":8,"b":140,"a":0,"n":""},{"p":"j33","pl":9,"b":100,"a":0,"n":""},{"p":"j37","pl":9,"b":100,"a":0,"n":""},{"p":"j45","pl":10,"b":80,"a":0,"n":""},{"p":"j34","pl":10,"b":80,"a":0,"n":""},{"p":"j108","pl":11,"b":60,"a":0,"n":""},{"p":"j62","pl":11,"b":60,"a":0,"n":""},{"p":"j84","pl":12,"b":40,"a":0,"n":""},{"p":"j82","pl":12,"b":40,"a":0,"n":""}]},{"n":5,"date":"2026-09-01","cat":"Open","status":"cerrada","mode":"manual","imp":true,"results":[{"p":"j50","pl":1,"b":240,"a":0,"n":""},{"p":"j91","pl":1,"b":240,"a":0,"n":""},{"p":"j86","pl":2,"b":200,"a":0,"n":""},{"p":"j15","pl":2,"b":200,"a":0,"n":""},{"p":"j88","pl":3,"b":180,"a":0,"n":""},{"p":"j93","pl":3,"b":180,"a":0,"n":""},{"p":"j13","pl":4,"b":160,"a":20,"n":"Bonificación 6–0"},{"p":"j45","pl":4,"b":160,"a":20,"n":"Bonificación 6–0"},{"p":"j66","pl":5,"b":140,"a":20,"n":"Bonificación 6–0"},{"p":"j90","pl":5,"b":140,"a":20,"n":"Bonificación 6–0"},{"p":"j43","pl":6,"b":120,"a":0,"n":""},{"p":"j46","pl":6,"b":120,"a":0,"n":""},{"p":"j92","pl":7,"b":100,"a":0,"n":""},{"p":"j37","pl":7,"b":100,"a":0,"n":""},{"p":"j34","pl":8,"b":80,"a":0,"n":""},{"p":"j36","pl":8,"b":80,"a":0,"n":""},{"p":"j63","pl":9,"b":60,"a":0,"n":""},{"p":"j11","pl":9,"b":60,"a":0,"n":""},{"p":"j4","pl":10,"b":50,"a":-20,"n":"Penalización simple"},{"p":"j3","pl":10,"b":50,"a":-20,"n":"Penalización simple"},{"p":"j95","pl":11,"b":30,"a":-20,"n":"Penalización simple"},{"p":"j96","pl":11,"b":30,"a":-20,"n":"Penalización simple"},{"p":"j108","pl":12,"b":20,"a":0,"n":""},{"p":"j94","pl":12,"b":20,"a":0,"n":""}]},{"n":6,"date":"2026-09-08","cat":"Challenger","status":"cerrada","mode":"manual","imp":true,"results":[{"p":"j90","pl":1,"b":150,"a":20,"n":"Bonificación 6–0"},{"p":"j55","pl":1,"b":150,"a":20,"n":"Bonificación 6–0"},{"p":"j66","pl":2,"b":130,"a":0,"n":""},{"p":"j61","pl":2,"b":130,"a":0,"n":""},{"p":"j22","pl":3,"b":110,"a":0,"n":""},{"p":"j47","pl":3,"b":110,"a":0,"n":""},{"p":"j23","pl":4,"b":90,"a":-20,"n":"Penalización simple"},{"p":"j62","pl":4,"b":90,"a":-20,"n":"Penalización simple"},{"p":"j13","pl":5,"b":80,"a":0,"n":""},{"p":"j4","pl":5,"b":80,"a":0,"n":""},{"p":"j50","pl":6,"b":70,"a":0,"n":""},{"p":"j88","pl":6,"b":70,"a":0,"n":""},{"p":"j34","pl":7,"b":60,"a":0,"n":""},{"p":"j36","pl":7,"b":60,"a":0,"n":""},{"p":"j84","pl":8,"b":50,"a":0,"n":""},{"p":"j82","pl":8,"b":50,"a":0,"n":""},{"p":"j91","pl":9,"b":40,"a":20,"n":"Bonificación 6–0"},{"p":"j98","pl":9,"b":40,"a":20,"n":"Bonificación 6–0"},{"p":"j11","pl":10,"b":30,"a":-20,"n":"Penalización simple"},{"p":"j33","pl":10,"b":30,"a":-20,"n":"Penalización simple"},{"p":"j30","pl":11,"b":20,"a":0,"n":""},{"p":"j43","pl":11,"b":20,"a":0,"n":""},{"p":"j97","pl":12,"b":10,"a":0,"n":""},{"p":"j21","pl":12,"b":10,"a":0,"n":""}]},{"n":7,"date":"2026-09-15","cat":"Open","status":"cerrada","mode":"manual","imp":true,"results":[{"p":"j55","pl":1,"b":240,"a":20,"n":"Bonificación 6–0"},{"p":"j90","pl":1,"b":240,"a":20,"n":"Bonificación 6–0"},{"p":"j99","pl":2,"b":200,"a":0,"n":""},{"p":"j100","pl":2,"b":200,"a":0,"n":""},{"p":"j31","pl":3,"b":180,"a":-20,"n":"Penalización simple"},{"p":"j66","pl":3,"b":180,"a":-20,"n":"Penalización simple"},{"p":"j13","pl":4,"b":160,"a":0,"n":""},{"p":"j76","pl":4,"b":160,"a":0,"n":""},{"p":"j37","pl":5,"b":140,"a":0,"n":""},{"p":"j80","pl":5,"b":140,"a":0,"n":""},{"p":"j98","pl":6,"b":120,"a":0,"n":""},{"p":"j91","pl":6,"b":120,"a":0,"n":""},{"p":"j22","pl":7,"b":100,"a":0,"n":""},{"p":"j47","pl":7,"b":100,"a":0,"n":""},{"p":"j40","pl":8,"b":80,"a":0,"n":""},{"p":"j12","pl":8,"b":80,"a":0,"n":""},{"p":"j45","pl":9,"b":60,"a":0,"n":""},{"p":"j34","pl":9,"b":60,"a":0,"n":""},{"p":"j62","pl":10,"b":50,"a":0,"n":""},{"p":"j102","pl":10,"b":50,"a":0,"n":""},{"p":"j46","pl":11,"b":30,"a":20,"n":"Bonificación 6–0"},{"p":"j33","pl":11,"b":30,"a":20,"n":"Bonificación 6–0"},{"p":"j3","pl":12,"b":20,"a":-20,"n":"Penalización simple"},{"p":"j101","pl":12,"b":20,"a":-20,"n":"Penalización simple"}]},{"n":8,"date":"2026-09-22","cat":"Master","status":"cerrada","mode":"manual","imp":true,"results":[{"p":"j90","pl":1,"b":320,"a":0,"n":""},{"p":"j33","pl":1,"b":320,"a":0,"n":""},{"p":"j19","pl":2,"b":280,"a":20,"n":"Bonificación 6–0"},{"p":"j96","pl":2,"b":280,"a":20,"n":"Bonificación 6–0"},{"p":"j13","pl":3,"b":250,"a":0,"n":""},{"p":"j50","pl":3,"b":250,"a":0,"n":""},{"p":"j37","pl":4,"b":230,"a":0,"n":""},{"p":"j22","pl":4,"b":230,"a":0,"n":""},{"p":"j108","pl":5,"b":210,"a":0,"n":""},{"p":"j34","pl":5,"b":210,"a":0,"n":""},{"p":"j47","pl":6,"b":190,"a":0,"n":""},{"p":"j1","pl":6,"b":190,"a":0,"n":""},{"p":"j82","pl":7,"b":170,"a":20,"n":"Bonificación 6–0"},{"p":"j98","pl":7,"b":170,"a":20,"n":"Bonificación 6–0"},{"p":"j43","pl":8,"b":140,"a":-20,"n":"Penalización simple"},{"p":"j66","pl":8,"b":140,"a":-20,"n":"Penalización simple"},{"p":"j23","pl":9,"b":100,"a":0,"n":""},{"p":"j15","pl":9,"b":100,"a":0,"n":""},{"p":"j91","pl":10,"b":80,"a":-20,"n":"Penalización simple"},{"p":"j84","pl":10,"b":80,"a":-20,"n":"Penalización simple"},{"p":"j88","pl":11,"b":60,"a":0,"n":""},{"p":"j45","pl":11,"b":60,"a":0,"n":""},{"p":"j76","pl":12,"b":40,"a":0,"n":""},{"p":"j46","pl":12,"b":40,"a":0,"n":""}]},{"n":9,"date":"2026-09-29","cat":"Open Special","status":"cerrada","mode":"manual","imp":true,"results":[{"p":"j90","pl":1,"b":280,"a":0,"n":""},{"p":"j66","pl":1,"b":280,"a":0,"n":""},{"p":"j50","pl":2,"b":240,"a":0,"n":""},{"p":"j64","pl":2,"b":240,"a":0,"n":""},{"p":"j13","pl":3,"b":210,"a":0,"n":""},{"p":"j4","pl":3,"b":210,"a":0,"n":""},{"p":"j23","pl":4,"b":190,"a":0,"n":""},{"p":"j62","pl":4,"b":190,"a":0,"n":""},{"p":"j45","pl":5,"b":170,"a":0,"n":""},{"p":"j61","pl":5,"b":170,"a":0,"n":""},{"p":"j103","pl":6,"b":150,"a":0,"n":""},{"p":"j98","pl":6,"b":150,"a":0,"n":""},{"p":"j55","pl":7,"b":130,"a":0,"n":""},{"p":"j104","pl":7,"b":130,"a":0,"n":""},{"p":"j37","pl":8,"b":115,"a":0,"n":""},{"p":"j38","pl":8,"b":115,"a":0,"n":""},{"p":"j108","pl":9,"b":100,"a":0,"n":""},{"p":"j105","pl":9,"b":100,"a":0,"n":""},{"p":"j15","pl":10,"b":85,"a":20,"n":"Bonificación 6–0"},{"p":"j31","pl":10,"b":85,"a":20,"n":"Bonificación 6–0"},{"p":"j22","pl":11,"b":70,"a":0,"n":""},{"p":"j29","pl":11,"b":70,"a":0,"n":""},{"p":"j106","pl":12,"b":60,"a":0,"n":""},{"p":"j107","pl":12,"b":60,"a":0,"n":""},{"p":"j26","pl":13,"b":50,"a":0,"n":""},{"p":"j14","pl":13,"b":50,"a":0,"n":""},{"p":"j34","pl":14,"b":40,"a":0,"n":""},{"p":"j36","pl":14,"b":40,"a":0,"n":""},{"p":"j1","pl":15,"b":30,"a":0,"n":""},{"p":"j47","pl":15,"b":30,"a":0,"n":""},{"p":"j88","pl":16,"b":20,"a":-20,"n":"Penalización simple"},{"p":"j63","pl":16,"b":20,"a":-20,"n":"Penalización simple"}],"note":"Fecha especial · 16 parejas"},{"n":10,"date":"2026-10-06","cat":"Challenger","status":"pendiente"},{"n":11,"date":"2026-10-13","cat":"Open","status":"pendiente"},{"n":12,"date":"2026-10-20","cat":"Master","status":"pendiente"},{"n":13,"date":"2026-10-27","cat":"Open","status":"pendiente"},{"n":14,"date":"2026-11-03","cat":"Challenger","status":"pendiente"},{"n":15,"date":"2026-11-10","cat":"Open","status":"pendiente"},{"n":16,"date":"2026-11-17","cat":"Master","status":"pendiente"},{"n":17,"date":"2026-11-24","cat":"Open","status":"pendiente"},{"n":18,"date":"2026-12-01","cat":"Challenger","status":"pendiente"},{"n":19,"date":"2026-12-08","cat":"Open","status":"pendiente"},{"n":20,"date":"2026-12-15","cat":"Master","status":"pendiente"},{"n":21,"date":"2026-12-22","cat":"Master Finals","status":"pendiente"}],"updated":"2026-10-02T01:09:54.101Z"}</script>
+<script type="application/json" id="liga-data">{"v":2,"league":{"name":"Liga El Garito","season":"Clausura 2026","web":"https://nnavarroo-sys.github.io/liga-el-garito/"},"settings":{"bonus60":20,"cap":4,"qualify":24,"start":"20:30","slot":20},"cats":["Challenger","Open","Master","Master Finals","Open Special"],"tables":{"Challenger":[150,130,110,90,80,70,60,50,40,30,20,10],"Open":[240,200,180,160,140,120,100,80,60,50,30,20],"Master":[320,280,250,230,210,190,170,140,100,80,60,40],"Master Finals":[640,500,420,360,290,260,220,200,160,140,100,80],"Open Special":[280,240,210,190,170,150,130,115,100,85,70,60,50,40,30,20]},"players":[{"id":"j1","name":"Rodrigo Nuñez","side":"AM"},{"id":"j2","name":"Rodrigo Rosas","side":""},{"id":"j3","name":"Amaro Taucan","side":"DR"},{"id":"j4","name":"Arturo Fuenzalida","side":"RV"},{"id":"j5","name":"Diego Garces","side":"RV"},{"id":"j6","name":"Aaron Encina","side":"DR"},{"id":"j7","name":"Alvaro Pérez","side":"DR"},{"id":"j9","name":"Jaime Gómez","side":"RV"},{"id":"j10","name":"Diego Díaz","side":"DR"},{"id":"j11","name":"Nelson Navarro","side":"RV"},{"id":"j12","name":"Jose Manuel Valencia","side":"DR"},{"id":"j13","name":"Esteban Ayala","side":"AM"},{"id":"j14","name":"Martin Carroz","side":"RV"},{"id":"j15","name":"Rodolfo Guajardo","side":"AM"},{"id":"j16","name":"Patricio Lobos","side":""},{"id":"j17","name":"Gustavo Isea","side":"RV"},{"id":"j18","name":"Daniel Bolados","side":"DR"},{"id":"j19","name":"Guillermo Tudezca (Memo)","side":"DR"},{"id":"j20","name":"Patricio Catalan","side":""},{"id":"j21","name":"Mauricio Perez","side":"DR"},{"id":"j22","name":"Seba Yañez","side":""},{"id":"j23","name":"Tomas Polloni","side":"DR"},{"id":"j24","name":"Pablo Aguayo","side":""},{"id":"j25","name":"Seba Quezada","side":""},{"id":"j26","name":"Ivan Neira","side":"DR"},{"id":"j27","name":"David Neira","side":"RV"},{"id":"j28","name":"Vicente Ramirez","side":""},{"id":"j29","name":"Camilo Fontova","side":"DR"},{"id":"j30","name":"Nico Guerra","side":""},{"id":"j31","name":"Daniel Belmar","side":"DR"},{"id":"j32","name":"Cristobal","side":"RV"},{"id":"j33","name":"Boris Morales","side":"AM"},{"id":"j34","name":"Seba Ogas","side":"RV"},{"id":"j35","name":"Miguel Partner de Seba","side":""},{"id":"j36","name":"Mauro Bouquet","side":"DR"},{"id":"j37","name":"Luis Reyes","side":"DR"},{"id":"j38","name":"Jorge Casas","side":"DR"},{"id":"j39","name":"Mirko Posavac","side":""},{"id":"j40","name":"Ale K","side":"DR"},{"id":"j41","name":"Vincenzo","side":""},{"id":"j42","name":"Jona Cooper","side":"RV"},{"id":"j43","name":"Alex Flores","side":"DR"},{"id":"j44","name":"Gonzalo Torres","side":"RV"},{"id":"j45","name":"Tomy Latorre","side":"RV"},{"id":"j46","name":"Nene","side":""},{"id":"j47","name":"Byron","side":"DR"},{"id":"j48","name":"Jorge Alvarado","side":""},{"id":"j49","name":"Benja Cabrera","side":""},{"id":"j50","name":"Juan Javia","side":"RV"},{"id":"j51","name":"Martin El Bueno","side":""},{"id":"j52","name":"Alfredo Viola","side":"DR"},{"id":"j53","name":"Lautaro Rodriguez","side":""},{"id":"j54","name":"Nico Moreno","side":""},{"id":"j55","name":"Carlos Amaro","side":"RV"},{"id":"j56","name":"Nico D","side":""},{"id":"j57","name":"Mauricio Encina","side":""},{"id":"j58","name":"Felipe O","side":""},{"id":"j59","name":"Carlos Barrera","side":"DR"},{"id":"j60","name":"Jota","side":"RV"},{"id":"j61","name":"Hector","side":"RV"},{"id":"j62","name":"Coke Castro","side":"RV"},{"id":"j63","name":"Rene Tobar (Coto)","side":"RV"},{"id":"j64","name":"Maldonado","side":"DR"},{"id":"j65","name":"Jose E","side":""},{"id":"j66","name":"Diego Rosales","side":"RV"},{"id":"j67","name":"Lucas Troya","side":""},{"id":"j69","name":"Joaquin Alegria","side":"RV"},{"id":"j70","name":"Alexis Gonzalez","side":"AM"},{"id":"j72","name":"Berti","side":"DR"},{"id":"j73","name":"Gonzalo Benavente","side":"RV"},{"id":"j75","name":"Mati C","side":""},{"id":"j76","name":"Cesar Jorquera","side":"DR"},{"id":"j77","name":"Nico Vega","side":""},{"id":"j78","name":"Seba B","side":""},{"id":"j79","name":"Rodrigo SC","side":""},{"id":"j80","name":"Byron Maipu","side":"RV"},{"id":"j81","name":"Gonza","side":"RV"},{"id":"j82","name":"Alex Marambio","side":"DR"},{"id":"j83","name":"Roy","side":""},{"id":"j84","name":"Carlos Villar","side":"RV"},{"id":"j85","name":"Martinoski","side":""},{"id":"j86","name":"Nico Campo","side":""},{"id":"j87","name":"Claudio Arce","side":"DR"},{"id":"j88","name":"Daniel Retuert","side":"DR"},{"id":"j89","name":"Nacho Rojo","side":""},{"id":"j90","name":"Super Jona","side":"DR"},{"id":"j91","name":"Pablo Muñoz","side":"DR"},{"id":"j92","name":"Fonck","side":"RV"},{"id":"j93","name":"German F","side":"RV"},{"id":"j94","name":"Joan Guzman","side":"RV"},{"id":"j95","name":"Nico Vilches","side":""},{"id":"j96","name":"Nico Fernandez","side":""},{"id":"j97","name":"Diego Rebolledo","side":"RV"},{"id":"j98","name":"Jaca","side":"RV"},{"id":"j99","name":"Alonso","side":"DR"},{"id":"j100","name":"Mario","side":""},{"id":"j101","name":"Juan Pablo","side":""},{"id":"j102","name":"Sandrino","side":""},{"id":"j103","name":"Seba Z","side":""},{"id":"j104","name":"Sziklai","side":""},{"id":"j105","name":"Marcelo","side":""},{"id":"j106","name":"Nico Makuc","side":""},{"id":"j107","name":"Seba Delmar","side":""},{"id":"j108","name":"Matias E","side":"DR"},{"id":"j109","name":"Felipe de Amaro","side":"RV"}],"fechas":[{"n":1,"date":"2026-08-04","cat":"Open","status":"cerrada","mode":"torneo","results":[{"p":"j66","pl":1,"b":240,"a":0,"n":""},{"p":"j31","pl":1,"b":240,"a":0,"n":""},{"p":"j19","pl":2,"b":200,"a":0,"n":""},{"p":"j63","pl":2,"b":200,"a":0,"n":""},{"p":"j50","pl":3,"b":180,"a":0,"n":""},{"p":"j85","pl":3,"b":180,"a":0,"n":""},{"p":"j27","pl":4,"b":160,"a":0,"n":""},{"p":"j67","pl":4,"b":160,"a":0,"n":""},{"p":"j3","pl":5,"b":140,"a":20,"n":"Bonificación 6–0"},{"p":"j109","pl":5,"b":140,"a":20,"n":"Bonificación 6–0"},{"p":"j46","pl":6,"b":120,"a":0,"n":""},{"p":"j83","pl":6,"b":120,"a":0,"n":""},{"p":"j22","pl":7,"b":100,"a":0,"n":""},{"p":"j21","pl":7,"b":100,"a":0,"n":""},{"p":"j82","pl":8,"b":80,"a":-20,"n":"Penalización simple"},{"p":"j84","pl":8,"b":80,"a":-20,"n":"Penalización simple"},{"p":"j23","pl":9,"b":60,"a":0,"n":""},{"p":"j62","pl":9,"b":60,"a":0,"n":""},{"p":"j15","pl":10,"b":50,"a":0,"n":""},{"p":"j4","pl":10,"b":50,"a":0,"n":""},{"p":"j34","pl":11,"b":30,"a":0,"n":""},{"p":"j45","pl":11,"b":30,"a":0,"n":""},{"p":"j43","pl":12,"b":20,"a":0,"n":""},{"p":"j42","pl":12,"b":20,"a":0,"n":""}],"np":12,"start":"20:30","slot":20,"pairs":[["j50","j85"],["j3","j109"],["j34","j45"],["j27","j67"],["j46","j83"],["j31","j66"],["j15","j4"],["j23","j62"],["j43","j42"],["j19","j63"],["j82","j84"],["j22","j21"]],"tomb":[1,2,3,4,5,6,7,8,9,10,11,12],"sc":{"A1":{"pa":0,"pb":1,"a":6,"b":5},"A2":{"pa":2,"pb":3,"a":4,"b":6},"B1":{"pa":4,"pb":5,"a":2,"b":6},"B2":{"pa":6,"pb":7,"a":4,"b":6},"C1":{"pa":8,"pb":9,"a":1,"b":6},"C2":{"pa":10,"pb":11,"a":6,"b":4},"A3":{"pa":0,"pb":2,"a":6,"b":2},"A4":{"pa":1,"pb":3,"a":1,"b":6},"B3":{"pa":4,"pb":6,"a":5,"b":6},"B4":{"pa":5,"pb":7,"a":6,"b":1},"C3":{"pa":8,"pb":10,"a":4,"b":5},"C4":{"pa":9,"pb":11,"a":6,"b":5},"A5":{"pa":0,"pb":3,"a":4,"b":6},"A6":{"pa":1,"pb":2,"a":6,"b":3},"B5":{"pa":4,"pb":7,"a":6,"b":2},"B6":{"pa":5,"pb":6,"a":6,"b":2},"C5":{"pa":8,"pb":11,"a":3,"b":5},"C6":{"pa":9,"pb":10,"a":6,"b":2},"ORO-S1":{"pa":5,"pb":0,"a":6,"b":4},"ORO-S2":{"pa":9,"pb":3,"a":6,"b":1},"PLATA-S1":{"pa":10,"pb":1,"a":0,"b":6},"PLATA-S2":{"pa":4,"pb":11,"a":6,"b":4},"CACA-S1":{"pa":6,"pb":2,"a":6,"b":4},"CACA-S2":{"pa":7,"pb":8,"a":6,"b":5},"ORO-F":{"pa":5,"pb":9,"a":6,"b":3},"ORO-3":{"pa":0,"pb":3,"a":6,"b":4},"PLATA-F":{"pa":1,"pb":4,"a":6,"b":5},"PLATA-3":{"pa":10,"pb":11,"a":1,"b":6},"CACA-F":{"pa":6,"pb":7,"a":4,"b":6},"CACA-3":{"pa":2,"pb":8,"a":6,"b":1}},"ex":{}},{"n":2,"date":"2026-08-11","cat":"Challenger","status":"cerrada","mode":"torneo","results":[{"p":"j61","pl":1,"b":150,"a":0,"n":""},{"p":"j13","pl":1,"b":150,"a":0,"n":""},{"p":"j31","pl":2,"b":130,"a":0,"n":""},{"p":"j66","pl":2,"b":130,"a":0,"n":""},{"p":"j50","pl":3,"b":110,"a":0,"n":""},{"p":"j64","pl":3,"b":110,"a":0,"n":""},{"p":"j14","pl":4,"b":90,"a":20,"n":"Bonificación 6–0"},{"p":"j37","pl":4,"b":90,"a":20,"n":"Bonificación 6–0"},{"p":"j33","pl":5,"b":80,"a":0,"n":""},{"p":"j46","pl":5,"b":80,"a":0,"n":""},{"p":"j15","pl":6,"b":70,"a":0,"n":""},{"p":"j86","pl":6,"b":70,"a":0,"n":""},{"p":"j3","pl":7,"b":60,"a":20,"n":"Bonificación 6–0"},{"p":"j62","pl":7,"b":60,"a":20,"n":"Bonificación 6–0"},{"p":"j108","pl":8,"b":50,"a":0,"n":""},{"p":"j87","pl":8,"b":50,"a":0,"n":""},{"p":"j63","pl":9,"b":40,"a":-20,"n":"Penalización simple"},{"p":"j1","pl":9,"b":40,"a":-20,"n":"Penalización simple"},{"p":"j30","pl":10,"b":30,"a":20,"n":"Bonificación 6–0"},{"p":"j34","pl":10,"b":30,"a":20,"n":"Bonificación 6–0"},{"p":"j21","pl":11,"b":20,"a":0,"n":""},{"p":"j22","pl":11,"b":20,"a":0,"n":""},{"p":"j88","pl":12,"b":10,"a":-40,"n":"Penalización doble"},{"p":"j45","pl":12,"b":10,"a":-40,"n":"Penalización doble"}],"np":12,"start":"20:30","slot":20,"pairs":[["j61","j13"],["j30","j34"],["j14","j37"],["j21","j22"],["j108","j87"],["j31","j66"],["j3","j62"],["j63","j1"],["j88","j45"],["j50","j64"],["j15","j86"],["j33","j46"]],"tomb":[1,2,3,4,5,6,7,8,9,10,11,12],"sc":{"A1":{"pa":0,"pb":1,"a":6,"b":3},"A2":{"pa":2,"pb":3,"a":6,"b":0},"B1":{"pa":4,"pb":5,"a":4,"b":5},"B2":{"pa":6,"pb":7,"a":6,"b":0},"C1":{"pa":8,"pb":9,"a":3,"b":6},"C2":{"pa":10,"pb":11,"a":6,"b":1},"A3":{"pa":0,"pb":2,"a":6,"b":2},"A4":{"pa":1,"pb":3,"a":5,"b":6},"B3":{"pa":4,"pb":6,"a":5,"b":3},"B4":{"pa":5,"pb":7,"a":6,"b":2},"C3":{"pa":8,"pb":10,"a":6,"b":5},"C4":{"pa":9,"pb":11,"a":4,"b":5},"A5":{"pa":0,"pb":3,"a":6,"b":3},"A6":{"pa":1,"pb":2,"a":3,"b":5},"B5":{"pa":4,"pb":7,"a":6,"b":5},"B6":{"pa":5,"pb":6,"a":5,"b":4},"C5":{"pa":8,"pb":11,"a":4,"b":5},"C6":{"pa":9,"pb":10,"a":5,"b":3},"ORO-S1":{"pa":0,"pb":2,"a":6,"b":1},"ORO-S2":{"pa":5,"pb":9,"a":6,"b":1},"PLATA-S1":{"pa":4,"pb":10,"a":2,"b":6},"PLATA-S2":{"pa":11,"pb":6,"a":6,"b":3},"CACA-S1":{"pa":3,"pb":7,"a":4,"b":6},"CACA-S2":{"pa":8,"pb":1,"a":0,"b":6},"ORO-F":{"pa":0,"pb":5,"a":6,"b":1},"ORO-3":{"pa":2,"pb":9,"a":4,"b":6},"PLATA-F":{"pa":10,"pb":11,"a":2,"b":6},"PLATA-3":{"pa":4,"pb":6,"a":1,"b":6},"CACA-F":{"pa":7,"pb":1,"a":6,"b":4},"CACA-3":{"pa":3,"pb":8,"a":6,"b":0}},"ex":{}},{"n":3,"date":"2026-08-18","cat":"Open","status":"cerrada","mode":"torneo","results":[{"p":"j55","pl":1,"b":240,"a":20,"n":"Bonificación 6–0"},{"p":"j66","pl":1,"b":240,"a":20,"n":"Bonificación 6–0"},{"p":"j86","pl":2,"b":200,"a":0,"n":""},{"p":"j15","pl":2,"b":200,"a":0,"n":""},{"p":"j108","pl":3,"b":180,"a":20,"n":"Bonificación 6–0"},{"p":"j87","pl":3,"b":180,"a":20,"n":"Bonificación 6–0"},{"p":"j13","pl":4,"b":160,"a":0,"n":""},{"p":"j37","pl":4,"b":160,"a":-20,"n":"Atraso"},{"p":"j26","pl":5,"b":140,"a":-20,"n":"Penalización simple"},{"p":"j62","pl":5,"b":140,"a":-20,"n":"Penalización simple"},{"p":"j46","pl":6,"b":120,"a":0,"n":""},{"p":"j33","pl":6,"b":120,"a":0,"n":""},{"p":"j34","pl":7,"b":100,"a":0,"n":""},{"p":"j50","pl":7,"b":100,"a":0,"n":""},{"p":"j29","pl":8,"b":80,"a":0,"n":""},{"p":"j22","pl":8,"b":80,"a":0,"n":""},{"p":"j89","pl":9,"b":60,"a":0,"n":""},{"p":"j21","pl":9,"b":60,"a":0,"n":""},{"p":"j19","pl":10,"b":50,"a":20,"n":"Bonificación 6–0"},{"p":"j63","pl":10,"b":50,"a":20,"n":"Bonificación 6–0"},{"p":"j3","pl":11,"b":30,"a":0,"n":""},{"p":"j4","pl":11,"b":30,"a":0,"n":""},{"p":"j18","pl":12,"b":20,"a":-40,"n":"Penalización doble"},{"p":"j1","pl":12,"b":20,"a":-40,"n":"Penalización doble"}],"np":12,"start":"20:30","slot":20,"pairs":[["j13","j37"],["j18","j1"],["j55","j66"],["j19","j63"],["j86","j15"],["j46","j33"],["j34","j50"],["j89","j21"],["j29","j22"],["j108","j87"],["j3","j4"],["j26","j62"]],"tomb":[1,2,3,4,5,6,7,8,9,10,11,12],"sc":{"A1":{"pa":0,"pb":1,"a":6,"b":3},"A2":{"pa":2,"pb":3,"a":5,"b":4},"B1":{"pa":4,"pb":5,"a":6,"b":2},"B2":{"pa":6,"pb":7,"a":4,"b":5},"C1":{"pa":8,"pb":9,"a":6,"b":3},"C2":{"pa":10,"pb":11,"a":3,"b":5},"A3":{"pa":0,"pb":2,"a":4,"b":6},"A4":{"pa":1,"pb":3,"a":6,"b":4},"B3":{"pa":4,"pb":6,"a":3,"b":6},"B4":{"pa":5,"pb":7,"a":5,"b":4},"C3":{"pa":8,"pb":10,"a":4,"b":6},"C4":{"pa":9,"pb":11,"a":6,"b":0},"A5":{"pa":0,"pb":3,"a":6,"b":1},"A6":{"pa":1,"pb":2,"a":0,"b":6},"B5":{"pa":4,"pb":7,"a":6,"b":3},"B6":{"pa":5,"pb":6,"a":6,"b":5},"C5":{"pa":8,"pb":11,"a":4,"b":5},"C6":{"pa":9,"pb":10,"a":6,"b":3},"ORO-S1":{"pa":2,"pb":0,"a":6,"b":3},"ORO-S2":{"pa":9,"pb":4,"a":3,"b":6},"PLATA-S1":{"pa":5,"pb":8,"a":6,"b":5},"PLATA-S2":{"pa":11,"pb":6,"a":6,"b":3},"CACA-S1":{"pa":1,"pb":3,"a":0,"b":6},"CACA-S2":{"pa":7,"pb":10,"a":6,"b":5},"ORO-F":{"pa":2,"pb":4,"a":6,"b":3},"ORO-3":{"pa":0,"pb":9,"a":4,"b":6},"PLATA-F":{"pa":5,"pb":11,"a":4,"b":6},"PLATA-3":{"pa":8,"pb":6,"a":4,"b":6},"CACA-F":{"pa":3,"pb":7,"a":3,"b":6},"CACA-3":{"pa":1,"pb":10,"a":4,"b":6}},"ex":{"j37":{"v":-20,"n":"Atraso"}}},{"n":4,"date":"2026-08-25","cat":"Master","status":"cerrada","mode":"torneo","results":[{"p":"j13","pl":1,"b":320,"a":0,"n":""},{"p":"j61","pl":1,"b":320,"a":0,"n":""},{"p":"j90","pl":2,"b":280,"a":0,"n":""},{"p":"j70","pl":2,"b":280,"a":0,"n":""},{"p":"j50","pl":3,"b":250,"a":0,"n":""},{"p":"j64","pl":3,"b":250,"a":0,"n":""},{"p":"j15","pl":4,"b":230,"a":0,"n":""},{"p":"j86","pl":4,"b":230,"a":0,"n":""},{"p":"j66","pl":5,"b":210,"a":0,"n":""},{"p":"j55","pl":5,"b":210,"a":0,"n":""},{"p":"j46","pl":6,"b":190,"a":0,"n":""},{"p":"j83","pl":6,"b":190,"a":0,"n":""},{"p":"j31","pl":7,"b":170,"a":0,"n":""},{"p":"j14","pl":7,"b":170,"a":0,"n":""},{"p":"j19","pl":8,"b":140,"a":0,"n":""},{"p":"j63","pl":8,"b":140,"a":0,"n":""},{"p":"j33","pl":9,"b":100,"a":0,"n":""},{"p":"j37","pl":9,"b":100,"a":0,"n":""},{"p":"j45","pl":10,"b":80,"a":0,"n":""},{"p":"j34","pl":10,"b":80,"a":0,"n":""},{"p":"j108","pl":11,"b":60,"a":0,"n":""},{"p":"j62","pl":11,"b":60,"a":0,"n":""},{"p":"j84","pl":12,"b":40,"a":0,"n":""},{"p":"j82","pl":12,"b":40,"a":0,"n":""}],"np":12,"start":"20:30","slot":20,"pairs":[["j45","j34"],["j33","j37"],["j90","j70"],["j46","j83"],["j31","j14"],["j15","j86"],["j50","j64"],["j108","j62"],["j84","j82"],["j19","j63"],["j13","j61"],["j66","j55"]],"tomb":[1,2,3,4,5,6,7,8,9,10,11,12],"sc":{"A1":{"pa":0,"pb":1,"a":3,"b":5},"A2":{"pa":2,"pb":3,"a":6,"b":2},"B1":{"pa":4,"pb":5,"a":4,"b":5},"B2":{"pa":6,"pb":7,"a":6,"b":1},"C1":{"pa":8,"pb":9,"a":3,"b":5},"C2":{"pa":10,"pb":11,"a":6,"b":5},"A3":{"pa":0,"pb":2,"a":1,"b":6},"A4":{"pa":1,"pb":3,"a":2,"b":6},"B3":{"pa":4,"pb":6,"a":6,"b":4},"B4":{"pa":5,"pb":7,"a":6,"b":1},"C3":{"pa":8,"pb":10,"a":1,"b":6},"C4":{"pa":9,"pb":11,"a":4,"b":5},"A5":{"pa":0,"pb":3,"a":5,"b":6},"A6":{"pa":1,"pb":2,"a":1,"b":6},"B5":{"pa":4,"pb":7,"a":6,"b":5},"B6":{"pa":5,"pb":6,"a":3,"b":5},"C5":{"pa":8,"pb":11,"a":4,"b":6},"C6":{"pa":9,"pb":10,"a":4,"b":5},"ORO-S1":{"pa":2,"pb":5,"a":6,"b":2},"ORO-S2":{"pa":10,"pb":6,"a":6,"b":3},"PLATA-S1":{"pa":11,"pb":9,"a":6,"b":3},"PLATA-S2":{"pa":3,"pb":4,"a":6,"b":4},"CACA-S1":{"pa":1,"pb":7,"a":6,"b":3},"CACA-S2":{"pa":0,"pb":8,"a":6,"b":5},"ORO-F":{"pa":2,"pb":10,"a":4,"b":6},"ORO-3":{"pa":5,"pb":6,"a":4,"b":6},"PLATA-F":{"pa":11,"pb":3,"a":6,"b":2},"PLATA-3":{"pa":9,"pb":4,"a":1,"b":6},"CACA-F":{"pa":1,"pb":0,"a":6,"b":2},"CACA-3":{"pa":7,"pb":8,"a":6,"b":2}},"ex":{}},{"n":5,"date":"2026-09-01","cat":"Open","status":"cerrada","mode":"torneo","results":[{"p":"j50","pl":1,"b":240,"a":0,"n":""},{"p":"j91","pl":1,"b":240,"a":0,"n":""},{"p":"j86","pl":2,"b":200,"a":0,"n":""},{"p":"j15","pl":2,"b":200,"a":0,"n":""},{"p":"j88","pl":3,"b":180,"a":0,"n":""},{"p":"j93","pl":3,"b":180,"a":0,"n":""},{"p":"j13","pl":4,"b":160,"a":20,"n":"Bonificación 6–0"},{"p":"j45","pl":4,"b":160,"a":20,"n":"Bonificación 6–0"},{"p":"j66","pl":5,"b":140,"a":20,"n":"Bonificación 6–0"},{"p":"j90","pl":5,"b":140,"a":20,"n":"Bonificación 6–0"},{"p":"j43","pl":6,"b":120,"a":0,"n":""},{"p":"j46","pl":6,"b":120,"a":0,"n":""},{"p":"j92","pl":7,"b":100,"a":0,"n":""},{"p":"j37","pl":7,"b":100,"a":0,"n":""},{"p":"j34","pl":8,"b":80,"a":0,"n":""},{"p":"j36","pl":8,"b":80,"a":0,"n":""},{"p":"j63","pl":9,"b":60,"a":0,"n":""},{"p":"j11","pl":9,"b":60,"a":0,"n":""},{"p":"j4","pl":10,"b":50,"a":-20,"n":"Penalización simple"},{"p":"j3","pl":10,"b":50,"a":-20,"n":"Penalización simple"},{"p":"j95","pl":11,"b":30,"a":-20,"n":"Penalización simple"},{"p":"j96","pl":11,"b":30,"a":-20,"n":"Penalización simple"},{"p":"j108","pl":12,"b":20,"a":0,"n":""},{"p":"j94","pl":12,"b":20,"a":0,"n":""}],"np":12,"start":"20:30","slot":20,"pairs":[["j108","j94"],["j63","j11"],["j86","j15"],["j92","j37"],["j34","j36"],["j88","j93"],["j13","j45"],["j95","j96"],["j43","j46"],["j4","j3"],["j66","j90"],["j50","j91"]],"tomb":[1,2,3,4,5,6,7,8,9,10,11,12],"sc":{"A1":{"pa":0,"pb":1,"a":5,"b":4},"A2":{"pa":2,"pb":3,"a":5,"b":4},"B1":{"pa":4,"pb":5,"a":4,"b":5},"B2":{"pa":6,"pb":7,"a":6,"b":0},"C1":{"pa":8,"pb":9,"a":6,"b":2},"C2":{"pa":10,"pb":11,"a":3,"b":5},"A3":{"pa":0,"pb":2,"a":3,"b":6},"A4":{"pa":1,"pb":3,"a":4,"b":5},"B3":{"pa":4,"pb":6,"a":2,"b":6},"B4":{"pa":5,"pb":7,"a":5,"b":3},"C3":{"pa":8,"pb":10,"a":4,"b":5},"C4":{"pa":9,"pb":11,"a":2,"b":6},"A5":{"pa":0,"pb":3,"a":2,"b":6},"A6":{"pa":1,"pb":2,"a":2,"b":6},"B5":{"pa":4,"pb":7,"a":5,"b":3},"B6":{"pa":5,"pb":6,"a":5,"b":4},"C5":{"pa":8,"pb":11,"a":3,"b":5},"C6":{"pa":9,"pb":10,"a":0,"b":6},"ORO-S1":{"pa":11,"pb":6,"a":6,"b":2},"ORO-S2":{"pa":2,"pb":5,"a":6,"b":2},"PLATA-S1":{"pa":10,"pb":4,"a":6,"b":3},"PLATA-S2":{"pa":3,"pb":8,"a":1,"b":6},"CACA-S1":{"pa":0,"pb":9,"a":6,"b":7},"CACA-S2":{"pa":1,"pb":7,"a":6,"b":3},"ORO-F":{"pa":11,"pb":2,"a":6,"b":3},"ORO-3":{"pa":6,"pb":5,"a":3,"b":6},"PLATA-F":{"pa":10,"pb":8,"a":6,"b":1},"PLATA-3":{"pa":4,"pb":3,"a":3,"b":6},"CACA-F":{"pa":9,"pb":1,"a":4,"b":6},"CACA-3":{"pa":0,"pb":7,"a":4,"b":6}},"ex":{}},{"n":6,"date":"2026-09-08","cat":"Challenger","status":"cerrada","mode":"torneo","results":[{"p":"j90","pl":1,"b":150,"a":20,"n":"Bonificación 6–0"},{"p":"j55","pl":1,"b":150,"a":20,"n":"Bonificación 6–0"},{"p":"j66","pl":2,"b":130,"a":0,"n":""},{"p":"j61","pl":2,"b":130,"a":0,"n":""},{"p":"j22","pl":3,"b":110,"a":0,"n":""},{"p":"j47","pl":3,"b":110,"a":0,"n":""},{"p":"j23","pl":4,"b":90,"a":-20,"n":"Penalización simple"},{"p":"j62","pl":4,"b":90,"a":-20,"n":"Penalización simple"},{"p":"j13","pl":5,"b":80,"a":0,"n":""},{"p":"j4","pl":5,"b":80,"a":0,"n":""},{"p":"j50","pl":6,"b":70,"a":0,"n":""},{"p":"j88","pl":6,"b":70,"a":0,"n":""},{"p":"j34","pl":7,"b":60,"a":0,"n":""},{"p":"j36","pl":7,"b":60,"a":0,"n":""},{"p":"j84","pl":8,"b":50,"a":0,"n":""},{"p":"j82","pl":8,"b":50,"a":0,"n":""},{"p":"j91","pl":9,"b":40,"a":20,"n":"Bonificación 6–0"},{"p":"j98","pl":9,"b":40,"a":20,"n":"Bonificación 6–0"},{"p":"j11","pl":10,"b":30,"a":-20,"n":"Penalización simple"},{"p":"j33","pl":10,"b":30,"a":-20,"n":"Penalización simple"},{"p":"j30","pl":11,"b":20,"a":0,"n":""},{"p":"j43","pl":11,"b":20,"a":0,"n":""},{"p":"j97","pl":12,"b":10,"a":0,"n":""},{"p":"j21","pl":12,"b":10,"a":0,"n":""}],"np":12,"start":"20:30","slot":20,"pairs":[["j97","j21"],["j90","j55"],["j91","j98"],["j13","j4"],["j84","j82"],["j66","j61"],["j34","j36"],["j30","j43"],["j11","j33"],["j50","j88"],["j22","j47"],["j23","j62"]],"tomb":[1,2,3,4,5,6,7,8,9,10,11,12],"sc":{"A1":{"pa":0,"pb":1,"a":1,"b":6},"A2":{"pa":2,"pb":3,"a":1,"b":6},"B1":{"pa":4,"pb":5,"a":3,"b":6},"B2":{"pa":6,"pb":7,"a":6,"b":5},"C1":{"pa":8,"pb":9,"a":1,"b":6},"C2":{"pa":10,"pb":11,"a":6,"b":5},"A3":{"pa":0,"pb":2,"a":1,"b":6},"A4":{"pa":1,"pb":3,"a":6,"b":4},"B3":{"pa":4,"pb":6,"a":5,"b":6},"B4":{"pa":5,"pb":7,"a":6,"b":4},"C3":{"pa":8,"pb":10,"a":4,"b":5},"C4":{"pa":9,"pb":11,"a":1,"b":6},"A5":{"pa":0,"pb":3,"a":2,"b":6},"A6":{"pa":1,"pb":2,"a":6,"b":1},"B5":{"pa":4,"pb":7,"a":6,"b":3},"B6":{"pa":5,"pb":6,"a":6,"b":3},"C5":{"pa":8,"pb":11,"a":2,"b":6},"C6":{"pa":9,"pb":10,"a":5,"b":6},"ORO-S1":{"pa":1,"pb":11,"a":6,"b":0},"ORO-S2":{"pa":5,"pb":10,"a":6,"b":2},"PLATA-S1":{"pa":3,"pb":4,"a":6,"b":1},"PLATA-S2":{"pa":6,"pb":9,"a":3,"b":6},"CACA-S1":{"pa":2,"pb":0,"a":6,"b":4},"CACA-S2":{"pa":7,"pb":8,"a":3,"b":6},"ORO-F":{"pa":1,"pb":5,"a":6,"b":2},"ORO-3":{"pa":11,"pb":10,"a":4,"b":6},"PLATA-F":{"pa":3,"pb":9,"a":6,"b":3},"PLATA-3":{"pa":4,"pb":6,"a":4,"b":6},"CACA-F":{"pa":2,"pb":8,"a":6,"b":0},"CACA-3":{"pa":0,"pb":7,"a":4,"b":6}},"ex":{}},{"n":7,"date":"2026-09-15","cat":"Open","status":"cerrada","mode":"torneo","results":[{"p":"j55","pl":1,"b":240,"a":20,"n":"Bonificación 6–0"},{"p":"j90","pl":1,"b":240,"a":20,"n":"Bonificación 6–0"},{"p":"j99","pl":2,"b":200,"a":0,"n":""},{"p":"j100","pl":2,"b":200,"a":0,"n":""},{"p":"j31","pl":3,"b":180,"a":-20,"n":"Penalización simple"},{"p":"j66","pl":3,"b":180,"a":-20,"n":"Penalización simple"},{"p":"j13","pl":4,"b":160,"a":0,"n":""},{"p":"j76","pl":4,"b":160,"a":0,"n":""},{"p":"j37","pl":5,"b":140,"a":0,"n":""},{"p":"j80","pl":5,"b":140,"a":0,"n":""},{"p":"j98","pl":6,"b":120,"a":0,"n":""},{"p":"j91","pl":6,"b":120,"a":0,"n":""},{"p":"j22","pl":7,"b":100,"a":0,"n":""},{"p":"j47","pl":7,"b":100,"a":0,"n":""},{"p":"j40","pl":8,"b":80,"a":0,"n":""},{"p":"j12","pl":8,"b":80,"a":0,"n":""},{"p":"j45","pl":9,"b":60,"a":0,"n":""},{"p":"j34","pl":9,"b":60,"a":0,"n":""},{"p":"j62","pl":10,"b":50,"a":0,"n":""},{"p":"j102","pl":10,"b":50,"a":0,"n":""},{"p":"j46","pl":11,"b":30,"a":20,"n":"Bonificación 6–0"},{"p":"j33","pl":11,"b":30,"a":20,"n":"Bonificación 6–0"},{"p":"j3","pl":12,"b":20,"a":-20,"n":"Penalización simple"},{"p":"j101","pl":12,"b":20,"a":-20,"n":"Penalización simple"}],"np":12,"start":"20:30","slot":20,"pairs":[["j13","j76"],["j46","j33"],["j37","j80"],["j31","j66"],["j98","j91"],["j99","j100"],["j3","j101"],["j22","j47"],["j45","j34"],["j55","j90"],["j40","j12"],["j62","j102"]],"tomb":[1,2,3,4,5,6,7,8,9,10,11,12],"sc":{"A1":{"pa":0,"pb":1,"a":6,"b":3},"A2":{"pa":2,"pb":3,"a":4,"b":5},"B1":{"pa":4,"pb":5,"a":5,"b":4},"B2":{"pa":6,"pb":7,"a":2,"b":6},"C1":{"pa":8,"pb":9,"a":1,"b":6},"C2":{"pa":10,"pb":11,"a":5,"b":4},"A3":{"pa":0,"pb":2,"a":6,"b":4},"A4":{"pa":1,"pb":3,"a":1,"b":6},"B3":{"pa":4,"pb":6,"a":6,"b":3},"B4":{"pa":5,"pb":7,"a":6,"b":2},"C3":{"pa":8,"pb":10,"a":3,"b":4},"C4":{"pa":9,"pb":11,"a":6,"b":3},"A5":{"pa":0,"pb":3,"a":5,"b":4},"A6":{"pa":1,"pb":2,"a":3,"b":6},"B5":{"pa":4,"pb":7,"a":3,"b":5},"B6":{"pa":5,"pb":6,"a":6,"b":1},"C5":{"pa":8,"pb":11,"a":5,"b":3},"C6":{"pa":9,"pb":10,"a":6,"b":3},"ORO-S1":{"pa":9,"pb":3,"a":6,"b":0},"ORO-S2":{"pa":0,"pb":5,"a":4,"b":6},"PLATA-S1":{"pa":7,"pb":2,"a":1,"b":6},"PLATA-S2":{"pa":10,"pb":4,"a":5,"b":6},"CACA-S1":{"pa":8,"pb":6,"a":6,"b":4},"CACA-S2":{"pa":11,"pb":1,"a":6,"b":4},"ORO-F":{"pa":9,"pb":5,"a":6,"b":3},"ORO-3":{"pa":3,"pb":0,"a":6,"b":2},"PLATA-F":{"pa":2,"pb":4,"a":6,"b":3},"PLATA-3":{"pa":7,"pb":10,"a":6,"b":4},"CACA-F":{"pa":8,"pb":11,"a":6,"b":4},"CACA-3":{"pa":6,"pb":1,"a":0,"b":6}},"ex":{}},{"n":8,"date":"2026-09-22","cat":"Master","status":"cerrada","mode":"torneo","results":[{"p":"j90","pl":1,"b":320,"a":0,"n":""},{"p":"j33","pl":1,"b":320,"a":0,"n":""},{"p":"j19","pl":2,"b":280,"a":20,"n":"Bonificación 6–0"},{"p":"j96","pl":2,"b":280,"a":20,"n":"Bonificación 6–0"},{"p":"j13","pl":3,"b":250,"a":0,"n":""},{"p":"j50","pl":3,"b":250,"a":0,"n":""},{"p":"j37","pl":4,"b":230,"a":0,"n":""},{"p":"j22","pl":4,"b":230,"a":0,"n":""},{"p":"j108","pl":5,"b":210,"a":0,"n":""},{"p":"j34","pl":5,"b":210,"a":0,"n":""},{"p":"j47","pl":6,"b":190,"a":0,"n":""},{"p":"j1","pl":6,"b":190,"a":0,"n":""},{"p":"j82","pl":7,"b":170,"a":20,"n":"Bonificación 6–0"},{"p":"j98","pl":7,"b":170,"a":20,"n":"Bonificación 6–0"},{"p":"j43","pl":8,"b":140,"a":-20,"n":"Penalización simple"},{"p":"j66","pl":8,"b":140,"a":-20,"n":"Penalización simple"},{"p":"j23","pl":9,"b":100,"a":0,"n":""},{"p":"j15","pl":9,"b":100,"a":0,"n":""},{"p":"j91","pl":10,"b":80,"a":-20,"n":"Penalización simple"},{"p":"j84","pl":10,"b":80,"a":-20,"n":"Penalización simple"},{"p":"j88","pl":11,"b":60,"a":0,"n":""},{"p":"j45","pl":11,"b":60,"a":0,"n":""},{"p":"j76","pl":12,"b":40,"a":0,"n":""},{"p":"j46","pl":12,"b":40,"a":0,"n":""}],"np":12,"start":"20:30","slot":20,"pairs":[["j23","j15"],["j76","j46"],["j90","j33"],["j13","j50"],["j108","j34"],["j88","j45"],["j47","j1"],["j37","j22"],["j19","j96"],["j43","j66"],["j82","j98"],["j91","j84"]],"tomb":[1,2,3,4,5,6,7,8,9,10,11,12],"sc":{"A1":{"pa":0,"pb":1,"a":4,"b":5},"A2":{"pa":2,"pb":3,"a":4,"b":5},"B1":{"pa":4,"pb":5,"a":3,"b":5},"B2":{"pa":6,"pb":7,"a":5,"b":6},"C1":{"pa":8,"pb":9,"a":5,"b":4},"C2":{"pa":10,"pb":11,"a":2,"b":6},"A3":{"pa":0,"pb":2,"a":5,"b":6},"A4":{"pa":1,"pb":3,"a":3,"b":5},"B3":{"pa":4,"pb":6,"a":6,"b":5},"B4":{"pa":5,"pb":7,"a":2,"b":6},"C3":{"pa":8,"pb":10,"a":4,"b":5},"C4":{"pa":9,"pb":11,"a":6,"b":1},"A5":{"pa":0,"pb":3,"a":3,"b":6},"A6":{"pa":1,"pb":2,"a":1,"b":6},"B5":{"pa":4,"pb":7,"a":4,"b":5},"B6":{"pa":5,"pb":6,"a":2,"b":6},"C5":{"pa":8,"pb":11,"a":6,"b":0},"C6":{"pa":9,"pb":10,"a":4,"b":5},"ORO-S1":{"pa":3,"pb":2,"a":3,"b":6},"ORO-S2":{"pa":7,"pb":8,"a":4,"b":6},"PLATA-S1":{"pa":10,"pb":4,"a":3,"b":6},"PLATA-S2":{"pa":6,"pb":9,"a":6,"b":2},"CACA-S1":{"pa":1,"pb":0,"a":5,"b":6},"CACA-S2":{"pa":5,"pb":11,"a":3,"b":6},"ORO-F":{"pa":2,"pb":8,"a":6,"b":2},"ORO-3":{"pa":3,"pb":7,"a":6,"b":4},"PLATA-F":{"pa":4,"pb":6,"a":6,"b":3},"PLATA-3":{"pa":10,"pb":9,"a":6,"b":0},"CACA-F":{"pa":0,"pb":11,"a":7,"b":6},"CACA-3":{"pa":1,"pb":5,"a":5,"b":6}},"ex":{}},{"n":9,"date":"2026-09-29","cat":"Open Special","status":"cerrada","mode":"torneo","results":[{"p":"j90","pl":1,"b":280,"a":0,"n":""},{"p":"j66","pl":1,"b":280,"a":0,"n":""},{"p":"j50","pl":2,"b":240,"a":0,"n":""},{"p":"j64","pl":2,"b":240,"a":0,"n":""},{"p":"j13","pl":3,"b":210,"a":0,"n":""},{"p":"j4","pl":3,"b":210,"a":0,"n":""},{"p":"j23","pl":4,"b":190,"a":0,"n":""},{"p":"j62","pl":4,"b":190,"a":0,"n":""},{"p":"j45","pl":5,"b":170,"a":0,"n":""},{"p":"j61","pl":5,"b":170,"a":0,"n":""},{"p":"j103","pl":6,"b":150,"a":0,"n":""},{"p":"j98","pl":6,"b":150,"a":0,"n":""},{"p":"j55","pl":7,"b":130,"a":0,"n":""},{"p":"j104","pl":7,"b":130,"a":0,"n":""},{"p":"j37","pl":8,"b":115,"a":0,"n":""},{"p":"j38","pl":8,"b":115,"a":0,"n":""},{"p":"j108","pl":9,"b":100,"a":0,"n":""},{"p":"j105","pl":9,"b":100,"a":0,"n":""},{"p":"j15","pl":10,"b":85,"a":20,"n":"Bonificación 6–0"},{"p":"j31","pl":10,"b":85,"a":20,"n":"Bonificación 6–0"},{"p":"j22","pl":11,"b":70,"a":0,"n":""},{"p":"j29","pl":11,"b":70,"a":0,"n":""},{"p":"j106","pl":12,"b":60,"a":0,"n":""},{"p":"j107","pl":12,"b":60,"a":0,"n":""},{"p":"j26","pl":13,"b":50,"a":0,"n":""},{"p":"j14","pl":13,"b":50,"a":0,"n":""},{"p":"j34","pl":14,"b":40,"a":0,"n":""},{"p":"j36","pl":14,"b":40,"a":0,"n":""},{"p":"j1","pl":15,"b":30,"a":0,"n":""},{"p":"j47","pl":15,"b":30,"a":0,"n":""},{"p":"j88","pl":16,"b":20,"a":-20,"n":"Penalización simple"},{"p":"j63","pl":16,"b":20,"a":-20,"n":"Penalización simple"}],"note":"Fecha especial","np":16,"start":"20:30","slot":20,"pairs":[["j66","j90"],["j26","j14"],["j106","j107"],["j61","j45"],["j50","j64"],["j108","j105"],["j34","j36"],["j37","j38"],["j55","j104"],["j23","j62"],["j1","j47"],["j22","j29"],["j13","j4"],["j31","j15"],["j88","j63"],["j98","j103"]],"tomb":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],"sc":{"A1":{"pa":0,"pb":1,"a":6,"b":2},"A2":{"pa":2,"pb":3,"a":4,"b":5},"B1":{"pa":4,"pb":5,"a":5,"b":3},"B2":{"pa":6,"pb":7,"a":3,"b":6},"C1":{"pa":8,"pb":9,"a":4,"b":5},"C2":{"pa":10,"pb":11,"a":4,"b":5},"D1":{"pa":12,"pb":13,"a":6,"b":2},"D2":{"pa":14,"pb":15,"a":4,"b":5},"A3":{"pa":0,"pb":2,"a":6,"b":1},"A4":{"pa":1,"pb":3,"a":3,"b":5},"B3":{"pa":4,"pb":6,"a":6,"b":2},"B4":{"pa":5,"pb":7,"a":5,"b":4},"C3":{"pa":8,"pb":10,"a":6,"b":2},"C4":{"pa":9,"pb":11,"a":6,"b":4},"D3":{"pa":12,"pb":14,"a":3,"b":5},"D4":{"pa":13,"pb":15,"a":1,"b":6},"A5":{"pa":0,"pb":3,"a":6,"b":5},"A6":{"pa":1,"pb":2,"a":1,"b":6},"B5":{"pa":4,"pb":7,"a":4,"b":5},"B6":{"pa":5,"pb":6,"a":6,"b":3},"C5":{"pa":8,"pb":11,"a":6,"b":1},"C6":{"pa":9,"pb":10,"a":5,"b":4},"D5":{"pa":12,"pb":15,"a":5,"b":2},"D6":{"pa":13,"pb":14,"a":6,"b":0},"ORO-S1":{"pa":0,"pb":12,"a":6,"b":5},"ORO-S2":{"pa":9,"pb":4,"a":5,"b":6},"PLATA-S1":{"pa":8,"pb":3,"a":4,"b":6},"PLATA-S2":{"pa":7,"pb":15,"a":2,"b":6},"CARTON-S1":{"pa":5,"pb":11,"a":6,"b":3},"CARTON-S2":{"pa":2,"pb":13,"a":4,"b":6},"CACA-S1":{"pa":14,"pb":1,"a":6,"b":7},"CACA-S2":{"pa":10,"pb":6,"a":1,"b":6},"ORO-F":{"pa":0,"pb":4,"a":6,"b":2},"ORO-3":{"pa":12,"pb":9,"a":6,"b":1},"PLATA-F":{"pa":3,"pb":15,"a":6,"b":3},"PLATA-3":{"pa":8,"pb":7,"a":6,"b":3},"CARTON-F":{"pa":5,"pb":13,"a":6,"b":2},"CARTON-3":{"pa":11,"pb":2,"a":7,"b":5},"CACA-F":{"pa":1,"pb":6,"a":7,"b":6},"CACA-3":{"pa":14,"pb":10,"a":3,"b":6}},"ex":{}},{"n":10,"date":"2026-10-06","cat":"Challenger","status":"pendiente"},{"n":11,"date":"2026-10-13","cat":"Open","status":"pendiente"},{"n":12,"date":"2026-10-20","cat":"Master","status":"pendiente"},{"n":13,"date":"2026-10-27","cat":"Open","status":"pendiente"},{"n":14,"date":"2026-11-03","cat":"Challenger","status":"pendiente"},{"n":15,"date":"2026-11-10","cat":"Open","status":"pendiente"},{"n":16,"date":"2026-11-17","cat":"Master","status":"pendiente"},{"n":17,"date":"2026-11-24","cat":"Open","status":"pendiente"},{"n":18,"date":"2026-12-01","cat":"Challenger","status":"pendiente"},{"n":19,"date":"2026-12-08","cat":"Open","status":"pendiente"},{"n":20,"date":"2026-12-15","cat":"Master","status":"pendiente"},{"n":21,"date":"2026-12-22","cat":"Master Finals","status":"pendiente"}]}</script>
 <script id="liga-app">
 (function () {
 'use strict';
 /*LOGIC-START*/
-var GROUPS = ['A', 'B', 'C'];
-var COPAS = ['ORO', 'PLATA', 'CACA'];
+/* Group stage: 1v2 3v4 (R1), 1v3 2v4 (R2), 1v4 2v3 (R3). Courts rotate so every group uses 2 courts per round. */
 var GM = [[0, 1, 1], [2, 3, 1], [0, 2, 2], [1, 3, 2], [0, 3, 3], [1, 2, 3]];
-var GC = { A: [1, 2, 3, 4, 5, 6], B: [3, 4, 5, 6, 1, 2], C: [5, 6, 1, 2, 3, 4] };
+var FMT = {
+  12: { np: 12, groups: ['A', 'B', 'C'], courts: 6, copas: ['ORO', 'PLATA', 'CACA'], gc: { A: [1, 2, 3, 4, 5, 6], B: [3, 4, 5, 6, 1, 2], C: [5, 6, 1, 2, 3, 4] }, seed: 'mix', tie: 'gc' },
+  16: { np: 16, groups: ['A', 'B', 'C', 'D'], courts: 8, copas: ['ORO', 'PLATA', 'CARTON', 'CACA'], gc: { A: [1, 2, 3, 4, 5, 6], B: [3, 4, 5, 6, 7, 8], C: [5, 6, 7, 8, 1, 2], D: [7, 8, 1, 2, 3, 4] }, seed: 'pos', tie: 'gf' }
+};
+var COPA_NAME = { ORO: 'ORO', PLATA: 'PLATA', CARTON: 'CARTÓN', CACA: 'CACA' };
 
+function fmtOf(f) { return FMT[f && f.np] || FMT[12]; }
 function num(v) { return (v === '' || v == null || isNaN(v)) ? null : Number(v); }
+function inc(o, k) { o[k] = (o[k] || 0) + 1; }
+function signed(v) { return (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v); }
+function slotName(pi) { return 'ABCD'.charAt(Math.floor(pi / 4)) + (pi % 4 + 1); }
+
+/* Tómbola: f.pairs is the registration list; f.tomb[i] is the number drawn by pair i.
+   Number n goes to slot n-1: 1-4 Grupo A, 5-8 B, 9-12 C, 13-16 D. */
+var SLOTC = new Map();
+function slotsOf(f) {
+  var N = fmtOf(f).np, key = f.n + '|' + N + '|' + (f.tomb || []).join(',');
+  var c = SLOTC.get(key);
+  if (c) return c;
+  var reg = new Array(N).fill(-1), seen = 0;
+  (f.tomb || []).forEach(function (n, i) { n = Number(n); if (n >= 1 && n <= N && reg[n - 1] === -1) { reg[n - 1] = i; seen++; } });
+  c = { reg: reg, count: seen, full: seen === N };
+  if (SLOTC.size > 300) SLOTC.clear();
+  SLOTC.set(key, c);
+  return c;
+}
+function pairOf(f, pi) { var r = slotsOf(f).reg[pi]; return r >= 0 ? ((f.pairs || [])[r] || ['', '']) : ['', '']; }
+function pairsDone(f) { return (f.pairs || []).filter(function (p) { return p && p[0] && p[1]; }).length; }
+function isReady(f) { return pairsDone(f) === fmtOf(f).np && slotsOf(f).full; }
+function slotOfPlayer(f, pid) {
+  for (var pi = 0; pi < fmtOf(f).np; pi++) { if (pairOf(f, pi).indexOf(pid) >= 0) return pi; }
+  return -1;
+}
 
 function decide(s) {
   if (!s) return null;
@@ -305,6 +531,159 @@ function decide(s) {
   return x > y ? 'a' : 'b';
 }
 
+function compute(f) {
+  var F = fmtOf(f), sc = f.sc || {}, G = F.groups;
+  var out = { F: F, gm: [], tables: {}, notes: {}, done: 0, gTotal: G.length * 6, tiers: null, assign: {}, seeds: null, origin: {}, po: [], poDone: 0, poTotal: F.copas.length * 4, places: new Array(F.np).fill(null), f60: {}, c60: {}, net: {}, complete: false };
+  G.forEach(function (g, gi) {
+    GM.forEach(function (m, k) {
+      var id = g + (k + 1), s = sc[id] || null;
+      var mm = { id: id, stage: 'G', g: g, r: m[2], court: F.gc[g][k], pa: gi * 4 + m[0], pb: gi * 4 + m[1], s: s, w: decide(s), ready: true };
+      if (mm.w) out.done++;
+      out.gm.push(mm);
+    });
+  });
+  G.forEach(function (g, gi) {
+    var rows = [0, 1, 2, 3].map(function (si) { return { pi: gi * 4 + si, seed: si, gi: gi, g: g, pj: 0, pg: 0, pp: 0, gf: 0, gc: 0, dg: 0, h2h: 0 }; });
+    var by = {}; rows.forEach(function (r) { by[r.pi] = r; });
+    var ms = out.gm.filter(function (m) { return m.g === g && m.w; });
+    ms.forEach(function (m) {
+      var A = by[m.pa], B = by[m.pb], a = num(m.s.a), b = num(m.s.b);
+      A.pj++; B.pj++; A.gf += a; A.gc += b; B.gf += b; B.gc += a;
+      if (m.w === 'a') { A.pg++; B.pp++; } else { B.pg++; A.pp++; }
+    });
+    rows.forEach(function (r) { r.dg = r.gf - r.gc; });
+    rows.forEach(function (r) {
+      rows.forEach(function (q) {
+        if (q === r || q.pg !== r.pg || q.dg !== r.dg) return;
+        ms.forEach(function (m) {
+          if ((m.pa === r.pi && m.pb === q.pi && m.w === 'a') || (m.pb === r.pi && m.pa === q.pi && m.w === 'b')) r.h2h++;
+        });
+      });
+    });
+    rows.sort(function (x, y) { return y.pg - x.pg || y.dg - x.dg || y.h2h - x.h2h || y.gf - x.gf || x.seed - y.seed; });
+    rows.forEach(function (r, i) { r.pos = i + 1; });
+    var notes = [];
+    if (ms.length === 6) {
+      for (var i = 1; i < 4; i++) {
+        var a = rows[i - 1], b = rows[i];
+        if (a.pg !== b.pg || a.dg !== b.dg) continue;
+        notes.push({ hi: i + 1, c: a.h2h !== b.h2h ? 'h2h' : a.gf !== b.gf ? 'gf' : 'orden' });
+      }
+    }
+    out.tables[g] = rows; out.notes[g] = notes;
+  });
+  /* classification to the cups (provisional until every group match is in) */
+  var tier = function (k) {
+    return G.map(function (g) { return out.tables[g][k]; }).sort(function (x, y) {
+      return y.pg - x.pg || y.dg - x.dg || (F.tie === 'gc' ? x.gc - y.gc : y.gf - x.gf) || x.gi - y.gi;
+    });
+  };
+  var T = [0, 1, 2, 3].map(tier), S = {};
+  if (F.seed === 'mix') S = { ORO: [T[0][0], T[0][1], T[0][2], T[1][0]], PLATA: [T[1][1], T[1][2], T[2][0], T[2][1]], CACA: [T[2][2], T[3][0], T[3][1], T[3][2]] };
+  else F.copas.forEach(function (C, ci) { S[C] = T[ci]; });
+  out.tiers = T;
+  F.copas.forEach(function (C, ci) {
+    S[C].forEach(function (r, k) { out.assign[r.pi] = { copa: C, seed: k + 1, overall: ci * 4 + k + 1, pos: r.pos, g: r.g, pg: r.pg, dg: r.dg, gf: r.gf, gc: r.gc }; });
+  });
+  if (out.done === out.gTotal) {
+    out.seeds = {};
+    F.copas.forEach(function (C) { out.seeds[C] = S[C].map(function (r) { return r.pi; }); });
+    out.origin = out.assign;
+  }
+  F.copas.forEach(function (C, ci) {
+    var sd = out.seeds ? out.seeds[C] : [null, null, null, null], base = ci * 4;
+    var mk = function (id, stage, label, court, pa, pb, la, lb) {
+      var s = sc[id], ready = pa != null && pb != null;
+      var ok = !!(ready && s && s.pa === pa && s.pb === pb);
+      var stale = !!(ready && s && !ok && (num(s.a) != null || num(s.b) != null));
+      var m = { id: id, stage: stage, c: C, ci: ci, r: stage === 'S' ? 4 : 5, label: label, court: court, pa: pa, pb: pb, la: la, lb: lb, s: ok ? s : null, stale: stale, w: ok ? decide(s) : null, ready: ready };
+      if (m.w) out.poDone++;
+      out.po.push(m);
+      return m;
+    };
+    var W = function (m) { return m.w ? (m.w === 'a' ? m.pa : m.pb) : null; };
+    var L = function (m) { return m.w ? (m.w === 'a' ? m.pb : m.pa) : null; };
+    var s1 = mk(C + '-S1', 'S', 'Semi 1 · 1 vs 4', ci * 2 + 1, sd[0], sd[3], 'Siembra 1', 'Siembra 4');
+    var s2 = mk(C + '-S2', 'S', 'Semi 2 · 2 vs 3', ci * 2 + 2, sd[1], sd[2], 'Siembra 2', 'Siembra 3');
+    var fi = mk(C + '-F', 'F', 'Final · ' + (base + 1) + '° y ' + (base + 2) + '°', ci * 2 + 1, W(s1), W(s2), 'Ganador semi 1', 'Ganador semi 2');
+    var th = mk(C + '-3', 'T', '3er puesto · ' + (base + 3) + '° y ' + (base + 4) + '°', ci * 2 + 2, L(s1), L(s2), 'Perdedor semi 1', 'Perdedor semi 2');
+    if (fi.w) { out.places[base] = W(fi); out.places[base + 1] = L(fi); }
+    if (th.w) { out.places[base + 2] = W(th); out.places[base + 3] = L(th); }
+  });
+  out.gm.concat(out.po).forEach(function (m) {
+    if (!m.w || !m.s) return;
+    var a = num(m.s.a), b = num(m.s.b);
+    if (a === 6 && b === 0) { inc(out.f60, m.pa); inc(out.c60, m.pb); }
+    if (b === 6 && a === 0) { inc(out.f60, m.pb); inc(out.c60, m.pa); }
+  });
+  for (var p = 0; p < F.np; p++) out.net[p] = (out.f60[p] || 0) - (out.c60[p] || 0);
+  out.complete = out.poDone === out.poTotal;
+  return out;
+}
+
+function adjName(net) {
+  if (net === 1) return 'Bonificación 6–0';
+  if (net === 2) return 'Doble bonificación';
+  if (net > 2) return 'Bonificación 6–0 ×' + net;
+  if (net === -1) return 'Penalización simple';
+  if (net === -2) return 'Penalización doble';
+  if (net < -2) return 'Penalización 6–0 ×' + (-net);
+  return '';
+}
+
+/* Points per player for a torneo: table by place + capped 6-0 net + manual adjustment */
+function results(f, d, lc) {
+  var tb = d.tables[f.cat] || [], S = d.settings, rows = [];
+  lc.places.forEach(function (pi, idx) {
+    if (pi == null) return;
+    var pair = pairOf(f, pi);
+    var net = Math.max(-S.cap, Math.min(S.cap, lc.net[pi] || 0));
+    pair.forEach(function (pid) {
+      if (!pid) return;
+      var ex = (f.ex && f.ex[pid]) || {}, exv = num(ex.v) || 0, notes = [];
+      if (net) notes.push(adjName(net));
+      if (exv || ex.n) notes.push((ex.n || 'Ajuste') + (exv ? ' (' + signed(exv) + ')' : ''));
+      rows.push({ p: pid, pl: idx + 1, b: tb[idx] || 0, a: net * S.bonus60 + exv, n: notes.join(' · '), auto: net * S.bonus60, ex: exv, pi: pi });
+    });
+  });
+  return rows;
+}
+
+/* Places typed in directly (fecha without match detail) */
+function manualResults(f, d) {
+  var t = d.tables[f.cat] || [], rows = [];
+  (f.man.rows || []).forEach(function (r) {
+    r.p.forEach(function (pid, k) {
+      if (!pid) return;
+      rows.push({ p: pid, pl: r.pl, b: t[r.pl - 1] || 0, a: num(r.a[k]) || 0, n: r.n[k] || '' });
+    });
+  });
+  return rows;
+}
+
+function pairStats(lc) {
+  var st = [];
+  for (var i = 0; i < lc.F.np; i++) st.push({ pi: i, ms: [], pj: 0, pg: 0, pp: 0, gf: 0, gc: 0, gpg: 0, gpj: 0, ppg: 0, ppj: 0, w60: 0, l60: 0, close: 0, streak: 0 });
+  lc.gm.concat(lc.po).filter(function (m) { return m.w && m.s; })
+    .sort(function (x, y) { return x.r - y.r || x.court - y.court; })
+    .forEach(function (m) {
+      var a = num(m.s.a), b = num(m.s.b);
+      [[m.pa, a, b, m.w === 'a', m.pb], [m.pb, b, a, m.w === 'b', m.pa]].forEach(function (x) {
+        var s = st[x[0]], gf = x[1], gc = x[2], win = x[3];
+        s.ms.push({ r: m.r, id: m.id, stage: m.stage, gf: gf, gc: gc, win: win, opp: x[4], tb: a === b });
+        s.pj++; if (win) s.pg++; else s.pp++;
+        s.gf += gf; s.gc += gc;
+        if (m.stage === 'G') { s.gpj++; if (win) s.gpg++; } else { s.ppj++; if (win) s.ppg++; }
+        if (gf === 6 && gc === 0) s.w60++;
+        if (gf === 0 && gc === 6) s.l60++;
+        if (Math.abs(gf - gc) <= 1) s.close++;
+      });
+    });
+  st.forEach(function (s) { var cur = 0; s.ms.forEach(function (x) { cur = x.win ? cur + 1 : 0; s.streak = Math.max(s.streak, cur); }); });
+  return st;
+}
+
+/* Individual ranking: sum of every closed fecha */
 function computeRanking(d, beforeN) {
   var names = new Map(d.players.map(function (p) { return [p.id, p.name]; }));
   var rows = new Map();
@@ -331,115 +710,72 @@ function computeRanking(d, beforeN) {
   return arr;
 }
 
-function liveCompute(f) {
-  var L = f.live || { pairs: [], sc: {}, ex: {} };
-  var out = { gm: [], tables: {}, done: 0, seeds: null, po: [], places: null, net: {}, finalsDone: 0, complete: false };
-  GROUPS.forEach(function (G, gi) {
-    GM.forEach(function (g, k) {
-      var id = G + (k + 1), s = L.sc[id];
-      var m = { id: id, stage: 'G', g: G, r: g[2], court: GC[G][k], pa: gi * 4 + g[0], pb: gi * 4 + g[1], s: s || null, w: decide(s) };
-      if (m.w) out.done++;
-      out.gm.push(m);
-    });
-  });
-  GROUPS.forEach(function (G, gi) {
-    var rows = [0, 1, 2, 3].map(function (si) { return { pi: gi * 4 + si, seed: si, gi: gi, pj: 0, pg: 0, pp: 0, gf: 0, gc: 0, dg: 0, pts: 0, h2h: 0 }; });
-    var by = {}; rows.forEach(function (r) { by[r.pi] = r; });
-    var ms = out.gm.filter(function (m) { return m.g === G && m.w; });
-    ms.forEach(function (m) {
-      var A = by[m.pa], B = by[m.pb], a = num(m.s.a), b = num(m.s.b);
-      A.pj++; B.pj++; A.gf += a; A.gc += b; B.gf += b; B.gc += a;
-      if (m.w === 'a') { A.pg++; B.pp++; } else { B.pg++; A.pp++; }
-    });
-    rows.forEach(function (r) { r.dg = r.gf - r.gc; r.pts = r.pg; });
-    rows.forEach(function (r) {
-      rows.forEach(function (q) {
-        if (q === r || q.pts !== r.pts || q.dg !== r.dg) return;
-        ms.forEach(function (m) {
-          if ((m.pa === r.pi && m.pb === q.pi && m.w === 'a') || (m.pb === r.pi && m.pa === q.pi && m.w === 'b')) r.h2h++;
+/* Season match statistics over every fecha played match by match */
+function seasonStats(d) {
+  var P = {}, PR = {}, out = { players: P, pairs: PR, matches: 0, sets60: 0, close: 0, tb: 0, fechas: [] };
+  d.fechas.slice().sort(function (a, b) { return a.n - b.n; }).forEach(function (f) {
+    if (f.mode !== 'torneo' || f.status === 'pendiente' || !isReady(f)) return;
+    var lc = compute(f), any = false;
+    lc.gm.concat(lc.po).forEach(function (m) {
+      if (!m.w || !m.s) return;
+      var a = num(m.s.a), b = num(m.s.b);
+      any = true; out.matches++;
+      if ((a === 6 && b === 0) || (a === 0 && b === 6)) out.sets60++;
+      if (Math.abs(a - b) <= 1) out.close++;
+      if (a === b) out.tb++;
+      [[m.pa, a, b, m.w === 'a'], [m.pb, b, a, m.w === 'b']].forEach(function (x) {
+        var pair = pairOf(f, x[0]);
+        pair.forEach(function (pid) {
+          if (!pid) return;
+          var s = P[pid] || (P[pid] = { pid: pid, pj: 0, pg: 0, gf: 0, gc: 0, w60: 0, l60: 0, fs: {} });
+          s.pj++; if (x[3]) s.pg++;
+          s.gf += x[1]; s.gc += x[2];
+          if (x[1] === 6 && x[2] === 0) s.w60++;
+          if (x[1] === 0 && x[2] === 6) s.l60++;
+          s.fs[f.n] = 1;
         });
+        if (pair[0] && pair[1]) {
+          var ids = pair.slice().sort(), key = ids.join('|');
+          var q = PR[key] || (PR[key] = { ids: ids, pj: 0, pg: 0, fs: {} });
+          q.pj++; if (x[3]) q.pg++;
+          q.fs[f.n] = 1;
+        }
       });
     });
-    rows.sort(function (x, y) { return y.pts - x.pts || y.dg - x.dg || y.h2h - x.h2h || y.gf - x.gf || x.seed - y.seed; });
-    rows.forEach(function (r, i) { r.pos = i + 1; });
-    out.tables[G] = rows;
+    if (any) out.fechas.push(f.n);
   });
-  if (out.done === 18) {
-    var tier = function (k) {
-      return GROUPS.map(function (G) { return out.tables[G][k]; })
-        .slice().sort(function (x, y) { return y.pts - x.pts || y.dg - x.dg || x.gc - y.gc || x.gi - y.gi; })
-        .map(function (r) { return r.pi; });
-    };
-    var F = tier(0), S = tier(1), T = tier(2), Q = tier(3);
-    out.seeds = { ORO: [F[0], F[1], F[2], S[0]], PLATA: [S[1], S[2], T[0], T[1]], CACA: [T[2], Q[0], Q[1], Q[2]] };
-    out.places = new Array(12).fill(null);
-    COPAS.forEach(function (C, ci) {
-      var sd = out.seeds[C];
-      var mk = function (id, stage, label, court, pa, pb) {
-        var s = L.sc[id];
-        var ok = !!(s && s.pa === pa && s.pb === pb);
-        var stale = !!(s && !ok && (num(s.a) != null || num(s.b) != null));
-        var m = { id: id, stage: stage, c: C, label: label, court: court, pa: pa, pb: pb, s: ok ? s : null, stale: stale, w: ok ? decide(s) : null };
-        out.po.push(m);
-        return m;
-      };
-      var s1 = mk(C + '-S1', 'S', 'Semi 1 · 1° vs 4°', ci * 2 + 1, sd[0], sd[3]);
-      var s2 = mk(C + '-S2', 'S', 'Semi 2 · 2° vs 3°', ci * 2 + 2, sd[1], sd[2]);
-      if (s1.w && s2.w) {
-        var W = function (m) { return m.w === 'a' ? m.pa : m.pb; };
-        var Lo = function (m) { return m.w === 'a' ? m.pb : m.pa; };
-        var fi = mk(C + '-F', 'F', 'Final · ' + (ci * 4 + 1) + '° y ' + (ci * 4 + 2) + '°', ci * 2 + 1, W(s1), W(s2));
-        var th = mk(C + '-3', 'T', '3er puesto · ' + (ci * 4 + 3) + '° y ' + (ci * 4 + 4) + '°', ci * 2 + 2, Lo(s1), Lo(s2));
-        if (fi.w) { out.places[ci * 4] = W(fi); out.places[ci * 4 + 1] = Lo(fi); out.finalsDone++; }
-        if (th.w) { out.places[ci * 4 + 2] = W(th); out.places[ci * 4 + 3] = Lo(th); out.finalsDone++; }
-      }
-    });
-  }
-  out.gm.concat(out.po).forEach(function (m) {
-    if (!m.w || !m.s) return;
-    var a = num(m.s.a), b = num(m.s.b);
-    if (a === 6 && b === 0) { out.net[m.pa] = (out.net[m.pa] || 0) + 1; out.net[m.pb] = (out.net[m.pb] || 0) - 1; }
-    if (b === 6 && a === 0) { out.net[m.pb] = (out.net[m.pb] || 0) + 1; out.net[m.pa] = (out.net[m.pa] || 0) - 1; }
-  });
-  out.complete = out.finalsDone === 6;
   return out;
 }
 
-function liveResults(f, d, lc) {
-  var t = d.tables[f.cat] || [], S = d.settings, L = f.live, rows = [];
-  (lc.places || []).forEach(function (pi, idx) {
-    if (pi == null) return;
-    var pl = idx + 1, pair = L.pairs[pi] || [];
-    var net = Math.max(-S.cap, Math.min(S.cap, lc.net[pi] || 0));
-    pair.forEach(function (pid) {
-      if (!pid) return;
-      var ex = (L.ex && L.ex[pid]) || {};
-      var exv = num(ex.v) || 0;
-      var notes = [];
-      if (net > 0) notes.push(net > 1 ? 'Doble bonificación 6-0' : 'Bonificación 6-0');
-      if (net < 0) notes.push(net < -1 ? 'Penalización doble 6-0' : 'Penalización 6-0');
-      if (exv || ex.n) notes.push((ex.n || 'Ajuste') + (exv ? ' (' + (exv > 0 ? '+' : '') + exv + ')' : ''));
-      rows.push({ p: pid, pl: pl, b: t[idx] || 0, a: net * S.bonus60 + exv, n: notes.join(' · '), auto: net * S.bonus60, ex: exv });
-    });
+function normalize(d) {
+  var S = d.settings = d.settings || {};
+  if (S.bonus60 == null) S.bonus60 = 20;
+  if (S.cap == null) S.cap = 4;
+  if (S.qualify == null) S.qualify = 24;
+  if (!S.start) S.start = '20:30';
+  if (!S.slot) S.slot = 20;
+  (d.fechas || []).forEach(function (f) {
+    if (f.mode === 'vivo' && f.live) {   /* older Ranking live mode: pairs were already in group order */
+      f.mode = 'torneo'; f.np = 12; f.pairs = f.live.pairs || []; f.tomb = f.pairs.map(function (_, i) { return i + 1; });
+      f.sc = f.live.sc || {}; f.ex = f.live.ex || {}; delete f.live;
+    }
+    if (f.mode === 'torneo') {
+      var N = fmtOf(f).np; f.np = N;
+      f.pairs = (f.pairs || []).slice(0, N); while (f.pairs.length < N) f.pairs.push(['', '']);
+      if (!Array.isArray(f.tomb)) f.tomb = f.pairs.map(function (_, i) { return i + 1; });
+      f.tomb = f.tomb.slice(0, N); while (f.tomb.length < N) f.tomb.push(null);
+      f.sc = f.sc || {}; f.ex = f.ex || {};
+      if (!f.start) f.start = S.start;
+      if (!f.slot) f.slot = S.slot;
+    }
   });
-  return rows;
-}
-
-function manualResults(f, d) {
-  var t = d.tables[f.cat] || [], rows = [];
-  (f.man.rows || []).forEach(function (r) {
-    r.p.forEach(function (pid, k) {
-      if (!pid) return;
-      rows.push({ p: pid, pl: r.pl, b: t[r.pl - 1] || 0, a: num(r.a[k]) || 0, n: r.n[k] || '' });
-    });
-  });
-  return rows;
+  return d;
 }
 /*LOGIC-END*/
 
 var TITLE = '<title>Ranking El Garito</title>';
-var DRAFT_KEY = 'garito-draft-v1', UI_KEY = 'garito-ui-v1';
-var saved = JSON.parse(document.getElementById('liga-data').textContent);
+var DRAFT_KEY = 'garito-liga-draft-v2', UI_KEY = 'garito-liga-ui-v2';
+var saved = normalize(JSON.parse(document.getElementById('liga-data').textContent));
 var SAVED_STR = JSON.stringify(saved);
 var HASH = (function (s) { var h = 5381; for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return (h >>> 0).toString(36) + s.length.toString(36); })(SAVED_STR);
 var work = JSON.parse(SAVED_STR);
@@ -452,6 +788,7 @@ var WD = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'], WDL = ['domingo', 
 var MO = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 var MOL = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
 function pd(s) { var p = String(s).split('-').map(Number); return new Date(p[0], (p[1] || 1) - 1, p[2] || 1); }
+function isoD(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
 function fShort(s) { var d = pd(s); return WD[d.getDay()] + ' ' + d.getDate() + ' ' + MO[d.getMonth()]; }
 function fLong(s) { var d = pd(s); return WDL[d.getDay()] + ' ' + d.getDate() + ' de ' + MOL[d.getMonth()]; }
 function fDM(s) { var d = pd(s); return d.getDate() + ' ' + MO[d.getMonth()]; }
@@ -461,19 +798,32 @@ function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function
 function norm(s) { return String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); }
 function slug(s) { return norm(s).replace(/[^a-z0-9]+/g, '-'); }
 function range(a, b) { var r = []; for (var i = a; i <= b; i++) r.push(i); return r; }
-function signed(v) { return (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v); }
+function hm(s, add) {
+  var p = String(s || '20:30').split(':').map(Number), m = ((p[0] || 0) * 60 + (p[1] || 0) + add) % 1440;
+  return String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
+}
+function slotOf(f) { return Math.max(5, num(f.slot) || work.settings.slot || 20); }
+function rTime(f, r) { var sl = slotOf(f); return hm(f.start, (r - 1) * sl) + '–' + hm(f.start, r * sl); }
+function rStart(f, r) { return hm(f.start, (r - 1) * slotOf(f)); }
+function score(a, b) { return a + '–' + b; }
+function plural(n, one, many) { return n + ' ' + (n === 1 ? one : many); }
+function pct(a, b) { return b ? Math.round(a * 100 / b) + '%' : '–'; }
 
-var PM = new Map(), SORTED = [], RK = null;
+var PM = new Map(), SORTED = [], RK = null, LCC = new Map(), SS = null;
 function nm(id) { var p = PM.get(id); return p ? p.name : '—'; }
+function lcOf(f) { var c = LCC.get(f); if (!c) { c = compute(f); LCC.set(f, c); } return c; }
+function season() { return SS || (SS = seasonStats(work)); }
 function fechasSorted(d) { return d.fechas.slice().sort(function (a, b) { return a.n - b.n; }); }
 function getF(d, n) { return d.fechas.find(function (f) { return f.n === n; }); }
 function closedF(d) { return fechasSorted(d).filter(function (f) { return f.status === 'cerrada' && f.results; }); }
+function isTorneo(f) { return !!(f && f.mode === 'torneo'); }
 
-var ui = { tab: 'ranking', fecha: null, sub: {}, open: {}, q: '', pq: '', player: null, confirm: null, toast: '', copyText: null, notice: '', oldDraft: null, newName: '', newSide: '', quick: '' };
+var STEPS = [['registro', 'Registro'], ['grupos', 'Grupos'], ['canchas', 'Canchas'], ['resultados', 'Resultados'], ['tablas', 'Tablas'], ['copas', 'Copas'], ['final', 'Final']];
+var ui = { tab: 'ranking', fecha: null, sub: {}, rd: {}, open: {}, q: '', pq: '', sq: '', player: null, confirm: null, toast: '', copyText: null, notice: '', oldDraft: null, newName: '', newSide: '', quick: '', st: 'temporada', all: false, pnp: {} };
 try { var us = JSON.parse(sessionStorage.getItem(UI_KEY) || 'null'); if (us) { Object.assign(ui, us); sessionStorage.removeItem(UI_KEY); } } catch (e) {}
-function uiPersist() { return { tab: ui.tab, fecha: ui.fecha, sub: ui.sub, player: ui.player, scroll: window.scrollY || 0 }; }
+function uiPersist() { return { tab: ui.tab, fecha: ui.fecha, sub: ui.sub, rd: ui.rd, player: ui.player, st: ui.st, scroll: window.scrollY || 0 }; }
 
-var canEdit = false, artifactNS = null, DL = null, saving = false, toastTimer = null, stripScroll = true;
+var canEdit = false, artifactNS = null, DL = null, saving = false, toastTimer = null, stripScroll = true, jump = false;
 
 function rankInfo() {
   var cl = closedF(work), R = computeRanking(work), last = cl[cl.length - 1];
@@ -486,20 +836,20 @@ function rankInfo() {
 
 /* ---------- small view helpers ---------- */
 function sideChip(pid) { var p = PM.get(pid); return p && p.side ? '<span class="side" title="' + (p.side === 'DR' ? 'Drive' : p.side === 'RV' ? 'Revés' : 'Ambos lados') + '">' + esc(p.side) + '</span>' : ''; }
-function empty(t, s) { return '<div class="empty"><h3>' + esc(t) + '</h3><p>' + esc(s) + '</p></div>'; }
-function slotName(pi) { return GROUPS[Math.floor(pi / 4)] + (pi % 4 + 1); }
-function pairLines(p, pi) {
-  if (p && p[0] && p[1]) return '<span>' + esc(nm(p[0])) + '</span><span>' + esc(nm(p[1])) + '</span>';
-  if (p && (p[0] || p[1])) return '<span>' + esc(nm(p[0] || p[1])) + '</span><span class="muted">Falta compañero</span>';
+function empty(t, s, extra) { return '<div class="empty"><h3>' + esc(t) + '</h3><p>' + esc(s) + '</p>' + (extra || '') + '</div>'; }
+function pairLines(f, pi) {
+  var p = pairOf(f, pi);
+  if (p[0] && p[1]) return '<span>' + esc(nm(p[0])) + '</span><span>' + esc(nm(p[1])) + '</span>';
+  if (p[0] || p[1]) return '<span>' + esc(nm(p[0] || p[1])) + '</span><span class="muted">Falta compañero</span>';
   return '<span class="muted">Pareja ' + slotName(pi) + '</span>';
 }
-function pairInline(p, pi) { return p && p[0] && p[1] ? esc(nm(p[0])) + ' / ' + esc(nm(p[1])) : 'Pareja ' + slotName(pi); }
-function copaOf(pl, np) { return np > 12 ? '' : pl <= 4 ? 'ORO' : pl <= 8 ? 'PLATA' : 'CACA'; }
-function copaChip(c) { return c ? '<span class="copa c-' + c.toLowerCase() + '">' + c + '</span>' : '<span></span>'; }
-function catSelect(f, field) {
-  return '<select id="fcat-' + f.n + '" data-f="' + (field || 'fcat') + '" data-n="' + f.n + '" data-v="' + esc(f.cat) + '">' +
-    work.cats.map(function (c) { return '<option value="' + esc(c) + '">' + esc(c) + '</option>'; }).join('') + '</select>';
-}
+function pairCell(f, pi) { return '<div class="pc"><b class="slot n">' + slotName(pi) + '</b><span class="pn">' + pairLines(f, pi) + '</span></div>'; }
+function pairText(f, pi) { var p = pairOf(f, pi); return p[0] && p[1] ? nm(p[0]) + ' / ' + nm(p[1]) : 'Pareja ' + slotName(pi); }
+function copaChip(c) { return c ? '<span class="copa c-' + slug(c) + '">' + COPA_NAME[c] + '</span>' : '<span></span>'; }
+function copaOfPl(np, pl) { var F = FMT[np]; return F ? (F.copas[Math.floor((pl - 1) / 4)] || '') : ''; }
+function npOf(f) { return isTorneo(f) ? fmtOf(f).np : Math.max.apply(null, [0].concat((f.results || []).map(function (r) { return r.pl; }))); }
+function catOptions() { return work.cats.map(function (c) { return '<option value="' + esc(c) + '">' + esc(c) + '</option>'; }).join(''); }
+function catSelect(f, id) { return '<select id="' + (id || 'fcat-' + f.n) + '" data-f="fcat" data-n="' + f.n + '" data-v="' + esc(f.cat) + '">' + catOptions() + '</select>'; }
 function playerSelect(id, val, used, field, extra) {
   var opts = SORTED.map(function (p) {
     var taken = used.has(p.id) && p.id !== val;
@@ -512,7 +862,7 @@ function numInput(id, v, attrs, label, ph) {
 }
 function confirmBtn(key, label, act, msg, cls, yes) {
   if (ui.confirm === key) {
-    return '<div class="confirm"><p>' + esc(msg) + '</p><div class="btns"><button class="btn ' + (cls && cls.indexOf('danger') >= 0 ? 'danger' : 'primary') + '" data-act="' + act + '">' + esc(yes || ('Sí, ' + label.charAt(0).toLowerCase() + label.slice(1))) + '</button><button class="btn" data-act="cancel">Cancelar</button></div></div>';
+    return '<div class="confirm"><p>' + esc(msg) + '</p><div class="btns"><button class="btn ' + (cls && cls.indexOf('danger') >= 0 ? 'danger' : 'primary') + '" data-act="' + act + '">' + esc(yes) + '</button><button class="btn" data-act="cancel">Cancelar</button></div></div>';
   }
   return '<button class="btn ' + (cls || '') + '" data-act="ask" data-v="' + key + '">' + esc(label) + '</button>';
 }
@@ -520,33 +870,55 @@ function quickAdd() {
   return '<span class="quick"><input id="quick-name" data-f="ui:quick" placeholder="¿Jugador nuevo? Escribe su nombre" value="' + esc(ui.quick) + '" aria-label="Nombre del jugador nuevo"><button class="btn" data-act="quick-add">Agregar</button></span>';
 }
 function sideOpts() { return '<option value="">Lado sin definir</option><option value="DR">Drive</option><option value="RV">Revés</option><option value="AM">Ambos</option>'; }
-function pointsPreview(cat) {
+function pointsPreview(cat, np) {
   var t = work.tables[cat] || [];
-  return t.length ? t.map(function (v, i) { return (i + 1) + '° ' + v; }).filter(function (_, i) { return i < 3 || i === t.length - 1; }).join(' · ').replace(/ · (\d+° \d+)$/, ' … $1') : 'sin tabla';
+  if (!t.length) return 'sin tabla';
+  var last = Math.min(np || t.length, t.length);
+  return '1° ' + t[0] + ' · 2° ' + t[1] + ' · 3° ' + t[2] + ' … ' + last + '° ' + t[last - 1];
 }
+function tableWarn(cat, np) {
+  var t = work.tables[cat] || [];
+  return np > t.length ? '<p class="note warn">La tabla ' + esc(cat) + ' tiene puntos hasta el ' + t.length + '° puesto: del ' + (t.length + 1) + '° al ' + np + '° suman 0. Para 16 parejas usa Open Special.</p>' : '';
+}
+function roundMatches(lc, r) { return (r <= 3 ? lc.gm : lc.po).filter(function (m) { return m.r === r; }).sort(function (a, b) { return a.court - b.court; }); }
+function curRound(lc) { for (var r = 1; r <= 5; r++) { if (roundMatches(lc, r).some(function (m) { return !m.w; })) return r; } return 5; }
+function roundOf(f, lc) { var r = ui.rd[f.n]; return r >= 1 && r <= 5 ? r : curRound(lc); }
+function tagOf(m) { return m.stage === 'G' ? 'Grupo ' + m.g : COPA_NAME[m.c] + ' · ' + m.label.split(' · ')[0]; }
+function roundName(r) { return r <= 3 ? 'Fase de grupos' : r === 4 ? 'Semifinales de copa' : 'Finales y 3er puesto'; }
+function stageOf(f, lc) {
+  var N = lc.F.np, pdn = pairsDone(f);
+  if (f.status === 'cerrada') return 'cerrada';
+  if (!isReady(f)) return pdn < N ? 'registro (' + pdn + '/' + N + ' parejas)' : 'falta la tómbola';
+  if (!lc.complete) return 'ronda ' + curRound(lc) + ' de 5';
+  return 'lista para cerrar';
+}
+function emptyPairs(n) { return range(1, n).map(function () { return ['', '']; }); }
+function nulls(n) { return range(1, n).map(function () { return null; }); }
+function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var x = a[i]; a[i] = a[j]; a[j] = x; } return a; }
+function winnersOf(f) { return (f.results || []).filter(function (r) { return r.pl === 1; }).map(function (r) { return nm(r.p); }); }
 
-/* ---------- views ---------- */
+/* ---------- shell ---------- */
 function view() {
   RK = rankInfo();
-  var body = ui.tab === 'fechas' ? vFechas() : ui.tab === 'jugadores' ? vPlayers() : (ui.tab === 'ajustes' && canEdit) ? vSettings() : vRanking();
+  var body = ui.tab === 'fechas' ? vFechas() : ui.tab === 'jugadores' ? vPlayers() : ui.tab === 'stats' ? vStatsTab() : (ui.tab === 'ajustes' && canEdit) ? vSettings() : vRanking();
   var dirty = canEdit && isDirty();
   return header() + tabs() + '<main class="wrap main">' + notices() + body + '</main>' +
-    '<datalist id="motivos"><option value="Atraso"><option value="Sanción"><option value="Corrección"><option value="Bonificación 6-0"><option value="Penalización 6-0"></datalist>' +
+    '<datalist id="motivos"><option value="Atraso"><option value="Sanción"><option value="Corrección"><option value="No se presentó"></datalist>' +
     (dirty ? '<div class="spacer"></div>' + saveBar() : '') +
     '<div class="toast" role="status" aria-live="polite">' + esc(ui.toast) + '</div>' + copyModal();
 }
 
 function header() {
   var fs = fechasSorted(work), cl = fs.filter(function (f) { return f.status === 'cerrada'; });
-  var live = fs.find(function (f) { return f.status === 'en juego'; }), next = fs.find(function (f) { return f.status === 'pendiente'; });
+  var live = fs.filter(function (f) { return f.status === 'en juego'; }), next = fs.find(function (f) { return f.status === 'pendiente'; });
   var st = cl.length + ' de ' + fs.length + ' fechas jugadas';
-  if (live) st += ' · <b>En juego: F' + live.n + ' ' + esc(live.cat) + '</b>';
+  if (live.length) { var l = live[live.length - 1]; st += ' · <b>En juego: F' + l.n + ' ' + esc(l.cat) + '</b>' + (isTorneo(l) ? ' · ' + esc(stageOf(l, lcOf(l))) : ''); }
   else if (next) st += ' · Próxima: <b>F' + next.n + ' ' + esc(next.cat) + '</b> · ' + fShort(next.date);
-  return '<header class="band"><div class="wrap band-in"><span class="logo" role="img" aria-label="Logo ' + esc(work.league.name) + '"></span><div class="band-txt"><p class="eyebrow">Ranking individual</p><h1>' + esc(work.league.season) + '</h1><p class="status">' + st + '</p></div></div></header>';
+  return '<header class="band"><div class="wrap band-in"><span class="logo" role="img" aria-label="Logo ' + esc(work.league.name) + '"></span><div class="band-txt"><p class="eyebrow">Ranking y torneos</p><h1>' + esc(work.league.season) + '</h1><p class="status">' + st + '</p></div></div></header>';
 }
 
 function tabs() {
-  var t = [['ranking', 'Ranking'], ['fechas', 'Fechas'], ['jugadores', 'Jugadores']];
+  var t = [['ranking', 'Ranking'], ['fechas', 'Fechas'], ['jugadores', 'Jugadores'], ['stats', 'Estadísticas']];
   if (canEdit) t.push(['ajustes', 'Ajustes']);
   return '<nav class="tabs" aria-label="Secciones"><div class="wrap tabs-in">' + t.map(function (x) {
     return '<button class="tab' + (ui.tab === x[0] ? ' on' : '') + '" data-act="tab" data-v="' + x[0] + '" aria-current="' + (ui.tab === x[0] ? 'page' : 'false') + '">' + x[1] + '</button>';
@@ -560,6 +932,7 @@ function notices() {
   return h;
 }
 
+/* ---------- ranking ---------- */
 function mov(e) {
   if (e.mov == null) return e.isNew ? '<span class="mov new">nuevo</span>' : '<span class="mov"></span>';
   if (e.mov > 0) return '<span class="mov up" title="Subió ' + e.mov + '">▲' + e.mov + '</span>';
@@ -572,11 +945,10 @@ function vRanking() {
   if (!R.length) return empty('Todavía no hay fechas cerradas', 'Cuando se cierre la primera fecha, el ranking aparece aquí.');
   var lead = R[0];
   var inQ = R.filter(function (e) { return e.pos <= Q; }), cut = inQ[inQ.length - 1];
-  var winners = last.results.filter(function (r) { return r.pl === 1; }).map(function (r) { return esc(nm(r.p)); });
   var h = '<section class="summary" aria-label="Resumen">' +
     '<div class="sum"><span class="lab">Líder</span><span class="val">' + esc(nm(lead.pid)) + '</span><span class="sub"><b class="n">' + lead.total + '</b> pts' + (R[1] ? ' · ' + (lead.total - R[1].total) + ' sobre el 2°' : '') + '</span></div>' +
     '<div class="sum"><span class="lab">Corte Top ' + Q + '</span><span class="val n">' + (cut ? cut.total + ' pts' : '—') + '</span><span class="sub">' + (cut ? esc(nm(cut.pid)) + ', ' + cut.pos + '°' : '') + '</span></div>' +
-    '<div class="sum"><span class="lab">Última fecha</span><span class="val">F' + last.n + ' · ' + esc(last.cat) + '</span><span class="sub">Ganaron ' + winners.join(' y ') + '</span></div></section>';
+    '<button class="sum sum-b" data-act="gofecha" data-v="' + last.n + '"><span class="lab">Última fecha</span><span class="val">F' + last.n + ' · ' + esc(last.cat) + '</span><span class="sub">Ganaron ' + winnersOf(last).map(esc).join(' y ') + '</span></button></section>';
   h += '<div class="toolbar"><input type="search" id="rk-q" data-f="ui:q" placeholder="Buscar jugador" value="' + esc(ui.q) + '" aria-label="Buscar jugador en el ranking"><button class="btn" data-act="copy-rank">Copiar Top ' + Q + ' para WhatsApp</button></div>';
   var q = norm(ui.q.trim());
   var rows = R.filter(function (e) { return !q || norm(nm(e.pid)).indexOf(q) >= 0; });
@@ -592,187 +964,377 @@ function vRanking() {
     if (open) {
       h += '<div class="rk-det" data-k="d-' + e.pid + '">' + RK.cl.map(function (f) {
         var p = e.per[f.n];
-        return p ? '<span class="pf"><b>F' + f.n + '</b> ' + p.pl + '° · <span class="n">' + p.pts + '</span>' + (p.a ? ' <i class="' + (p.a > 0 ? 'up' : 'down') + '">' + signed(p.a) + '</i>' : '') + '</span>'
+        return p ? '<button class="pf" data-act="gofecha" data-v="' + f.n + '"><b>F' + f.n + '</b> ' + p.pl + '° · <span class="n">' + p.pts + '</span>' + (p.a ? ' <i class="' + (p.a > 0 ? 'up' : 'down') + '">' + signed(p.a) + '</i>' : '') + '</button>'
           : '<span class="pf off"><b>F' + f.n + '</b> no jugó</span>';
       }).join('') + '<button class="link" data-act="goplayer" data-v="' + e.pid + '">Ver ficha</button></div>';
     }
   });
   if (!rows.length) h += '<div class="rk-row"><span></span><span></span><span class="muted">Nadie coincide con “' + esc(ui.q) + '”.</span></div>';
-  h += '</div><p class="muted small">Los empates en puntos comparten puesto. ▲▼ compara con el ranking antes de la Fecha ' + last.n + '.</p>';
+  h += '</div><p class="muted small">Los empates en puntos comparten puesto. ▲▼ compara con el ranking antes de la Fecha ' + last.n + '. Toca una fecha para ver su torneo.</p>';
   return h;
 }
 
-function vFechas() {
+/* ---------- fechas ---------- */
+function pickFecha() {
   var fs = fechasSorted(work);
-  if (ui.fecha == null || !getF(work, ui.fecha)) {
-    var live = fs.find(function (f) { return f.status === 'en juego'; }), cl = fs.filter(function (f) { return f.status === 'cerrada'; });
-    ui.fecha = (live || cl[cl.length - 1] || fs[0]).n;
-  }
-  var f = getF(work, ui.fecha), next = fs.find(function (x) { return x.status === 'pendiente'; });
-  var strip = '<div class="fstrip" aria-label="Fechas de la temporada">' + fs.map(function (x) {
-    return '<button class="fchip st-' + slug(x.status) + (x.n === f.n ? ' sel' : '') + (next && x.n === next.n ? ' next' : '') + '" data-k="fc' + x.n + '" data-act="fecha" data-v="' + x.n + '" aria-pressed="' + (x.n === f.n) + '"><b>F' + x.n + '</b><span>' + fDM(x.date) + '</span><span>' + esc(x.cat) + '</span></button>';
+  if (ui.fecha != null && getF(work, ui.fecha)) return getF(work, ui.fecha);
+  var live = fs.filter(function (f) { return f.status === 'en juego'; }), cl = fs.filter(function (f) { return f.status === 'cerrada'; });
+  var f = live[live.length - 1] || cl[cl.length - 1] || fs[0];
+  ui.fecha = f ? f.n : null;
+  return f;
+}
+
+function strip(cur) {
+  var fs = fechasSorted(work), next = fs.find(function (x) { return x.status === 'pendiente'; });
+  return '<div class="fstrip" aria-label="Fechas de la temporada">' + fs.map(function (x) {
+    return '<button class="fchip st-' + slug(x.status) + (x.n === cur ? ' sel' : '') + (next && x.n === next.n ? ' next' : '') + '" data-k="fc' + x.n + '" data-act="fecha" data-v="' + x.n + '" aria-pressed="' + (x.n === cur) + '"><b>F' + x.n + '</b><span>' + fDM(x.date) + '</span><span>' + esc(x.cat) + '</span></button>';
   }).join('') + '</div>';
-  return strip + vFecha(f);
+}
+
+function vFechas() {
+  var f = pickFecha();
+  if (!f) return empty('Todavía no hay fechas', canEdit ? 'Agrégalas en Ajustes → Calendario.' : 'El calendario aparece aquí cuando el organizador lo arme.');
+  return strip(f.n) + vFecha(f);
+}
+
+function fechaHead(f) {
+  var label = { 'cerrada': 'Cerrada', 'en juego': 'En juego', 'pendiente': 'Pendiente' }[f.status], F = fmtOf(f);
+  var meta = '<b class="fcat">' + esc(f.cat) + '</b> · ' + cap(fLong(f.date));
+  if (isTorneo(f)) meta += ' · ' + F.np + ' parejas · ' + F.courts + ' canchas · desde las ' + esc(f.start);
+  if (f.note) meta += ' · ' + esc(f.note);
+  return '<div class="fhead"><div><h2>Fecha ' + f.n + '</h2><p class="muted">' + meta + '</p></div><span class="pill p-' + slug(f.status) + '">' + label + '</span></div>';
 }
 
 function vFecha(f) {
-  var label = { 'cerrada': 'Cerrada', 'en juego': 'En juego', 'pendiente': 'Pendiente' }[f.status];
-  var h = '<section class="fecha" data-k="fecha-' + f.n + '"><div class="fhead"><div><h2>Fecha ' + f.n + '</h2><p class="muted"><b class="fcat">' + esc(f.cat) + '</b> · ' + cap(fLong(f.date)) + (f.note ? ' · ' + esc(f.note) : '') + '</p></div><span class="pill p-' + slug(f.status) + '">' + label + '</span></div>';
+  var h = '<section class="fecha" data-k="fecha-' + f.n + '">' + fechaHead(f);
   if (f.status === 'pendiente') h += vPending(f);
-  else if (f.status === 'cerrada') h += vClosed(f);
-  else if (f.mode === 'vivo') h += vLive(f);
+  else if (isTorneo(f)) h += vTorneo(f);
+  else if (f.status === 'cerrada') h += vClosedPlain(f);
   else h += vManual(f);
   return h + '</section>';
 }
 
 function vPending(f) {
   if (!canEdit) return empty('Esta fecha aún no se juega', 'Está programada para el ' + fLong(f.date) + '.');
-  return '<div class="card pad"><label class="fld"><span>Categoría de la fecha</span>' + catSelect(f) + '</label>' +
-    '<p class="muted small">Puntos por jugador: ' + esc(pointsPreview(f.cat)) + '</p>' +
-    '<div class="btns"><button class="btn primary" data-act="f-live">Armar torneo de 12 parejas</button><button class="btn" data-act="f-manual">Cargar puestos directamente</button></div>' +
-    '<p class="muted small">Usa “Cargar puestos directamente” para una fecha especial (por ejemplo, con 16 parejas) o si el torneo se anotó en papel.</p></div>';
+  var np = ui.pnp[f.n] || (f.cat === 'Open Special' ? 16 : 12), F = FMT[np];
+  return '<div class="card pad"><div class="grid2"><label class="fld"><span>Categoría</span>' + catSelect(f) + '</label>' +
+    '<label class="fld"><span>Formato</span><select id="pnp-' + f.n + '" data-f="pnp" data-n="' + f.n + '" data-v="' + np + '"><option value="12">12 parejas · 3 grupos · 6 canchas</option><option value="16">16 parejas · 4 grupos · 8 canchas</option></select></label></div>' +
+    '<p class="muted small">Puntos por jugador (' + esc(f.cat) + '): ' + esc(pointsPreview(f.cat, np)) + '</p>' + tableWarn(f.cat, np) +
+    '<p class="muted small">' + F.groups.length + ' grupos de 4 parejas, 3 partidos de grupo por pareja y copas ' + F.copas.map(function (c) { return COPA_NAME[c]; }).join(', ').replace(/, ([^,]+)$/, ' y $1') + ' con semis, final y 3er puesto: 5 rondas desde las ' + esc(work.settings.start) + '.</p>' +
+    '<div class="btns"><button class="btn primary" data-act="f-torneo">Armar torneo</button><button class="btn" data-act="f-manual">Cargar puestos directamente</button></div>' +
+    '<p class="muted small">“Armar torneo” abre el registro con tómbola, grupos, canchas y resultados partido a partido; al cerrarlo, los puntos pasan solos al ranking. Usa “Cargar puestos directamente” si solo tienes la clasificación final.</p></div>';
 }
 
-function finalList(f, rows) {
-  var np = Math.max.apply(null, [0].concat(rows.map(function (r) { return r.pl; })));
-  var by = {};
+/* torneo de la fecha, paso a paso */
+function defStep(f, lc, edit) {
+  if (f.status === 'cerrada') return 'final';
+  if (!isReady(f)) return 'registro';
+  if (!lc.complete) return edit ? 'resultados' : 'canchas';
+  return 'final';
+}
+
+function stepNav(f, lc, sub) {
+  var N = lc.F.np, ready = isReady(f), closed = f.status === 'cerrada';
+  var info = {
+    registro: [pairsDone(f) + '/' + N + ' parejas', ready],
+    grupos: [ready ? lc.F.groups.join(' · ') : 'tras la tómbola', ready],
+    canchas: [ready ? 'Ronda ' + (closed ? 5 : curRound(lc)) : 'tras la tómbola', false],
+    resultados: [(lc.done + lc.poDone) + '/' + (lc.gTotal + lc.poTotal), lc.complete],
+    tablas: [lc.done + '/' + lc.gTotal + ' partidos', lc.done === lc.gTotal],
+    copas: [lc.seeds ? lc.poDone + '/' + lc.poTotal : 'provisoria', lc.complete],
+    final: [closed ? 'cerrada' : lc.complete ? 'lista' : '—', closed]
+  };
+  return '<nav class="steps" aria-label="Pasos del torneo">' + STEPS.map(function (s, i) {
+    var x = info[s[0]];
+    return '<button class="step' + (sub === s[0] ? ' on' : '') + (x[1] ? ' done' : '') + '" data-k="sp-' + s[0] + '" data-act="sub" data-v="' + s[0] + '" aria-current="' + (sub === s[0] ? 'step' : 'false') + '"><b class="n">' + (x[1] && sub !== s[0] ? '✓' : i + 1) + '</b><span>' + s[1] + '<i>' + esc(x[0]) + '</i></span></button>';
+  }).join('') + '</nav>';
+}
+
+function vTorneo(f) {
+  var lc = lcOf(f), F = lc.F, closed = f.status === 'cerrada', edit = canEdit && !closed;
+  var sub = ui.sub[f.n] || defStep(f, lc, edit), h = '';
+  if (edit) {
+    var hasSc = Object.keys(f.sc || {}).length > 0;
+    h += '<div class="fmeta"><div class="toolbar">' +
+      '<label class="fld inline"><span>Categoría</span>' + catSelect(f) + '</label>' +
+      '<label class="fld inline"><span>Inicio</span><input id="ts-' + f.n + '" type="time" data-f="fstart" value="' + esc(f.start) + '"></label>' +
+      '<label class="fld inline"><span>Min. por ronda</span><input id="tl-' + f.n + '" class="ni sm" type="number" inputmode="numeric" min="5" data-f="fslot" value="' + esc(f.slot) + '"></label>' +
+      (hasSc ? '' : '<label class="fld inline"><span>Formato</span><select id="tf-' + f.n + '" data-f="fnp" data-v="' + f.np + '"><option value="12">12 parejas</option><option value="16">16 parejas</option></select></label>') +
+      '</div>' + (f.results ? '' : confirmBtn('reset-' + f.n, 'Descartar fecha', 'f-reset', 'Se borran las parejas, la tómbola y los resultados, y la fecha queda pendiente.', 'danger sm', 'Sí, descartar')) + '</div>';
+    h += tableWarn(f.cat, F.np);
+  }
+  h += stepNav(f, lc, sub);
+  h += '<div class="stepbody" data-k="sb-' + f.n + '-' + sub + '">';
+  if (sub === 'registro') h += stRegistro(f, lc, edit);
+  else if (sub === 'grupos') h += stGrupos(f, lc);
+  else if (sub === 'canchas') h += stCanchas(f, lc);
+  else if (sub === 'resultados') h += stResultados(f, lc, edit);
+  else if (sub === 'tablas') h += stTablas(f, lc);
+  else if (sub === 'copas') h += stCopas(f, lc);
+  else h += stFinal(f, lc);
+  return h + '</div>';
+}
+
+function notReady(f) {
+  var N = fmtOf(f).np, pdn = pairsDone(f), S = slotsOf(f);
+  var miss = [];
+  if (pdn < N) miss.push(plural(N - pdn, 'pareja', 'parejas'));
+  if (!S.full) miss.push(plural(N - S.count, 'número de tómbola', 'números de tómbola'));
+  return empty('Primero completa el registro', 'Faltan ' + miss.join(' y ') + '. Los grupos, los partidos y las canchas se arman solos cuando las ' + N + ' parejas tengan su número.',
+    '<div class="btns center"><button class="btn" data-act="sub" data-v="registro">Ir al registro</button></div>');
+}
+
+/* 1 · Registro + tómbola */
+function stRegistro(f, lc, edit) {
+  var F = lc.F, N = F.np, S = slotsOf(f), hasSc = Object.keys(f.sc || {}).length > 0, ready = isReady(f), pdn = pairsDone(f);
+  var used = new Set([].concat.apply([], f.pairs).filter(Boolean));
+  var nums = new Set((f.tomb || []).map(Number).filter(function (n) { return n >= 1 && n <= N; }));
+  var h = '<div class="summary"><div class="sum"><span class="lab">Parejas</span><span class="val n">' + pdn + ' de ' + N + '</span><span class="sub">' + (pdn < N ? 'Faltan ' + (N - pdn) : 'Completas') + '</span></div>' +
+    '<div class="sum"><span class="lab">Tómbola</span><span class="val n">' + S.count + ' de ' + N + '</span><span class="sub">' + (S.full ? 'Números asignados' : 'Números por sortear') + '</span></div>' +
+    '<div class="sum"><span class="lab">Grupos</span><span class="val">' + (ready ? 'Listos' : 'Por armar') + '</span><span class="sub">' + (ready ? F.groups.length + ' grupos · ' + lc.gTotal + ' partidos' : 'Se arman con la tómbola') + '</span></div></div>';
+  if (edit) {
+    h += '<div class="toolbar">';
+    if (hasSc) h += confirmBtn('retomb-' + f.n, 'Rehacer tómbola', 'tomb-redo', 'Ya hay resultados cargados. Rehacer la tómbola borra los números y todos los resultados de la fecha.', 'danger', 'Sí, rehacer y borrar');
+    else h += '<button class="btn primary" data-act="tomb-draw">' + (S.count ? 'Volver a sortear la tómbola' : 'Sortear tómbola') + '</button>' + (S.count ? '<button class="btn" data-act="tomb-clear">Borrar números</button>' : '');
+    h += quickAdd() + '</div>';
+    h += '<p class="muted small">Registra las ' + N + ' parejas y toca “Sortear tómbola”, o elige el número que sacó cada pareja si la tómbola se hizo en el club. ' + F.groups.map(function (G, gi) { return 'Del ' + (gi * 4 + 1) + ' al ' + (gi * 4 + 4) + ': Grupo ' + G; }).join(' · ') + '.</p>';
+  }
+  h += '<ol class="reg">' + f.pairs.map(function (p, i) {
+    var n = Number(f.tomb[i]), has = n >= 1 && n <= N, slot = has ? slotName(n - 1) : '';
+    var grp = '<span class="reg-g">' + (has ? '<b class="n">' + slot + '</b><i>Grupo ' + slot.charAt(0) + '</i>' : '<i>Sin grupo</i>') + '</span>';
+    if (!edit) {
+      return '<li class="reg-r ro" data-k="rg' + i + '"><span class="reg-i n">' + (i + 1) + '</span><div class="reg-names">' + (p[0] || p[1] ? '<span>' + esc(p[0] ? nm(p[0]) : '—') + '</span><span>' + esc(p[1] ? nm(p[1]) : '—') + '</span>' : '<span class="muted">Sin registrar</span>') + '</div><div class="reg-t"><span class="reg-num"><span class="lab">N° tómbola</span><b class="n">' + (has ? n : '—') + '</b></span>' + grp + '</div></li>';
+    }
+    return '<li class="reg-r" data-k="rg' + i + '"><span class="reg-i n">' + (i + 1) + '</span><div class="reg-p">' +
+      playerSelect('pp-' + i + '-0', p[0], used, 'pair', 'data-i="' + i + '" data-j="0"') + playerSelect('pp-' + i + '-1', p[1], used, 'pair', 'data-i="' + i + '" data-j="1"') + '</div>' +
+      '<div class="reg-t"><label class="fld"><span>N° tómbola</span><select id="tb-' + i + '" data-f="tomb" data-i="' + i + '" data-v="' + (has ? n : '') + '"' + (hasSc ? ' disabled' : '') + '><option value="">—</option>' +
+      range(1, N).map(function (k) { var tk = nums.has(k) && k !== n; return '<option value="' + k + '"' + (tk ? ' disabled' : '') + '>' + k + (tk ? ' · ya salió' : '') + '</option>'; }).join('') + '</select></label>' + grp + '</div></li>';
+  }).join('') + '</ol>';
+  if (ready) h += '<div class="note"><span>Tómbola lista: ' + F.groups.length + ' grupos de 4 y ' + lc.gTotal + ' partidos de grupo armados.</span><button class="btn sm" data-act="sub" data-v="grupos">Ver grupos y partidos</button><button class="btn sm" data-act="sub" data-v="canchas">Ver canchas</button></div>';
+  return h;
+}
+
+/* 2 · Grupos y partidos */
+function stGrupos(f, lc) {
+  if (!isReady(f)) return notReady(f);
+  var F = lc.F;
+  return '<div class="' + (F.np === 16 ? 'groups4' : 'groups3') + '">' + F.groups.map(function (G, gi) {
+    var ms = lc.gm.filter(function (m) { return m.g === G; }).sort(function (a, b) { return a.r - b.r || a.court - b.court; });
+    return '<div class="card pad" data-k="gr-' + G + '"><h3 class="gh">Grupo ' + G + '</h3><ol class="grp-p">' + [0, 1, 2, 3].map(function (si) {
+      var pi = gi * 4 + si;
+      return '<li><b class="slot n">' + G + (si + 1) + '</b><span class="grp-n">' + pairLines(f, pi) + '</span><span class="muted small n">N° ' + (pi + 1) + '</span></li>';
+    }).join('') + '</ol><h4 class="lab">Partidos</h4><ul class="fx">' + ms.map(function (m) {
+      return '<li><span class="fx-m n">R' + m.r + ' · ' + rStart(f, m.r) + ' · Cancha ' + m.court + '</span><span class="fx-v n"><b>' + slotName(m.pa) + '</b> vs <b>' + slotName(m.pb) + '</b></span><span class="fx-s n">' + (m.w ? score(m.s.a, m.s.b) : '–') + '</span></li>';
+    }).join('') + '</ul></div>';
+  }).join('') + '</div><p class="muted small">Cada pareja juega 3 partidos de grupo: 1 vs 2 y 3 vs 4 en la ronda 1, 1 vs 3 y 2 vs 4 en la ronda 2, 1 vs 4 y 2 vs 3 en la ronda 3. Las canchas rotan para que cada grupo use 2 canchas por ronda.</p>';
+}
+
+/* 3 · Canchas */
+function roundSel(f, lc, r) {
+  return '<div class="seg rounds" role="tablist" aria-label="Rondas">' + [1, 2, 3, 4, 5].map(function (k) {
+    var ms = roundMatches(lc, k), dn = ms.filter(function (m) { return m.w; }).length;
+    return '<button class="seg-b' + (k === r ? ' on' : '') + '" role="tab" aria-selected="' + (k === r) + '" data-act="rd" data-v="' + k + '">Ronda ' + k + '<i class="n">' + rStart(f, k) + (ms.length && dn === ms.length ? ' ✓' : '') + '</i></button>';
+  }).join('') + '</div>';
+}
+function courtCard(f, lc, m) {
+  var ready = m.pa != null && m.pb != null, s = m.s || {}, a = num(s.a), b = num(s.b), tie = a != null && a === b;
+  var side = function (k, pi, ph) {
+    var g = k === 'a' ? a : b, win = m.w === k;
+    var who = '<span class="who">' + (pi == null ? '<span class="ph">' + esc(ph) + '</span>' : '<span class="slot n">' + slotName(pi) + '</span>' + pairLines(f, pi)) + '</span>';
+    return '<div class="half ' + k + (win ? ' win' : '') + (m.w && !win ? ' lose' : '') + '">' + who +
+      (m.w ? '<span class="pg n' + (win ? ' w' : '') + '">' + g + (tie ? '<small>' + num(s['t' + k]) + '</small>' : '') + '</span>' : '') + '</div>';
+  };
+  return '<article class="court' + (ready ? '' : ' wait') + '" data-k="ct-' + m.id + (ready ? '' : '-w') + '"><header class="court-h"><b>Cancha ' + m.court + '</b><span>' + esc(tagOf(m)) + '</span></header>' +
+    '<div class="pitch"><i class="lines" aria-hidden="true"></i><i class="net" aria-hidden="true"></i>' + side('a', m.pa, m.la) + side('b', m.pb, m.lb) + '</div>' +
+    (m.w ? '' : '<p class="court-f">' + (ready ? 'Por jugar' : 'Se define con ' + (m.stage === 'S' ? 'la fase de grupos' : 'las semifinales')) + '</p>') + '</article>';
+}
+function whereTable(f, lc, cur) {
+  var F = lc.F, rounds = lc.seeds ? [1, 2, 3, 4, 5] : [1, 2, 3], by = {};
+  lc.gm.concat(lc.po).forEach(function (m) {
+    if (m.pa == null || m.pb == null) return;
+    [[m.pa, m.pb], [m.pb, m.pa]].forEach(function (x) { (by[x[0]] = by[x[0]] || {})[m.r] = { c: m.court, o: x[1], m: m }; });
+  });
+  return '<h3 class="sec">¿Dónde juega cada pareja?</h3><div class="card"><div class="scroll-x"><table class="st where' + (rounds.length > 3 ? ' w5' : '') + '"><thead><tr><th>Pareja</th>' + rounds.map(function (r) { return '<th class="' + (r === cur ? 'cur' : '') + '">R' + r + ' <span class="n">' + rStart(f, r) + '</span></th>'; }).join('') + '</tr></thead><tbody>' +
+    range(0, F.np - 1).map(function (pi) {
+      return '<tr' + (pi % 4 === 0 && pi ? ' class="gsep"' : '') + '><td class="gt-p">' + pairCell(f, pi) + '</td>' + rounds.map(function (r) {
+        var x = (by[pi] || {})[r];
+        var res = x && x.m.w ? '<span class="rc ' + ((x.m.w === 'a') === (x.m.pa === pi) ? 'w">G' : 'l">P') + '</span>' : '';
+        return '<td class="' + (r === cur ? 'cur' : '') + '">' + (x ? '<b class="n">C' + x.c + '</b> <span class="muted n">vs ' + slotName(x.o) + '</span> ' + res : '<span class="muted">–</span>') + '</td>';
+      }).join('') + '</tr>';
+    }).join('') + '</tbody></table></div></div>';
+}
+function programCard(f, lc) {
+  var F = lc.F;
+  return '<h3 class="sec">Programa completo</h3><div class="card pad"><div class="scroll-x"><table class="prog n"><thead><tr><th>Ronda</th><th>Hora</th>' + range(1, F.courts).map(function (c) { return '<th>C' + c + '</th>'; }).join('') + '</tr></thead><tbody>' +
+    [1, 2, 3, 4, 5].map(function (r) {
+      var byC = {}; roundMatches(lc, r).forEach(function (m) { byC[m.court] = m; });
+      return '<tr><th>' + r + '</th><td>' + rStart(f, r) + '</td>' + range(1, F.courts).map(function (c) {
+        var m = byC[c];
+        if (!m) return '<td></td>';
+        if (m.stage === 'G') return '<td>' + slotName(m.pa) + '–' + slotName(m.pb) + '</td>';
+        return '<td>' + (m.ready ? slotName(m.pa) + '–' + slotName(m.pb) : '<span class="muted">' + COPA_NAME[m.c] + ' ' + (m.stage === 'S' ? 'S' + m.id.slice(-1) : m.stage === 'F' ? 'F' : '3°') + '</span>') + '</td>';
+      }).join('') + '</tr>';
+    }).join('') +
+    '</tbody></table></div><p class="muted small">Termina a las ' + hm(f.start, 5 * slotOf(f)) + '. Partidos a 1 set de ' + slotOf(f) + ' minutos; si empatan en games, tie-break a 5 sin diferencia.</p><div class="toolbar"><button class="btn" data-act="copy-prog">Copiar programa para WhatsApp</button></div></div>';
+}
+function stCanchas(f, lc) {
+  if (!isReady(f)) return notReady(f);
+  var r = roundOf(f, lc), ms = roundMatches(lc, r), F = lc.F;
+  var h = roundSel(f, lc, r);
+  h += '<div class="sec-row"><h3 class="sec">Ronda ' + r + ' <span class="sec-t n">' + rTime(f, r) + ' · ' + roundName(r) + '</span></h3><button class="btn sm" data-act="copy-round">Copiar ronda para WhatsApp</button></div>';
+  if (r >= 4 && !lc.seeds) h += '<p class="note">Los cruces de copa se completan solos al terminar la fase de grupos (' + plural(lc.gTotal - lc.done, 'partido pendiente', 'partidos pendientes') + '). Por ahora ves qué cancha usa cada llave.</p>';
+  h += '<div class="courts' + (F.courts === 8 ? ' c8' : '') + '">' + ms.map(function (m) { return courtCard(f, lc, m); }).join('') + '</div>';
+  h += whereTable(f, lc, r) + programCard(f, lc);
+  return h;
+}
+
+/* 4 · Resultados */
+function matchCard(f, m, tag, edit) {
+  var s = m.s || {}, ga = num(s.a), gb = num(s.b), tie = ga != null && ga === gb;
+  var ready = m.pa != null && m.pb != null, canIn = edit && ready;
+  var attrs = function (k) { return 'data-f="sc" data-id="' + m.id + '" data-s="' + k + '" data-pa="' + m.pa + '" data-pb="' + m.pb + '"'; };
+  var row = function (k, pi, ph) {
+    var g = s[k], tb = s['t' + k];
+    var who = pi == null ? '<span class="muted">' + esc(ph) + '</span>' : pairLines(f, pi);
+    return '<div class="sb' + (m.w === k ? ' win' : '') + '"><span class="sb-p">' + who + '</span>' +
+      (tie ? '<span class="sb-tb">' + (canIn ? numInput('sc-' + m.id + '-t' + k, tb, attrs('t' + k), 'Tie-break', 'TB') : 'TB ' + (num(tb) == null ? '–' : num(tb))) + '</span>' : '<span></span>') +
+      '<span class="sb-g">' + (canIn ? numInput('sc-' + m.id + '-' + k, g, attrs(k), 'Games de ' + (pi == null ? ph : pairText(f, pi))) : (num(g) == null ? '–' : num(g))) + '</span></div>';
+  };
+  var slots = m.pa != null && m.pb != null ? slotName(m.pa) + ' vs ' + slotName(m.pb) : '';
+  return '<article class="match' + (ready ? '' : ' wait') + '" data-k="m-' + m.id + (ready ? '' : '-w') + '"><header class="mh"><span>Cancha ' + m.court + (slots ? ' · ' + slots : '') + '</span><span>' + esc(tag) + '</span></header>' + row('a', m.pa, m.la) + row('b', m.pb, m.lb) +
+    (tie && !m.w && canIn ? '<p class="mnote">Empate en games: ingresa el tie-break (a 5, sin diferencia).</p>' : '') +
+    (m.stale && edit ? '<p class="mnote warn">Los cruces cambiaron después de cargar este partido. Ingresa el resultado de nuevo.</p>' : '') + '</article>';
+}
+function stResultados(f, lc, edit) {
+  if (!isReady(f)) return notReady(f);
+  var r = roundOf(f, lc), ms = roundMatches(lc, r), F = lc.F, dn = ms.filter(function (m) { return m.w; }).length;
+  var h = roundSel(f, lc, r);
+  h += '<div class="sec-row"><h3 class="sec">Ronda ' + r + ' <span class="sec-t n">' + rTime(f, r) + ' · ' + dn + '/' + ms.length + ' cargados</span></h3></div>';
+  if (r >= 4 && !lc.seeds) return h + empty('Faltan ' + plural(lc.gTotal - lc.done, 'partido de grupo', 'partidos de grupo'), 'Las semifinales de copa se arman solas cuando estén los ' + lc.gTotal + ' resultados de la fase de grupos.', '<div class="btns center"><button class="btn" data-act="rd" data-v="' + curRound(lc) + '">Ir a la ronda ' + curRound(lc) + '</button></div>');
+  if (edit) h += '<p class="muted small">Ingresa los games de cada pareja. Si empatan, aparece el tie-break. Tablas, clasificación a copas y cruces se actualizan solos.</p>';
+  h += '<div class="matches' + (F.np === 16 ? ' m4' : '') + '">' + ms.map(function (m) { return matchCard(f, m, tagOf(m), edit); }).join('') + '</div>';
+  if (dn === ms.length) {
+    h += '<div class="toolbar">' + (r < 5 ? '<button class="btn primary" data-act="rd" data-v="' + (r + 1) + '">Ir a la ronda ' + (r + 1) + '</button>' : '') +
+      (r === 3 ? '<button class="btn" data-act="sub" data-v="copas">Ver clasificación a copas</button>' : r < 3 ? '<button class="btn" data-act="sub" data-v="tablas">Ver tablas</button>' : '') +
+      (r === 5 && lc.complete ? '<button class="btn primary" data-act="sub" data-v="final">Ver clasificación final</button>' : '') + '</div>';
+  }
+  return h;
+}
+
+/* 5 · Tablas de grupo */
+var WHY = { h2h: 'define el partido entre ellos (H2H)', gf: 'define games a favor', orden: 'siguen empatados y queda el orden de la tómbola' };
+function groupTable(f, lc, G) {
+  var notes = lc.notes[G] || [], played = lc.gm.filter(function (m) { return m.g === G && m.w; }).length;
+  return '<div class="card pad" data-k="gt-' + G + '"><div class="gt-h"><h3 class="gh">Grupo ' + G + '</h3><span class="muted small n">' + played + '/6 partidos</span></div><table class="gt"><thead><tr><th>#</th><th>Pareja</th><th>PJ</th><th>PG</th><th>PP</th><th>GF</th><th>GC</th><th>DG</th><th>H2H</th></tr></thead><tbody>' +
+    lc.tables[G].map(function (r) {
+      return '<tr><td class="n">' + r.pos + '</td><td class="gt-p">' + pairCell(f, r.pi) + '</td><td class="n">' + r.pj + '</td><td class="n"><b>' + r.pg + '</b></td><td class="n">' + r.pp + '</td><td class="n">' + r.gf + '</td><td class="n">' + r.gc + '</td><td class="n">' + signed(r.dg) + '</td><td class="n">' + r.h2h + '</td></tr>';
+    }).join('') + '</tbody></table>' +
+    notes.map(function (x) { return '<p class="why">' + (x.hi - 1) + '° y ' + x.hi + '° empatan en ganados y diferencia: ' + WHY[x.c] + '.</p>'; }).join('') + '</div>';
+}
+function stTablas(f, lc) {
+  if (!isReady(f)) return notReady(f);
+  var F = lc.F;
+  return '<div class="' + (F.np === 16 ? 'groups4' : 'groups3') + '">' + F.groups.map(function (G) { return groupTable(f, lc, G); }).join('') + '</div>' +
+    '<p class="muted small">PJ jugados · PG ganados (cada victoria vale 1 punto) · PP perdidos · GF games a favor · GC games en contra · DG diferencia · H2H victorias contra parejas empatadas en PG y DG. Orden: partidos ganados, diferencia de games, H2H y games a favor.</p>';
+}
+
+/* 6 · Copas */
+var TIER = ['Primeros de grupo', 'Segundos de grupo', 'Terceros de grupo', 'Cuartos de grupo'];
+function tierCard(f, lc, k) {
+  return '<div class="card tier" data-k="ti-' + k + '"><h4 class="gh">' + TIER[k] + '</h4><table class="gt tt"><thead><tr><th>#</th><th>Pareja</th><th>PG</th><th>DG</th><th>GF</th><th>GC</th><th>Va a</th></tr></thead><tbody>' +
+    lc.tiers[k].map(function (r, i) {
+      var a = lc.assign[r.pi];
+      return '<tr><td class="n">' + (i + 1) + '</td><td class="gt-p">' + pairCell(f, r.pi) + '</td><td class="n"><b>' + r.pg + '</b></td><td class="n">' + signed(r.dg) + '</td><td class="n">' + r.gf + '</td><td class="n">' + r.gc + '</td><td class="tt-c">' + copaChip(a.copa) + '<span class="n">' + a.seed + '</span></td></tr>';
+    }).join('') + '</tbody></table></div>';
+}
+function bm(f, lc, m) {
+  var s = m.s || {}, tie = num(s.a) != null && num(s.a) === num(s.b);
+  var row = function (k, pi, ph) {
+    var o = pi != null ? lc.origin[pi] : null;
+    return '<div class="bm-r' + (m.w === k ? ' win' : '') + '"><b class="bm-sd n">' + (o ? o.seed : '') + '</b><span class="bm-p">' + (pi == null ? '<span class="muted">' + esc(ph) + '</span>' : '<span class="n bm-slot">' + slotName(pi) + '</span> ' + esc(pairText(f, pi))) + '</span><span class="bm-g n">' + (m.w ? num(s[k]) + (tie ? '<small>(' + num(s['t' + k]) + ')</small>' : '') : '') + '</span></div>';
+  };
+  return '<div class="bm' + (m.ready ? '' : ' wait') + '" data-k="bm-' + m.id + '"><div class="bm-h"><span>' + esc(m.label) + '</span><span class="n">C' + m.court + ' · ' + rStart(f, m.r) + '</span></div>' + row('a', m.pa, m.la) + row('b', m.pb, m.lb) + '</div>';
+}
+function bracket(f, lc, C, ci) {
+  var ms = lc.po.filter(function (m) { return m.c === C; }), fi = ms[2];
+  var champ = fi.w ? '<p class="br-champ"><span class="lab">Campeón ' + COPA_NAME[C] + '</span> ' + esc(pairText(f, fi.w === 'a' ? fi.pa : fi.pb)) + '</p>' : '';
+  return '<section class="card pad brk" data-k="br-' + C + '"><h3 class="copa-h">' + copaChip(C) + ' Puestos ' + (ci * 4 + 1) + '° a ' + (ci * 4 + 4) + '°</h3>' +
+    '<div class="br"><div class="br-semis">' + bm(f, lc, ms[0]) + bm(f, lc, ms[1]) + '</div><div class="br-link" aria-hidden="true"></div><div class="br-fin">' + bm(f, lc, ms[2]) + '</div><div class="br-third">' + bm(f, lc, ms[3]) + '</div></div>' + champ + '</section>';
+}
+function stCopas(f, lc) {
+  if (!isReady(f)) return notReady(f);
+  var F = lc.F, left = lc.gTotal - lc.done;
+  var h = '<div class="sec-row"><h3 class="sec">Clasificación a copas</h3>' + (lc.seeds ? '<span class="pill p-cerrada">Definitiva</span>' : '<span class="pill">Provisoria · ' + plural(left, 'partido pendiente', 'partidos pendientes') + '</span>') + '</div>';
+  h += '<p class="muted small">' + (F.seed === 'mix'
+    ? 'ORO: los 3 primeros y el mejor 2°. PLATA: los otros dos 2° y los 2 mejores 3°. CACA: el peor 3° y los tres 4°. Para comparar parejas de distintos grupos: partidos ganados, diferencia de games y menos games en contra.'
+    : 'ORO: los 1° de cada grupo. PLATA: los 2°. CARTÓN: los 3°. CACA: los 4°. Dentro de cada copa se siembra por partidos ganados, diferencia de games y games a favor.') + ' El número junto a la copa es la siembra: semis 1 vs 4 y 2 vs 3.</p>';
+  h += '<div class="tiers">' + [0, 1, 2, 3].map(function (k) { return tierCard(f, lc, k); }).join('') + '</div>';
+  h += '<div class="sec-row"><h3 class="sec">Semifinales y finales</h3>' + (lc.seeds ? '<button class="btn sm" data-act="copy-cruces">Copiar cruces para WhatsApp</button>' : '') + '</div>';
+  if (!lc.seeds) return h + empty('Los cuadros se arman al terminar los grupos', 'Faltan ' + plural(left, 'partido', 'partidos') + ' de grupo. Con el último resultado se completan las semifinales de cada copa.');
+  h += F.copas.map(function (C, ci) { return bracket(f, lc, C, ci); }).join('');
+  if (canEdit && f.status !== 'cerrada' && !lc.complete) h += '<div class="toolbar"><button class="btn primary" data-act="rd-go" data-v="' + curRound(lc) + '">Cargar resultados de la ronda ' + curRound(lc) + '</button></div>';
+  return h;
+}
+
+/* 7 · Final */
+function finalList(f, rows, withInputs) {
+  var np = npOf(f), by = {};
   rows.forEach(function (r) { (by[r.pl] = by[r.pl] || []).push(r); });
   return '<ol class="final">' + Object.keys(by).map(Number).sort(function (a, b) { return a - b; }).map(function (pl) {
     return '<li class="fin" data-k="fin' + pl + '"><span class="fin-pl n">' + pl + '°</span><div class="fin-pair">' + by[pl].map(function (r) {
-      return '<div class="fin-p"><span class="fin-nm">' + esc(nm(r.p)) + sideChip(r.p) + '</span>' + (r.a ? '<span class="adj ' + (r.a > 0 ? 'up' : 'down') + '">' + signed(r.a) + '</span>' : '') + '<span class="fin-pts n">' + (r.b + r.a) + '</span>' + (r.n ? '<span class="fin-note">' + esc(r.n) + '</span>' : '') + '</div>';
-    }).join('') + '</div>' + copaChip(copaOf(pl, np)) + '</li>';
+      var ex = (f.ex && f.ex[r.p]) || {};
+      var calc = r.auto != null ? '<span class="cl-calc">' + r.b + ' por el puesto' + (r.auto ? ' ' + signed(r.auto).replace(/^([+−])/, '$1 ') + ' por 6–0' : '') + (r.ex ? ' ' + signed(r.ex).replace(/^([+−])/, '$1 ') + ' de ajuste' : '') + '</span>' : '';
+      return '<div class="fin-p"><button class="fin-nm" data-act="goplayer" data-v="' + r.p + '">' + esc(nm(r.p)) + sideChip(r.p) + '</button>' + (r.a ? '<span class="adj ' + (r.a > 0 ? 'up' : 'down') + '">' + signed(r.a) + '</span>' : '') + '<span class="fin-pts n">' + (r.b + r.a) + '</span>' +
+        (withInputs ? calc + '<div class="cl-in"><input class="ti" id="exn-' + r.p + '" data-f="ex" data-pid="' + r.p + '" data-s="n" list="motivos" value="' + esc(ex.n || '') + '" placeholder="Motivo del ajuste" aria-label="Motivo del ajuste de ' + esc(nm(r.p)) + '"><input class="ni" type="number" inputmode="numeric" id="exv-' + r.p + '" data-f="ex" data-pid="' + r.p + '" data-s="v" value="' + esc(ex.v == null ? '' : ex.v) + '" placeholder="±0" aria-label="Ajuste en puntos de ' + esc(nm(r.p)) + '"></div>'
+          : (r.n ? '<span class="fin-note">' + esc(r.n) + '</span>' : '')) + '</div>';
+    }).join('') + '</div>' + copaChip(copaOfPl(np, pl)) + '</li>';
   }).join('') + '</ol>';
 }
-
-function vClosed(f) {
-  var h = '';
-  if (f.imp) h += '<p class="note">Fecha importada del Excel: guarda puestos y puntos, sin el detalle de los partidos.</p>';
-  h += '<div class="toolbar"><button class="btn" data-act="copy-fecha">Copiar resultados para WhatsApp</button>';
-  if (canEdit) h += confirmBtn('reopen-' + f.n, f.mode === 'vivo' ? 'Reabrir fecha' : 'Editar puestos', 'f-reopen', 'La fecha vuelve a “En juego” y deja de sumar en el ranking hasta que la cierres de nuevo.', '', f.mode === 'vivo' ? 'Sí, reabrir' : 'Sí, editar');
-  if (f.mode === 'vivo' && f.live) h += '<button class="btn ghost" data-act="toggle-detail">' + (ui.open['det' + f.n] ? 'Ocultar partidos' : 'Ver partidos') + '</button>';
+function champion(f, lc) {
+  var txt = '';
+  if (f.status === 'cerrada' && f.results) txt = winnersOf(f).join(' / ');
+  else if (lc && lc.places[0] != null) txt = pairText(f, lc.places[0]);
+  if (!txt) return '';
+  return '<div class="champ"><span class="lab">Campeones' + (FMT[npOf(f)] ? ' · Copa ORO' : '') + '</span><span class="champ-n">' + esc(txt) + '</span></div>';
+}
+function closedTools(f, reopenLabel, reopenMsg) {
+  var h = '<div class="toolbar"><button class="btn" data-act="copy-res">Copiar resultados para WhatsApp</button>';
+  if (canEdit) h += confirmBtn('reopen-' + f.n, reopenLabel, 'f-reopen', reopenMsg, '', 'Sí, ' + reopenLabel.charAt(0).toLowerCase() + reopenLabel.slice(1));
   h += '</div>';
   if (canEdit && RK.last && RK.last.n === f.n) h += webCard(false);
-  h += finalList(f, f.results || []);
-  if (f.mode === 'vivo' && f.live && ui.open['det' + f.n]) {
-    var lc = liveCompute(f);
-    h += '<h3 class="sec">Tablas de grupo</h3><div class="groups3">' + GROUPS.map(function (G) { return groupTable(f, lc, G); }).join('') + '</div>';
-    h += '<h3 class="sec">Copas</h3>' + copasView(f, lc, false);
-    h += '<h3 class="sec">Fase de grupos</h3><div class="matches">' + lc.gm.slice().sort(function (a, b) { return a.r - b.r || a.court - b.court; }).map(function (m) { return matchCard(f, m, 'Ronda ' + m.r + ' · Grupo ' + m.g, false); }).join('') + '</div>';
-  }
   return h;
 }
-
-function vLive(f) {
-  var L = f.live, lc = liveCompute(f);
-  var pairsDone = L.pairs.filter(function (p) { return p && p[0] && p[1]; }).length;
-  var poDone = lc.po.filter(function (m) { return m.w; }).length;
-  var def = pairsDone < 12 ? 'parejas' : lc.done < 18 ? 'grupos' : !lc.complete ? 'copas' : 'cierre';
-  var sub = ui.sub[f.n] || def;
-  var subs = [['parejas', 'Parejas <i>' + pairsDone + '/12</i>'], ['grupos', 'Grupos <i>' + lc.done + '/18</i>'], ['copas', 'Copas <i>' + poDone + '/12</i>'], ['cierre', 'Cierre <i>' + (lc.complete ? 'listo' : '—') + '</i>']];
-  var h = '';
-  if (canEdit) {
-    h += '<div class="fmeta"><label class="fld inline"><span>Categoría</span>' + catSelect(f) + '</label>' +
-      (f.results ? '' : confirmBtn('reset-' + f.n, 'Descartar fecha', 'f-reset', 'Se borran las parejas y resultados de esta fecha, y queda pendiente.', 'danger sm', 'Sí, descartar')) + '</div>';
+function stFinal(f, lc) {
+  var S = work.settings, F = lc.F;
+  if (f.status === 'cerrada') {
+    return closedTools(f, 'Reabrir fecha', 'La fecha vuelve a “En juego” para corregir resultados y deja de sumar en el ranking hasta que la cierres de nuevo.') +
+      champion(f, lc) + '<p class="muted small">Estos puntos ya suman en el ranking.</p>' + finalList(f, f.results || [], false);
   }
-  h += '<div class="seg" role="tablist" aria-label="Etapas de la fecha">' + subs.map(function (s) {
-    return '<button class="seg-b' + (sub === s[0] ? ' on' : '') + '" role="tab" aria-selected="' + (sub === s[0]) + '" data-act="sub" data-v="' + s[0] + '">' + s[1] + '</button>';
-  }).join('') + '</div>';
-  if (sub === 'parejas') h += lvPairs(f);
-  else if (sub === 'grupos') h += lvGroups(f, lc);
-  else if (sub === 'copas') h += lc.seeds ? copasView(f, lc, canEdit) : empty('Faltan ' + (18 - lc.done) + ' partidos de grupo', 'Las copas se arman solas cuando estén los 18 resultados de la fase de grupos.');
-  else h += lvClose(f, lc);
-  return h;
-}
-
-function lvPairs(f) {
-  var L = f.live, used = new Set([].concat.apply([], L.pairs).filter(Boolean));
-  var h = '';
-  if (canEdit) {
-    var hasScores = Object.keys(L.sc).length > 0;
-    h += '<div class="toolbar">' + (hasScores ? confirmBtn('draw-' + f.n, 'Sortear grupos', 'draw', 'Ya hay resultados cargados. Volver a sortear los borra.', 'danger', 'Sí, sortear y borrar') : '<button class="btn primary" data-act="draw">Sortear grupos (tómbola)</button>') + quickAdd() + '</div>' +
-      '<p class="muted small">Cada grupo toma las parejas en el orden de la lista. Si hiciste la tómbola en el club, ingrésalas directo en su grupo.</p>';
-  }
-  h += '<div class="groups3">' + GROUPS.map(function (G, gi) {
-    return '<div class="card pad"><h3 class="gh">Grupo ' + G + '</h3>' + [0, 1, 2, 3].map(function (si) {
-      var i = gi * 4 + si, p = L.pairs[i] || ['', ''];
-      return '<div class="pslot" data-k="ps' + i + '"><span class="ps-id">' + G + (si + 1) + '</span>' + (canEdit
-        ? '<div class="ps-sel">' + playerSelect('pp-' + i + '-0', p[0], used, 'pair', 'data-i="' + i + '" data-j="0"') + playerSelect('pp-' + i + '-1', p[1], used, 'pair', 'data-i="' + i + '" data-j="1"') + '</div>'
-        : '<div class="ps-names">' + pairLines(p, i) + '</div>') + '</div>';
-    }).join('') + '</div>';
-  }).join('') + '</div>';
-  return h;
-}
-
-function matchCard(f, m, tag, edit) {
-  var L = f.live, s = m.s || {};
-  var ga = num(s.a), gb = num(s.b), tie = ga != null && ga === gb;
-  var attrs = function (k) { return 'data-f="sc" data-id="' + m.id + '" data-s="' + k + '" data-pa="' + m.pa + '" data-pb="' + m.pb + '"'; };
-  var row = function (k, pi) {
-    var g = s[k], t = s['t' + k];
-    return '<div class="sb' + (m.w === k ? ' win' : '') + '"><span class="sb-p">' + pairLines(L.pairs[pi], pi) + '</span>' +
-      (tie ? '<span class="sb-tb">' + (edit ? numInput('sc-' + m.id + '-t' + k, t, attrs('t' + k), 'Tie-break', 'TB') : 'TB ' + (num(t) == null ? '–' : num(t))) + '</span>' : '<span></span>') +
-      '<span class="sb-g">' + (edit ? numInput('sc-' + m.id + '-' + k, g, attrs(k), 'Games de ' + pairInline(L.pairs[pi], pi).replace(/&[^;]+;/g, '')) : (num(g) == null ? '–' : num(g))) + '</span></div>';
-  };
-  return '<article class="match" data-k="m-' + m.id + '"><header class="mh"><span>Cancha ' + m.court + '</span><span>' + esc(tag) + '</span></header>' + row('a', m.pa) + row('b', m.pb) +
-    (tie && !m.w && edit ? '<p class="mnote">Empate en games: ingresa el tie-break (a 5, sin diferencia).</p>' : '') +
-    (m.stale && edit ? '<p class="mnote warn">Los cruces cambiaron después de cargar este partido. Ingresa el resultado de nuevo.</p>' : '') + '</article>';
-}
-
-function groupTable(f, lc, G) {
-  return '<div class="card pad"><h3 class="gh">Grupo ' + G + '</h3><table class="gt"><thead><tr><th>#</th><th>Pareja</th><th>PJ</th><th>PG</th><th>DG</th><th>GF</th></tr></thead><tbody>' +
-    lc.tables[G].map(function (r) {
-      return '<tr><td class="n">' + r.pos + '</td><td class="gt-p">' + pairLines(f.live.pairs[r.pi], r.pi) + '</td><td class="n">' + r.pj + '</td><td class="n">' + r.pg + '</td><td class="n">' + (r.dg > 0 ? '+' : '') + r.dg + '</td><td class="n">' + r.gf + '</td></tr>';
-    }).join('') + '</tbody></table></div>';
-}
-
-function lvGroups(f, lc) {
-  var h = '';
-  for (var r = 1; r <= 3; r++) {
-    var ms = lc.gm.filter(function (m) { return m.r === r; }).sort(function (a, b) { return a.court - b.court; });
-    h += '<h3 class="sec">Ronda ' + r + '</h3><div class="matches">' + ms.map(function (m) { return matchCard(f, m, 'Grupo ' + m.g, canEdit); }).join('') + '</div>';
-  }
-  h += '<h3 class="sec">Tablas de grupo</h3><div class="groups3">' + GROUPS.map(function (G) { return groupTable(f, lc, G); }).join('') + '</div>' +
-    '<p class="muted small">Orden en el grupo: partidos ganados, diferencia de games, resultado entre ellos y games a favor. Si empatan en games, tie-break a 5 sin diferencia.</p>';
-  return h;
-}
-
-function copasView(f, lc, edit) {
-  return '<div class="copas">' + COPAS.map(function (C, ci) {
-    var ms = lc.po.filter(function (m) { return m.c === C; });
-    return '<section class="copa-b"><h3 class="copa-h">' + copaChip(C) + ' Puestos ' + (ci * 4 + 1) + '° a ' + (ci * 4 + 4) + '°</h3>' +
-      '<ol class="seeds">' + lc.seeds[C].map(function (pi, k) { return '<li><b class="n">' + (k + 1) + '</b><span>' + pairInline(f.live.pairs[pi], pi) + '</span></li>'; }).join('') + '</ol>' +
-      '<div class="matches one">' + ms.map(function (m) { return matchCard(f, m, m.label, edit); }).join('') + '</div>' +
-      (ms.length < 4 ? '<p class="muted small">La final y el 3er puesto aparecen cuando terminen las dos semis.</p>' : '') + '</section>';
-  }).join('') + '</div>' + (edit ? '<p class="muted small">ORO: los 3 primeros y el mejor 2°. PLATA: los otros 2° y los 2 mejores 3°. CACA: el peor 3° y los 4°. Entre grupos se compara partidos ganados, diferencia de games y menos games en contra.</p>' : '');
-}
-
-function lvClose(f, lc) {
+  if (!isReady(f)) return notReady(f);
   if (!lc.complete) {
-    var left = (18 - lc.done) + (12 - lc.po.filter(function (m) { return m.w; }).length);
-    return empty('Faltan ' + left + ' partidos', 'El cierre se habilita cuando terminen las finales y los 3eros puestos de las tres copas.');
+    var left = (lc.gTotal - lc.done) + (lc.poTotal - lc.poDone), part = results(f, work, lc);
+    return empty('Faltan ' + plural(left, 'partido', 'partidos'), 'La clasificación del 1° al ' + F.np + '° se completa cuando terminen las finales y los 3eros puestos de todas las copas.') +
+      (part.length ? '<h3 class="sec">Puestos ya definidos</h3>' + finalList(f, part, false) : '');
   }
-  var rows = liveResults(f, work, lc), S = work.settings, L = f.live;
-  var by = {};
-  rows.forEach(function (r) { (by[r.pl] = by[r.pl] || []).push(r); });
-  var h = '<p class="muted small">Puntos de la tabla ' + esc(f.cat) + '. Los bonos 6-0 se calculan solos (' + S.bonus60 + ' pts por set, tope ±' + (S.cap * S.bonus60) + '). Usa “Ajuste” para atrasos u otras sanciones.</p>';
-  h += '<ol class="final">' + Object.keys(by).map(Number).sort(function (a, b) { return a - b; }).map(function (pl) {
-    return '<li class="fin" data-k="cl' + pl + '"><span class="fin-pl n">' + pl + '°</span><div class="fin-pair">' + by[pl].map(function (r) {
-      var ex = (L.ex && L.ex[r.p]) || {};
-      return '<div class="cl-p"><span class="fin-nm">' + esc(nm(r.p)) + '</span><span class="fin-pts n">' + (r.b + r.a) + '</span>' +
-        '<span class="cl-calc">' + r.b + ' por el puesto' + (r.auto ? ' ' + signed(r.auto).replace(/^([+−])/, '$1 ') + ' por 6-0' : '') + (r.ex ? ' ' + signed(r.ex).replace(/^([+−])/, '$1 ') + ' de ajuste' : '') + '</span>' +
-        (canEdit ? '<div class="cl-in"><input class="ti" id="exn-' + r.p + '" data-f="ex" data-pid="' + r.p + '" data-s="n" list="motivos" value="' + esc(ex.n || '') + '" placeholder="Motivo del ajuste" aria-label="Motivo del ajuste de ' + esc(nm(r.p)) + '"><input class="ni" type="number" inputmode="numeric" id="exv-' + r.p + '" data-f="ex" data-pid="' + r.p + '" data-s="v" value="' + esc(ex.v == null ? '' : ex.v) + '" placeholder="±0" aria-label="Ajuste en puntos de ' + esc(nm(r.p)) + '"></div>' : '') + '</div>';
-    }).join('') + '</div>' + copaChip(copaOf(pl, 12)) + '</li>';
-  }).join('') + '</ol>';
-  if (canEdit) h += '<div class="toolbar">' + confirmBtn('close-' + f.n, 'Cerrar fecha y sumar al ranking', 'f-close', 'Se suman ' + rows.length + ' jugadores al ranking. Si hay que corregir algo, puedes reabrirla.', 'primary', 'Sí, cerrar y sumar') + '</div>';
+  var rows = results(f, work, lc);
+  var h = champion(f, lc) + '<p class="muted small">Puntos de la tabla ' + esc(f.cat) + ' para cada jugador. Cada set 6–0 ganado suma ' + S.bonus60 + ' y cada 0–6 perdido resta ' + S.bonus60 + ' (tope ' + signed(S.cap * S.bonus60) + ' / ' + signed(-S.cap * S.bonus60) + '). Usa el ajuste para atrasos u otras sanciones.</p>';
+  h += finalList(f, rows, canEdit);
+  if (canEdit) h += '<div class="toolbar">' + confirmBtn('close-' + f.n, 'Cerrar fecha y sumar al ranking', 'f-close', 'Se suman ' + rows.length + ' jugadores al ranking. Si hay que corregir algo, puedes reabrirla.', 'primary', 'Sí, cerrar y sumar') + '<button class="btn" data-act="copy-res">Copiar resultados para WhatsApp</button></div>';
   return h;
+}
+
+/* fecha cargada solo con puestos */
+function vClosedPlain(f) {
+  return '<p class="note">' + (f.imp ? 'Fecha importada con la clasificación final: guarda puestos y puntos, sin el detalle de los partidos.' : 'Fecha cargada con los puestos directamente, sin el detalle de los partidos.') + '</p>' +
+    closedTools(f, 'Editar puestos', 'La fecha vuelve a “En juego” y deja de sumar en el ranking hasta que la cierres de nuevo.') + champion(f, null) + finalList(f, f.results || [], false);
 }
 
 function vManual(f) {
   if (!canEdit) return empty('Resultados en carga', 'El organizador está ingresando los puestos de esta fecha.');
   var M = f.man, t = work.tables[f.cat] || [];
   var used = new Set([].concat.apply([], M.rows.map(function (r) { return r.p; })).filter(Boolean));
-  var h = '<div class="fmeta"><label class="fld inline"><span>Tabla de puntos</span>' + catSelect(f) + '</label><label class="fld inline"><span>Parejas</span><select id="np-' + f.n + '" data-f="np" data-v="' + M.np + '">' +
-    range(4, 16).map(function (n) { return '<option value="' + n + '">' + n + '</option>'; }).join('') + '</select></label>' + quickAdd() + '</div>';
+  var h = '<div class="fmeta"><div class="toolbar"><label class="fld inline"><span>Tabla de puntos</span>' + catSelect(f) + '</label><label class="fld inline"><span>Parejas</span><select id="np-' + f.n + '" data-f="np" data-v="' + M.np + '">' +
+    range(4, 16).map(function (n) { return '<option value="' + n + '">' + n + '</option>'; }).join('') + '</select></label></div>' + quickAdd() + '</div>';
   if (M.np > t.length) h += '<p class="note warn">La tabla ' + esc(f.cat) + ' tiene puntos hasta el ' + t.length + '° puesto; los siguientes suman 0. Para 16 parejas usa Open Special.</p>';
   h += '<ol class="man">' + M.rows.map(function (r, i) {
     return '<li class="card man-r" data-k="mr' + r.pl + '"><div class="man-h"><b class="n">' + r.pl + '°</b><span class="muted small">' + (t[r.pl - 1] || 0) + ' pts cada uno</span></div>' + [0, 1].map(function (k) {
@@ -787,10 +1349,11 @@ function vManual(f) {
   return h;
 }
 
+/* ---------- jugadores ---------- */
 function playerUsage(pid) {
   return work.fechas.some(function (f) {
     return (f.results || []).some(function (r) { return r.p === pid; }) ||
-      (f.live && f.live.pairs.some(function (p) { return p && p.indexOf(pid) >= 0; })) ||
+      (isTorneo(f) && (f.pairs || []).some(function (p) { return p && p.indexOf(pid) >= 0; })) ||
       (f.man && f.man.rows.some(function (r) { return r.p.indexOf(pid) >= 0; }));
   });
 }
@@ -804,63 +1367,200 @@ function vPlayers() {
   if (canEdit) h += '<div class="card pad"><h3 class="gh">Agregar jugador</h3><div class="row"><input id="new-name" data-f="ui:newName" placeholder="Nombre" value="' + esc(ui.newName) + '" aria-label="Nombre"><select id="new-side" data-f="ui:newSide" data-v="' + esc(ui.newSide) + '" aria-label="Lado">' + sideOpts() + '</select><button class="btn primary" data-act="padd">Agregar</button></div></div>';
   h += '<ul class="plist">' + list.map(function (p) {
     var e = rmap.get(p.id);
-    return '<li data-k="pl-' + p.id + '"><button class="pl-row" data-act="goplayer" data-v="' + p.id + '"><span class="nm">' + esc(p.name) + sideChip(p.id) + '</span><span class="muted small">' + (e ? e.pos + '° · ' + e.nf + (e.nf === 1 ? ' fecha' : ' fechas') : 'Sin fechas') + '</span><span class="pts n">' + (e ? e.total : '') + '</span></button></li>';
+    return '<li data-k="pl-' + p.id + '"><button class="pl-row" data-act="goplayer" data-v="' + p.id + '"><span class="nm">' + esc(p.name) + sideChip(p.id) + '</span><span class="muted small">' + (e ? e.pos + '° · ' + plural(e.nf, 'fecha', 'fechas') : 'Sin fechas') + '</span><span class="pts n">' + (e ? e.total : '') + '</span></button></li>';
   }).join('') + '</ul>';
   if (!list.length) h += empty('Sin coincidencias', 'Nadie en la lista coincide con “' + ui.pq + '”.');
   return h;
 }
 
+function playerFechaRecord(f, pid) {
+  if (!isTorneo(f) || !isReady(f)) return null;
+  var pi = slotOfPlayer(f, pid);
+  if (pi < 0) return null;
+  var st = pairStats(lcOf(f))[pi];
+  return st.pj ? st : null;
+}
+
 function vPlayer(pid) {
   var p = PM.get(pid), e = RK.R.find(function (x) { return x.pid === pid; }), Q = work.settings.qualify;
-  var hist = [], cats = {};
+  var hist = [], cats = {}, mates = {};
   RK.cl.forEach(function (f) {
     var r = f.results.find(function (x) { return x.p === pid; });
     if (!r) return;
     var mate = f.results.find(function (x) { return x.pl === r.pl && x.p !== pid; });
-    hist.push({ f: f, r: r, mate: mate });
+    hist.push({ f: f, r: r, mate: mate, rec: playerFechaRecord(f, pid) });
     var c = cats[f.cat] || (cats[f.cat] = { n: 0, pts: 0 }); c.n++; c.pts += r.b + r.a;
+    if (mate) mates[mate.p] = (mates[mate.p] || 0) + 1;
   });
-  var pj = 0, pg = 0, gf = 0, gc = 0;
-  fechasSorted(work).forEach(function (f) {
-    if (f.mode !== 'vivo' || !f.live) return;
-    var pi = f.live.pairs.findIndex(function (pp) { return pp && pp.indexOf(pid) >= 0; });
-    if (pi < 0) return;
-    var lc = liveCompute(f);
-    lc.gm.concat(lc.po).forEach(function (m) {
-      if (!m.w || !m.s || (m.pa !== pi && m.pb !== pi)) return;
-      var isA = m.pa === pi; pj++;
-      if ((m.w === 'a') === isA) pg++;
-      gf += isA ? num(m.s.a) : num(m.s.b); gc += isA ? num(m.s.b) : num(m.s.a);
-    });
-  });
+  var ms = season().players[pid];
   var sideTxt = { DR: 'Drive', RV: 'Revés', AM: 'Ambos lados' }[p.side] || '';
   var h = '<button class="link" data-act="pback">← Todos los jugadores</button>';
   h += '<div class="ph"><div><h2>' + esc(p.name) + '</h2><p class="muted">' + (e ? e.pos + '° del ranking · ' + e.total + ' pts' : 'Todavía sin fechas jugadas') + (sideTxt ? ' · ' + sideTxt : '') + '</p></div>' + (e && e.pos <= Q ? '<span class="pill p-q">Clasificando al Master Final</span>' : '') + '</div>';
   if (e) {
     h += '<div class="stats">' + [[e.nf, e.nf === 1 ? 'fecha jugada' : 'fechas jugadas'], [e.wins, e.wins === 1 ? 'fecha ganada' : 'fechas ganadas'], [e.pods, 'podios (1° a 3°)'], [e.best + '°', 'mejor puesto'], [(e.sumPl / e.nf).toFixed(1).replace('.', ',') + '°', 'puesto promedio'], [Math.round(e.total / e.nf), 'pts por fecha']]
       .map(function (s) { return '<div class="stat"><b class="n">' + s[0] + '</b><span>' + s[1] + '</span></div>'; }).join('') + '</div>';
-    h += '<div class="catrow">' + Object.keys(cats).map(function (c) { return '<span class="pf"><b>' + esc(c) + '</b> ' + cats[c].n + (cats[c].n === 1 ? ' fecha' : ' fechas') + ' · <span class="n">' + cats[c].pts + '</span> pts</span>'; }).join('') + '</div>';
-    if (pj) h += '<div class="card pad"><h3 class="gh">Partidos</h3><p class="n">' + pj + ' jugados · ' + pg + ' ganados (' + Math.round(pg * 100 / pj) + '%) · ' + gf + ' games a favor y ' + gc + ' en contra</p><p class="muted small">Solo fechas cargadas partido a partido en la app.</p></div>';
-    h += '<div class="card pad"><h3 class="gh">Historial</h3><div class="scroll-x"><table class="ht"><thead><tr><th>Fecha</th><th>Puesto</th><th>Compañero</th><th class="r">Pts</th></tr></thead><tbody>' +
-      hist.map(function (x) { return '<tr><td><b>F' + x.f.n + '</b> <span class="muted small">' + esc(x.f.cat) + ' · ' + dd(x.f.date) + '</span></td><td class="n">' + x.r.pl + '°</td><td>' + (x.mate ? esc(nm(x.mate.p)) : '—') + '</td><td class="r n">' + (x.r.b + x.r.a) + (x.r.a ? ' <span class="small ' + (x.r.a > 0 ? 'up' : 'down') + '">(' + signed(x.r.a) + ')</span>' : '') + '</td></tr>'; }).join('') +
-      '</tbody></table></div></div>';
+    h += '<div class="catrow">' + Object.keys(cats).map(function (c) { return '<span class="pf"><b>' + esc(c) + '</b> ' + plural(cats[c].n, 'fecha', 'fechas') + ' · <span class="n">' + cats[c].pts + '</span> pts</span>'; }).join('') + '</div>';
+  }
+  if (ms && ms.pj) {
+    h += '<div class="card pad"><h3 class="gh">Partidos de la temporada</h3><div class="stats">' + [[ms.pj, 'jugados'], [ms.pg, 'ganados'], [pct(ms.pg, ms.pj), 'de victorias'], [signed(ms.gf - ms.gc), 'dif. de games'], [ms.w60, 'sets 6–0 ganados'], [ms.l60, 'sets 0–6 perdidos']]
+      .map(function (s) { return '<div class="stat"><b class="n">' + s[0] + '</b><span>' + s[1] + '</span></div>'; }).join('') + '</div><p class="muted small n">' + ms.gf + ' games a favor y ' + ms.gc + ' en contra, en grupos y copas de las fechas cargadas partido a partido.</p></div>';
+  }
+  if (hist.length) {
+    h += '<div class="card pad"><h3 class="gh">Historial</h3><div class="scroll-x"><table class="ht"><thead><tr><th>Fecha</th><th>Puesto</th><th>Compañero</th><th>Partidos</th><th class="r">Pts</th></tr></thead><tbody>' +
+      hist.map(function (x) {
+        var rec = x.rec ? '<span class="rc w">' + x.rec.pg + 'G</span> <span class="rc l">' + x.rec.pp + 'P</span>' : '<span class="muted">–</span>';
+        return '<tr><td><button class="link tl" data-act="gofecha" data-v="' + x.f.n + '">F' + x.f.n + '</button> <span class="muted small">' + esc(x.f.cat) + ' · ' + dd(x.f.date) + '</span></td><td class="n">' + x.r.pl + '° ' + copaChip(copaOfPl(npOf(x.f), x.r.pl)) + '</td><td>' + (x.mate ? '<button class="link tl" data-act="goplayer" data-v="' + x.mate.p + '">' + esc(nm(x.mate.p)) + '</button>' : '—') + '</td><td class="n">' + rec + '</td><td class="r n">' + (x.r.b + x.r.a) + (x.r.a ? ' <span class="small ' + (x.r.a > 0 ? 'up' : 'down') + '">(' + signed(x.r.a) + ')</span>' : '') + '</td></tr>';
+      }).join('') + '</tbody></table></div></div>';
+    var mk = Object.keys(mates).sort(function (a, b) { return mates[b] - mates[a] || nm(a).localeCompare(nm(b), 'es'); });
+    if (mk.length) h += '<div class="card pad"><h3 class="gh">Compañeros</h3><div class="catrow">' + mk.map(function (m) { return '<button class="pf" data-act="goplayer" data-v="' + m + '">' + esc(nm(m)) + ' · <b class="n">' + mates[m] + '</b></button>'; }).join('') + '</div></div>';
   }
   if (canEdit) {
     var usedP = playerUsage(pid);
     h += '<div class="card pad"><h3 class="gh">Editar jugador</h3><div class="grid2"><label class="fld"><span>Nombre</span><input id="pn-' + pid + '" data-f="pname" data-id="' + pid + '" value="' + esc(p.name) + '"></label><label class="fld"><span>Lado</span><select id="ps-' + pid + '" data-f="pside" data-id="' + pid + '" data-v="' + esc(p.side || '') + '">' + sideOpts() + '</select></label></div>' +
-      (usedP ? '<p class="muted small">Tiene resultados cargados, así que no se puede eliminar.</p>' : '<div class="toolbar">' + confirmBtn('pdel-' + pid, 'Eliminar jugador', 'pdel', 'Se quita ' + p.name + ' de la lista.', 'danger', 'Sí, eliminar') + '</div>') + '</div>';
+      (usedP ? '<p class="muted small">Tiene resultados o torneos cargados, así que no se puede eliminar.</p>' : '<div class="toolbar">' + confirmBtn('pdel-' + pid, 'Eliminar jugador', 'pdel', 'Se quita ' + p.name + ' de la lista.', 'danger', 'Sí, eliminar') + '</div>') + '</div>';
   }
   return h;
 }
 
+/* ---------- estadísticas ---------- */
+function vStatsTab() {
+  var h = '<div class="seg" role="tablist" aria-label="Estadísticas">' + [['temporada', 'Temporada'], ['fecha', 'Por fecha']].map(function (x) {
+    return '<button class="seg-b' + (ui.st === x[0] ? ' on' : '') + '" role="tab" aria-selected="' + (ui.st === x[0]) + '" data-act="st" data-v="' + x[0] + '">' + x[1] + '</button>';
+  }).join('') + '</div>';
+  return h + (ui.st === 'fecha' ? vStatsFecha() : vSeason());
+}
+
+function vSeason() {
+  var S = season(), R = RK.R, h = '';
+  if (!S.matches) return empty('Todavía no hay partidos', 'Las estadísticas de la temporada aparecen cuando se cargue el primer resultado.');
+  var P = Object.keys(S.players).map(function (k) { return S.players[k]; });
+  var best = function (arr, fn) { var b = null; arr.forEach(function (x) { if (b == null || fn(x, b) < 0) b = x; }); return b; };
+  var mostW = best(P, function (a, b) { return b.pg - a.pg || a.pj - b.pj; });
+  var minPJ = Math.max(6, Math.round(S.matches * 2 / Math.max(1, P.length)));
+  var bestPct = best(P.filter(function (x) { return x.pj >= minPJ; }), function (a, b) { return b.pg / b.pj - a.pg / a.pj || b.pj - a.pj; });
+  var most60 = best(P, function (a, b) { return b.w60 - a.w60 || b.pg - a.pg; });
+  var titles = R.filter(function (e) { return e.wins; }).sort(function (a, b) { return b.wins - a.wins; });
+  var topT = titles.length ? titles.filter(function (e) { return e.wins === titles[0].wins; }) : [];
+  var tiles = [
+    ['Partidos jugados', String(S.matches), plural(S.fechas.length, 'fecha', 'fechas') + ' cargadas partido a partido'],
+    ['Más partidos ganados', mostW ? nm(mostW.pid) : '—', mostW ? mostW.pg + ' de ' + mostW.pj + ' (' + pct(mostW.pg, mostW.pj) + ')' : ''],
+    ['Mejor % de victorias', bestPct ? nm(bestPct.pid) : '—', bestPct ? pct(bestPct.pg, bestPct.pj) + ' · ' + bestPct.pg + ' de ' + bestPct.pj + ' (mín. ' + minPJ + ' partidos)' : ''],
+    ['Más fechas ganadas', topT.length ? topT.map(function (e) { return nm(e.pid); }).join(', ') : '—', topT.length ? plural(topT[0].wins, 'fecha ganada', 'fechas ganadas') + (topT.length > 1 ? ' cada uno' : '') : ''],
+    ['Más sets 6–0', most60 && most60.w60 ? nm(most60.pid) : '—', most60 && most60.w60 ? plural(most60.w60, 'set', 'sets') + ' · ' + S.sets60 + ' en total' : ''],
+    ['Partidos ajustados', pct(S.close, S.matches), S.close + ' por 1 game o en tie-break · ' + S.tb + ' en tie-break']
+  ];
+  h += '<div class="hl">' + tiles.map(function (x) { return '<div class="sum"><span class="lab">' + esc(x[0]) + '</span><span class="val">' + esc(x[1]) + '</span><span class="sub">' + esc(x[2]) + '</span></div>'; }).join('') + '</div>';
+
+  /* campeones */
+  h += '<h3 class="sec">Campeones de cada fecha</h3><ul class="champs">' + RK.cl.map(function (f) {
+    return '<li><button class="chf" data-act="gofecha" data-v="' + f.n + '" data-k="ch' + f.n + '"><b class="n">F' + f.n + '</b><span class="chf-m">' + esc(f.cat) + ' · ' + dd(f.date) + '</span><span class="chf-n">' + winnersOf(f).map(esc).join(' / ') + '</span></button></li>';
+  }).join('') + '</ul>';
+
+  /* jugadores */
+  var q = norm(ui.sq.trim());
+  var rows = P.filter(function (x) { return !q || norm(nm(x.pid)).indexOf(q) >= 0; }).sort(function (a, b) { return b.pg - a.pg || (b.pg / b.pj) - (a.pg / a.pj) || (b.gf - b.gc) - (a.gf - a.gc); });
+  var shown = ui.all || q ? rows : rows.slice(0, 20);
+  h += '<div class="sec-row"><h3 class="sec">Jugadores</h3><input type="search" id="sq" data-f="ui:sq" placeholder="Buscar jugador" value="' + esc(ui.sq) + '" aria-label="Buscar jugador en las estadísticas"></div>';
+  h += '<div class="card"><div class="scroll-x"><table class="st"><thead><tr><th>#</th><th>Jugador</th><th class="r">PJ</th><th class="r">PG</th><th class="r">% gan.</th><th class="r">GF</th><th class="r">GC</th><th class="r">Dif.</th><th class="r">6–0</th><th class="r">Fechas</th></tr></thead><tbody>' +
+    shown.map(function (x, i) {
+      return '<tr><td class="n">' + (rows.indexOf(x) + 1) + '</td><td><button class="link tl" data-act="goplayer" data-v="' + x.pid + '">' + esc(nm(x.pid)) + '</button></td><td class="r n">' + x.pj + '</td><td class="r n"><b>' + x.pg + '</b></td><td class="r n">' + pct(x.pg, x.pj) + '</td><td class="r n">' + x.gf + '</td><td class="r n">' + x.gc + '</td><td class="r n">' + signed(x.gf - x.gc) + '</td><td class="r n">' + (x.w60 || x.l60 ? (x.w60 ? '<span class="up">+' + x.w60 + '</span>' : '') + (x.w60 && x.l60 ? ' ' : '') + (x.l60 ? '<span class="down">−' + x.l60 + '</span>' : '') : '–') + '</td><td class="r n">' + Object.keys(x.fs).length + '</td></tr>';
+    }).join('') + (shown.length ? '' : '<tr><td colspan="10" class="muted">Nadie coincide con “' + esc(ui.sq) + '”.</td></tr>') + '</tbody></table></div></div>';
+  if (!q && rows.length > 20) h += '<div class="toolbar"><button class="btn sm" data-act="all">' + (ui.all ? 'Ver solo los 20 primeros' : 'Ver los ' + rows.length + ' jugadores') + '</button></div>';
+  h += '<p class="muted small">Ordenados por partidos ganados. Incluye grupos y copas de todas las fechas cargadas partido a partido. 6–0: sets ganados (+) y perdidos (−) por 6–0.</p>';
+
+  /* parejas */
+  var pr = Object.keys(S.pairs).map(function (k) { return S.pairs[k]; }).filter(function (x) { return Object.keys(x.fs).length >= 2; });
+  pr.forEach(function (x) {
+    x.nf = Object.keys(x.fs).length; x.best = null;
+    Object.keys(x.fs).forEach(function (n) {
+      var f = getF(work, Number(n)), r = f && (f.results || []).find(function (rr) { return rr.p === x.ids[0]; });
+      if (r) x.best = x.best == null ? r.pl : Math.min(x.best, r.pl);
+    });
+  });
+  pr.sort(function (a, b) { return b.nf - a.nf || b.pg - a.pg || (a.best || 99) - (b.best || 99); });
+  if (pr.length) {
+    h += '<h3 class="sec">Parejas que más se repiten</h3><div class="card"><div class="scroll-x"><table class="st pairs"><thead><tr><th>Pareja</th><th class="r">Fechas</th><th class="r">PJ</th><th class="r">PG</th><th class="r">% gan.</th><th class="r">Mejor</th></tr></thead><tbody>' +
+      pr.slice(0, 12).map(function (x) {
+        return '<tr><td class="gt-p"><span>' + esc(nm(x.ids[0])) + '</span><span>' + esc(nm(x.ids[1])) + '</span></td><td class="r n">' + x.nf + '</td><td class="r n">' + x.pj + '</td><td class="r n"><b>' + x.pg + '</b></td><td class="r n">' + pct(x.pg, x.pj) + '</td><td class="r n">' + (x.best ? x.best + '°' : '–') + '</td></tr>';
+      }).join('') + '</tbody></table></div></div>';
+  }
+  return h;
+}
+
+function vStatsFecha() {
+  var f = pickFecha();
+  if (!f) return empty('Todavía no hay fechas', 'Las estadísticas aparecen cuando se juegue la primera fecha.');
+  var h = strip(f.n) + '<section class="fecha" data-k="st-' + f.n + '">' + fechaHead(f);
+  if (f.status === 'pendiente') return h + empty('Esta fecha aún no se juega', 'Está programada para el ' + fLong(f.date) + '.') + '</section>';
+  if (!isTorneo(f)) return h + empty('Esta fecha no tiene partidos cargados', 'Se cargó solo con la clasificación final, sin el detalle de los partidos.') + '</section>';
+  var lc = lcOf(f);
+  if (!isReady(f) || !lc.done) return h + empty('Todavía no hay partidos jugados', 'Las estadísticas aparecen cuando se cargue el primer resultado.') + '</section>';
+  return h + vStats(f, lc) + '</section>';
+}
+
+function orderKey(lc) {
+  var key = {};
+  for (var pi = 0; pi < lc.F.np; pi++) {
+    var pl = lc.places.indexOf(pi), a = lc.assign[pi];
+    key[pi] = pl >= 0 ? pl : a ? 100 + a.overall : 1000 + pi;
+  }
+  return key;
+}
+
+function vStats(f, lc) {
+  var F = lc.F, st = pairStats(lc), key = orderKey(lc);
+  var order = st.slice().sort(function (a, b) { return key[a.pi] - key[b.pi]; });
+  var played = st.filter(function (s) { return s.pj; });
+  var allM = lc.gm.concat(lc.po).filter(function (m) { return m.w && m.s; });
+  var h = '', tiles = [];
+  if (lc.places[0] != null) tiles.push(['Campeones', pairText(f, lc.places[0]), 'Copa ORO · ' + st[lc.places[0]].pg + ' de ' + st[lc.places[0]].pj + ' ganados']);
+  var bestGF = played.slice().sort(function (a, b) { return b.gf - a.gf || a.pj - b.pj; })[0];
+  if (bestGF) tiles.push(['Más games a favor', pairText(f, bestGF.pi), bestGF.gf + ' games en ' + plural(bestGF.pj, 'partido', 'partidos')]);
+  var bestD = played.slice().sort(function (a, b) { return a.gc / a.pj - b.gc / b.pj || b.pj - a.pj; })[0];
+  if (bestD) tiles.push(['Mejor defensa', pairText(f, bestD.pi), (bestD.gc / bestD.pj).toFixed(1).replace('.', ',') + ' games en contra por partido']);
+  var big = allM.slice().sort(function (a, b) { return Math.abs(num(b.s.a) - num(b.s.b)) - Math.abs(num(a.s.a) - num(a.s.b)) || a.r - b.r; })[0];
+  if (big) { var wa = big.w === 'a'; tiles.push(['Mayor diferencia', score(wa ? big.s.a : big.s.b, wa ? big.s.b : big.s.a), pairText(f, wa ? big.pa : big.pb) + ' sobre ' + pairText(f, wa ? big.pb : big.pa)]); }
+  var climbs = st.filter(function (s) { return lc.seeds && lc.places.indexOf(s.pi) >= 0; }).map(function (s) { return { pi: s.pi, d: lc.origin[s.pi].overall - (lc.places.indexOf(s.pi) + 1) }; }).sort(function (a, b) { return b.d - a.d; });
+  if (climbs.length && climbs[0].d > 0) { var c0 = climbs[0]; tiles.push(['Más subió en las copas', pairText(f, c0.pi), 'De ' + lc.origin[c0.pi].overall + '° en la siembra a ' + (lc.places.indexOf(c0.pi) + 1) + '° final']); }
+  var close = allM.filter(function (m) { return Math.abs(num(m.s.a) - num(m.s.b)) <= 1; }).length;
+  tiles.push(['Partidos ajustados', close + ' de ' + allM.length, 'Se definieron por 1 game o en tie-break']);
+  if (tiles.length % 2) tiles.push(['Sets 6–0', String(allM.filter(function (m) { var a = num(m.s.a), b = num(m.s.b); return (a === 6 && b === 0) || (a === 0 && b === 6); }).length), 'Cada uno suma o resta ' + work.settings.bonus60 + ' pts']);
+  h += '<h3 class="sec">Destacados</h3><div class="hl">' + tiles.map(function (x) { return '<div class="sum"><span class="lab">' + esc(x[0]) + '</span><span class="val">' + esc(x[1]) + '</span><span class="sub">' + esc(x[2]) + '</span></div>'; }).join('') + '</div>';
+  if (lc.seeds) {
+    h += '<h3 class="sec">Podio de cada copa</h3><div class="copas' + (F.copas.length === 4 ? ' c4' : '') + '">' + F.copas.map(function (C, ci) {
+      return '<div class="card pad"><h3 class="copa-h">' + copaChip(C) + ' Puestos ' + (ci * 4 + 1) + '° a ' + (ci * 4 + 4) + '°</h3><ol class="podio">' + [0, 1, 2].map(function (k) {
+        var pi = lc.places[ci * 4 + k];
+        return '<li><b class="n">' + (ci * 4 + k + 1) + '°</b><span>' + (pi == null ? '<span class="muted">Por definir</span>' : esc(pairText(f, pi))) + '</span></li>';
+      }).join('') + '</ol></div>';
+    }).join('') + '</div>';
+  }
+  h += '<h3 class="sec">Rendimiento</h3><div class="card"><div class="scroll-x"><table class="st"><thead><tr><th>#</th><th>Pareja</th><th class="r">PJ</th><th class="r">PG</th><th class="r">PP</th><th class="r">% gan.</th><th class="r">GF</th><th class="r">GC</th><th class="r">Dif.</th><th class="r">6–0</th><th class="r">Ajust.</th></tr></thead><tbody>' +
+    order.map(function (s) {
+      var pl = lc.places.indexOf(s.pi);
+      return '<tr><td class="n"><b>' + (pl >= 0 ? (pl + 1) + '°' : '–') + '</b></td><td class="gt-p">' + pairCell(f, s.pi) + '</td><td class="r n">' + s.pj + '</td><td class="r n">' + s.pg + '</td><td class="r n">' + s.pp + '</td><td class="r n">' + pct(s.pg, s.pj) + '</td><td class="r n">' + s.gf + '</td><td class="r n">' + s.gc + '</td><td class="r n">' + signed(s.gf - s.gc) + '</td><td class="r n">' + (s.w60 || s.l60 ? (s.w60 ? '<span class="up">+' + s.w60 + '</span>' : '') + (s.w60 && s.l60 ? ' ' : '') + (s.l60 ? '<span class="down">−' + s.l60 + '</span>' : '') : '–') + '</td><td class="r n">' + s.close + '</td></tr>';
+    }).join('') + '</tbody></table></div></div><p class="muted small">Incluye grupos y copas. 6–0: sets ganados (+) y perdidos (−) por 6–0. Ajust.: partidos definidos por 1 game o en tie-break.</p>';
+  h += '<h3 class="sec">Recorrido ronda a ronda</h3><div class="card"><div class="scroll-x"><table class="st rec"><thead><tr><th>Pareja</th><th>R1</th><th>R2</th><th>R3</th><th class="r">Siembra</th><th>R4</th><th>R5</th><th class="r">Final</th><th class="r">Δ</th></tr></thead><tbody>' +
+    order.map(function (s) {
+      var by = {}; s.ms.forEach(function (x) { by[x.r] = x; });
+      var cell = function (r) { var x = by[r]; return '<td>' + (x ? '<span class="rc ' + (x.win ? 'w' : 'l') + '">' + (x.win ? 'G' : 'P') + ' ' + score(x.gf, x.gc) + '</span>' : '<span class="muted">–</span>') + '</td>'; };
+      var o = lc.seeds ? lc.origin[s.pi] : null, pl = lc.places.indexOf(s.pi), d = o && pl >= 0 ? o.overall - (pl + 1) : null;
+      return '<tr><td class="gt-p">' + pairCell(f, s.pi) + '</td>' + cell(1) + cell(2) + cell(3) + '<td class="r n">' + (o ? o.overall + '°' : '–') + '</td>' + cell(4) + cell(5) + '<td class="r n"><b>' + (pl >= 0 ? (pl + 1) + '°' : '–') + '</b></td><td class="r n">' +
+        (d == null ? '–' : d > 0 ? '<span class="up">▲' + d + '</span>' : d < 0 ? '<span class="down">▼' + (-d) + '</span>' : '=') + '</td></tr>';
+    }).join('') + '</tbody></table></div></div><p class="muted small">G gana, P pierde, con el marcador de la pareja primero. Siembra: puesto con que entró a las copas según la fase de grupos. Δ compara la siembra con el puesto final.</p>';
+  return h;
+}
+
+/* ---------- ajustes ---------- */
 function vSettings() {
   var d = work, S = d.settings, maxPos = Math.max.apply(null, d.cats.map(function (c) { return d.tables[c].length; }));
   var h = '<div class="card pad"><h3 class="gh">Liga</h3><div class="grid2"><label class="fld"><span>Nombre</span><input id="s-name" data-f="set" data-k="league.name" value="' + esc(d.league.name) + '"></label><label class="fld"><span>Temporada</span><input id="s-season" data-f="set" data-k="league.season" value="' + esc(d.league.season) + '"></label></div></div>';
-  h += '<div class="card pad"><h3 class="gh">Bonos y clasificación</h3><div class="grid3">' +
-    '<label class="fld"><span>Puntos por set 6-0</span><input type="number" inputmode="numeric" id="s-b60" data-f="setn" data-k="settings.bonus60" value="' + S.bonus60 + '"></label>' +
-    '<label class="fld"><span>Tope de sets 6-0 por fecha</span><input type="number" inputmode="numeric" id="s-cap" data-f="setn" data-k="settings.cap" value="' + S.cap + '"></label>' +
-    '<label class="fld"><span>Clasifican al Master Final</span><input type="number" inputmode="numeric" id="s-q" data-f="setn" data-k="settings.qualify" value="' + S.qualify + '"></label></div>' +
-    '<p class="muted small">Cada set ganado 6-0 suma y cada set perdido 0-6 resta, en todas las rondas. Con ' + S.bonus60 + ' pts y tope ' + S.cap + ', el ajuste va de ' + signed(-S.cap * S.bonus60) + ' a ' + signed(S.cap * S.bonus60) + ' por fecha.</p></div>';
+  h += '<div class="card pad"><h3 class="gh">Bonos, clasificación y horario</h3><div class="grid3">' +
+    '<label class="fld"><span>Puntos por set 6–0</span><input type="number" inputmode="numeric" id="s-b60" data-f="setn" data-k="settings.bonus60" value="' + S.bonus60 + '"></label>' +
+    '<label class="fld"><span>Tope de sets 6–0 por fecha</span><input type="number" inputmode="numeric" id="s-cap" data-f="setn" data-k="settings.cap" value="' + S.cap + '"></label>' +
+    '<label class="fld"><span>Clasifican al Master Final</span><input type="number" inputmode="numeric" id="s-q" data-f="setn" data-k="settings.qualify" value="' + S.qualify + '"></label>' +
+    '<label class="fld"><span>Hora de inicio habitual</span><input type="time" id="s-start" data-f="set" data-k="settings.start" value="' + esc(S.start) + '"></label>' +
+    '<label class="fld"><span>Minutos por ronda</span><input type="number" inputmode="numeric" id="s-slot" data-f="setn" data-k="settings.slot" value="' + S.slot + '"></label></div>' +
+    '<p class="muted small">Cada set ganado 6–0 suma y cada set perdido 0–6 resta, en grupos y copas. Con ' + S.bonus60 + ' pts y tope ' + S.cap + ', el ajuste va de ' + signed(-S.cap * S.bonus60) + ' a ' + signed(S.cap * S.bonus60) + ' por fecha. La hora y los minutos se usan al armar cada torneo.</p></div>';
   h += '<div class="card pad"><h3 class="gh">Puntos por puesto</h3><div class="scroll-x"><table class="pt"><thead><tr><th>Puesto</th>' + d.cats.map(function (c) { return '<th>' + esc(c) + '</th>'; }).join('') + '</tr></thead><tbody>' +
     range(1, maxPos).map(function (pos) {
       return '<tr><th>' + pos + '°</th>' + d.cats.map(function (c) {
@@ -871,11 +1571,11 @@ function vSettings() {
   h += '<div class="card pad"><h3 class="gh">Calendario</h3><ul class="cal">' + fechasSorted(d).map(function (f) {
     var lab = { 'cerrada': 'Cerrada', 'en juego': 'En juego', 'pendiente': 'Pendiente' }[f.status];
     return '<li class="cal-r" data-k="cal' + f.n + '"><b>F' + f.n + '</b><input type="date" id="cd-' + f.n + '" data-f="cdate" data-n="' + f.n + '" value="' + esc(f.date) + '" aria-label="Día de la fecha ' + f.n + '">' +
-      '<select id="cc-' + f.n + '" data-f="fcat" data-n="' + f.n + '" data-v="' + esc(f.cat) + '"' + (f.status === 'cerrada' ? ' disabled' : '') + ' aria-label="Categoría de la fecha ' + f.n + '">' + d.cats.map(function (c) { return '<option value="' + esc(c) + '">' + esc(c) + '</option>'; }).join('') + '</select>' +
+      '<select id="cc-' + f.n + '" data-f="fcat" data-n="' + f.n + '" data-v="' + esc(f.cat) + '"' + (f.status === 'cerrada' ? ' disabled' : '') + ' aria-label="Categoría de la fecha ' + f.n + '">' + catOptions() + '</select>' +
       '<span class="cal-end"><span class="pill p-' + slug(f.status) + '">' + lab + '</span>' + (f.status === 'pendiente' ? '<button class="btn sm ghost" data-act="fdel" data-v="' + f.n + '">Quitar</button>' : '') + '</span></li>';
   }).join('') + '</ul><div class="toolbar"><button class="btn" data-act="fadd">Agregar fecha</button><span class="muted small">La categoría de una fecha cerrada se cambia reabriéndola.</span></div></div>';
   h += webCard(true);
-  h += '<div class="card pad"><h3 class="gh">Respaldo</h3><p class="muted small">Copia todos los datos de la liga (jugadores, fechas y puntos) en formato JSON para guardarlos aparte.</p><div class="toolbar"><button class="btn" data-act="copy-json">Copiar datos</button></div></div>';
+  h += '<div class="card pad"><h3 class="gh">Respaldo</h3><p class="muted small">Copia todos los datos de la liga (jugadores, fechas, torneos y puntos) en formato JSON para guardarlos aparte.</p><div class="toolbar"><button class="btn" data-act="copy-json">Copiar datos</button></div></div>';
   return h;
 }
 
@@ -891,7 +1591,6 @@ function copyModal() {
   return '<div class="modal" role="dialog" aria-modal="true" aria-label="Texto para copiar"><div class="modal-c"><h3 class="gh">Copia este texto</h3><p class="muted small">Tu navegador no dejó copiar directo. Selecciónalo y elige Copiar.</p><textarea id="copy-ta" readonly>' + esc(ui.copyText) + '</textarea><div class="btns"><button class="btn primary" data-act="copy-close">Listo</button></div></div></div>';
 }
 
-
 /* ---------- public website (outside Claude) ---------- */
 function webCard(full) {
   var dirty = isDirty(), web = String(work.league.web || '').trim();
@@ -901,7 +1600,7 @@ function webCard(full) {
     return '<div class="note"><span>¿Ya actualizaste la página web de la liga? Descarga el archivo nuevo y súbelo a GitHub.</span>' + btn + (dirty ? '<span class="small">Primero toca “Guardar y publicar”.</span>' : '') + '</div>';
   }
   return '<div class="card pad"><h3 class="gh">Página web de la liga</h3>' +
-    '<p class="small">Es la versión que ven los jugadores, sin Claude. Después de cada fecha: guarda y publica aquí, descarga el archivo y súbelo a tu repositorio de GitHub (Add file → Upload files → Commit). Se actualiza en 1 o 2 minutos.</p>' +
+    '<p class="small">Es la versión que ven los jugadores, sin Claude: ranking, fechas con su torneo completo, jugadores y estadísticas. Después de cada fecha: guarda y publica aquí, descarga el archivo y súbelo a tu repositorio de GitHub (Add file → Upload files → Commit). Se actualiza en 1 o 2 minutos.</p>' +
     '<label class="fld"><span>Dirección de la página (para la vista previa en WhatsApp)</span><input id="s-web" data-f="set" data-k="league.web" inputmode="url" placeholder="https://tu-usuario.github.io/liga-el-garito/" value="' + esc(web) + '"></label>' +
     '<div class="toolbar">' + btn + (dirty ? '<span class="muted small">Primero toca “Guardar y publicar”: el archivo usa la versión guardada.</span>' : '') + '</div></div>';
 }
@@ -910,7 +1609,7 @@ function buildStandalone(data) {
   var L = data.league || {}, web = String(L.web || '').trim();
   if (web && !/\/$/.test(web)) web += '/';
   var title = (L.name || 'Liga') + ' · Ranking ' + (L.season || '');
-  var desc = 'Ranking individual, fechas y resultados de la ' + (L.name || 'liga') + '.';
+  var desc = 'Ranking individual, fechas con su torneo, jugadores y estadísticas de la ' + (L.name || 'liga') + '.';
   var fonts = document.getElementById('liga-fonts'), css = document.getElementById('liga-css'), js = document.getElementById('liga-app');
   return '<!doctype html>\n<html lang="es">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n' +
     '<title>' + esc(title) + '</title>\n<meta name="description" content="' + esc(desc) + '">\n<meta name="robots" content="noindex">\n<meta name="theme-color" content="#040e23">\n' +
@@ -935,6 +1634,7 @@ function downloadWeb() {
 }
 
 /* ---------- text exports ---------- */
+function headLine(f) { return '🎾 *' + work.league.name + ' · Fecha ' + f.n + ' ' + f.cat + '*'; }
 function rankText() {
   var R = RK.R, last = RK.last, Q = work.settings.qualify, med = ['🥇', '🥈', '🥉'];
   var lines = ['🎾 *' + work.league.name + ' · ' + work.league.season + '*', 'Ranking tras la Fecha ' + last.n + ' (' + dd(last.date) + ')', ''];
@@ -942,18 +1642,57 @@ function rankText() {
   lines.push('', '— Corte Master Final: Top ' + Q + ' —');
   return lines.join('\n');
 }
-function fechaText(f) {
-  var by = {}; (f.results || []).forEach(function (r) { (by[r.pl] = by[r.pl] || []).push(r); });
-  var lines = ['🎾 *' + work.league.name + ' · Fecha ' + f.n + ' ' + f.cat + '*', cap(fLong(f.date)), ''];
-  Object.keys(by).map(Number).sort(function (a, b) { return a - b; }).forEach(function (pl) {
-    var rs = by[pl], pts = rs.map(function (r) { return r.b + r.a; });
-    lines.push(pl + '° ' + rs.map(function (r) { return nm(r.p); }).join(' / ') + ' · ' + (pts.every(function (v) { return v === pts[0]; }) ? pts[0] : pts.join(' / ')) + ' pts');
+function programText(f) {
+  var lc = compute(f), F = lc.F, lines = [headLine(f), cap(fLong(f.date)) + ' · ' + F.np + ' parejas · ' + F.courts + ' canchas', ''];
+  F.groups.forEach(function (G, gi) {
+    lines.push('*Grupo ' + G + '*');
+    [0, 1, 2, 3].forEach(function (si) { lines.push(G + (si + 1) + ' ' + pairText(f, gi * 4 + si)); });
+    lines.push('');
+  });
+  [1, 2, 3].forEach(function (r) {
+    lines.push('*Ronda ' + r + ' · ' + rStart(f, r) + '*');
+    roundMatches(lc, r).forEach(function (m) { lines.push('Cancha ' + m.court + ': ' + slotName(m.pa) + ' vs ' + slotName(m.pb)); });
+    lines.push('');
+  });
+  lines.push('*Ronda 4 · ' + rStart(f, 4) + '* Semifinales de copa', '*Ronda 5 · ' + rStart(f, 5) + '* Finales y 3er puesto', '', 'Partidos a 1 set de ' + slotOf(f) + ' min. Empate en games: tie-break a 5.');
+  return lines.join('\n');
+}
+function roundText(f, r) {
+  var lc = compute(f), lines = [headLine(f), '*Ronda ' + r + ' · ' + rTime(f, r) + '* · ' + roundName(r), ''];
+  roundMatches(lc, r).forEach(function (m) {
+    var who = m.ready ? slotName(m.pa) + ' ' + pairText(f, m.pa) + ' vs ' + slotName(m.pb) + ' ' + pairText(f, m.pb) : m.la + ' vs ' + m.lb;
+    lines.push('Cancha ' + m.court + ' · ' + tagOf(m) + ': ' + who + (m.w ? ' (' + score(m.s.a, m.s.b) + ')' : ''));
   });
   return lines.join('\n');
 }
-function copy(text) {
+function crucesText(f) {
+  var lc = compute(f), lines = [headLine(f), 'Copas', ''];
+  if (!lc.seeds) return lines.concat(['Las copas se arman cuando terminen los grupos.']).join('\n');
+  [4, 5].forEach(function (r) {
+    lines.push('*Ronda ' + r + ' · ' + rStart(f, r) + (r === 4 ? ' · Semifinales*' : ' · Finales y 3er puesto*'));
+    roundMatches(lc, r).forEach(function (m) {
+      var who = m.ready ? pairText(f, m.pa) + ' vs ' + pairText(f, m.pb) : m.la + ' vs ' + m.lb;
+      lines.push('Cancha ' + m.court + ' · ' + COPA_NAME[m.c] + ' ' + m.label.split(' · ')[0] + ': ' + who + (m.w ? ' (' + score(m.s.a, m.s.b) + ')' : ''));
+    });
+    lines.push('');
+  });
+  return lines.join('\n').trim();
+}
+function resultsText(f) {
+  var rows = f.status === 'cerrada' || !isTorneo(f) ? (f.results || []) : results(f, work, compute(f));
+  var np = npOf(f), by = {}, med = ['🥇', '🥈', '🥉'], lines = [headLine(f), cap(fLong(f.date)), ''], lastC = null;
+  rows.forEach(function (r) { (by[r.pl] = by[r.pl] || []).push(r); });
+  Object.keys(by).map(Number).sort(function (a, b) { return a - b; }).forEach(function (pl) {
+    var C = copaOfPl(np, pl);
+    if (C && C !== lastC) { if (lastC) lines.push(''); lines.push('*Copa ' + COPA_NAME[C] + '*'); lastC = C; }
+    var rs = by[pl], pts = rs.map(function (r) { return r.b + r.a; });
+    lines.push((pl <= 3 ? med[pl - 1] + ' ' : '') + pl + '° ' + rs.map(function (r) { return nm(r.p); }).join(' / ') + ' · ' + (pts.every(function (v) { return v === pts[0]; }) ? pts[0] : pts.join(' / ')) + ' pts');
+  });
+  return lines.join('\n');
+}
+function copy(text, okMsg) {
   try {
-    navigator.clipboard.writeText(text).then(function () { toast('Copiado. Ya puedes pegarlo en WhatsApp.'); }, function () { ui.copyText = text; render(); focusCopy(); });
+    navigator.clipboard.writeText(text).then(function () { toast(okMsg || 'Copiado. Ya puedes pegarlo en WhatsApp.'); }, function () { ui.copyText = text; render(); focusCopy(); });
   } catch (e) { ui.copyText = text; render(); focusCopy(); }
 }
 function focusCopy() { setTimeout(function () { var t = document.getElementById('copy-ta'); if (t) { t.focus(); t.select(); } }, 30); }
@@ -972,7 +1711,7 @@ function loadDraft() {
     var raw = localStorage.getItem(DRAFT_KEY); if (!raw) return;
     var dr = JSON.parse(raw);
     if (!dr || !dr.data || dr.data === SAVED_STR) { localStorage.removeItem(DRAFT_KEY); return; }
-    if (dr.base === HASH) { work = JSON.parse(dr.data); ui.notice = 'Recuperé cambios que no alcanzaste a guardar. Revisa y toca “Guardar y publicar”.'; }
+    if (dr.base === HASH) { work = normalize(JSON.parse(dr.data)); ui.notice = 'Recuperé cambios que no alcanzaste a guardar. Revisa y toca “Guardar y publicar”.'; }
     else ui.oldDraft = dr;
   } catch (e) {}
 }
@@ -993,52 +1732,76 @@ function manFromResults(f) {
     return { pl: pl, p: [rs[0] ? rs[0].p : '', rs[1] ? rs[1].p : ''], a: [rs[0] ? rs[0].a : 0, rs[1] ? rs[1].a : 0], n: [rs[0] ? rs[0].n || '' : '', rs[1] ? rs[1].n || '' : ''] };
   }) };
 }
-function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function clearTorneo(f) { ['np', 'start', 'slot', 'pairs', 'tomb', 'sc', 'ex', 'man', 'results', 'mode', 'imp'].forEach(function (k) { delete f[k]; }); }
 
 function act(a, el) {
   var v = el.getAttribute('data-v');
   var f = ui.fecha != null ? getF(work, ui.fecha) : null;
+  var fromBody = !el.closest('.steps') && !el.closest('.rounds');
   switch (a) {
-    case 'tab': ui.tab = v; ui.confirm = null; if (v === 'fechas') stripScroll = true; window.scrollTo(0, 0); break;
+    case 'tab': ui.tab = v; ui.confirm = null; stripScroll = true; if (v === 'jugadores') ui.player = null; window.scrollTo(0, 0); break;
     case 'fecha': ui.fecha = Number(v); ui.confirm = null; stripScroll = true; break;
-    case 'sub': ui.sub[ui.fecha] = v; ui.confirm = null; break;
+    case 'gofecha': ui.tab = 'fechas'; ui.fecha = Number(v); ui.confirm = null; stripScroll = true; window.scrollTo(0, 0); break;
+    case 'sub': ui.sub[ui.fecha] = v; ui.confirm = null; stripScroll = true; if (fromBody) jump = true; break;
+    case 'rd': ui.rd[ui.fecha] = Number(v); ui.confirm = null; stripScroll = true; if (fromBody) jump = true; break;
+    case 'rd-go': ui.rd[ui.fecha] = Number(v); ui.sub[ui.fecha] = 'resultados'; ui.confirm = null; stripScroll = true; jump = true; break;
+    case 'st': ui.st = v; stripScroll = true; break;
+    case 'all': ui.all = !ui.all; break;
     case 'rk-open': ui.open[v] = !ui.open[v]; break;
-    case 'toggle-detail': ui.open['det' + ui.fecha] = !ui.open['det' + ui.fecha]; break;
     case 'goplayer': ui.tab = 'jugadores'; ui.player = v; ui.confirm = null; window.scrollTo(0, 0); break;
     case 'pback': ui.player = null; ui.confirm = null; break;
-    case 'copy-rank': copy(rankText()); return;
-    case 'copy-fecha': copy(fechaText(f)); return;
-    case 'copy-json': copy(JSON.stringify(work, null, 1)); return;
-    case 'copy-close': ui.copyText = null; break;
     case 'ask': ui.confirm = v; break;
     case 'cancel': ui.confirm = null; break;
     case 'notice-x': ui.notice = ''; break;
-    case 'draft-restore': try { work = JSON.parse(ui.oldDraft.data); } catch (e) {} ui.oldDraft = null; saveDraft(); break;
+    case 'draft-restore': try { work = normalize(JSON.parse(ui.oldDraft.data)); } catch (e) {} ui.oldDraft = null; saveDraft(); break;
     case 'draft-drop': ui.oldDraft = null; try { localStorage.removeItem(DRAFT_KEY); } catch (e) {} break;
     case 'save': save(); return;
     case 'dl-web': downloadWeb(); return;
     case 'discard': work = JSON.parse(SAVED_STR); ui.confirm = null; try { localStorage.removeItem(DRAFT_KEY); } catch (e) {} toast('Cambios descartados.'); return;
-    case 'f-live': f.mode = 'vivo'; f.status = 'en juego'; f.live = { pairs: range(1, 12).map(function () { return ['', '']; }), sc: {}, ex: {} }; ui.sub[f.n] = 'parejas'; saveDraft(); break;
-    case 'f-manual': f.mode = 'manual'; f.status = 'en juego'; f.man = { np: 12, rows: mkRows(12) }; saveDraft(); break;
-    case 'f-reset': delete f.live; delete f.man; delete f.results; delete f.mode; delete f.imp; f.status = 'pendiente'; ui.confirm = null; saveDraft(); break;
-    case 'f-reopen': f.status = 'en juego'; if (f.mode !== 'vivo') { f.mode = 'manual'; f.man = manFromResults(f); } ui.sub[f.n] = f.mode === 'vivo' ? 'cierre' : undefined; ui.confirm = null; saveDraft(); break;
+    case 'copy-rank': copy(rankText()); return;
+    case 'copy-json': copy(JSON.stringify(work, null, 1), 'Copiado. Guárdalo como respaldo.'); return;
+    case 'copy-close': ui.copyText = null; break;
+    case 'copy-prog': copy(programText(f)); return;
+    case 'copy-round': copy(roundText(f, roundOf(f, compute(f)))); return;
+    case 'copy-cruces': copy(crucesText(f)); return;
+    case 'copy-res': copy(resultsText(f)); return;
+    case 'f-torneo': {
+      var np = Number(ui.pnp[f.n] || (f.cat === 'Open Special' ? 16 : 12)) === 16 ? 16 : 12;
+      clearTorneo(f);
+      f.mode = 'torneo'; f.status = 'en juego'; f.np = np; f.start = work.settings.start || '20:30'; f.slot = work.settings.slot || 20;
+      f.pairs = emptyPairs(np); f.tomb = nulls(np); f.sc = {}; f.ex = {};
+      ui.sub[f.n] = 'registro'; ui.confirm = null; saveDraft(); toast('Torneo armado. Registra las parejas.'); return;
+    }
+    case 'f-manual': clearTorneo(f); f.mode = 'manual'; f.status = 'en juego'; f.man = { np: 12, rows: mkRows(12) }; ui.confirm = null; saveDraft(); break;
+    case 'f-reset': clearTorneo(f); f.status = 'pendiente'; delete ui.sub[f.n]; delete ui.rd[f.n]; ui.confirm = null; saveDraft(); break;
+    case 'f-reopen': {
+      f.status = 'en juego';
+      if (isTorneo(f)) ui.sub[f.n] = 'final';
+      else { f.mode = 'manual'; f.man = manFromResults(f); }
+      ui.confirm = null; saveDraft(); break;
+    }
     case 'f-close': {
-      var rows = f.mode === 'vivo' ? liveResults(f, work, liveCompute(f)).map(function (r) { return { p: r.p, pl: r.pl, b: r.b, a: r.a, n: r.n }; }) : manualResults(f, work);
+      var rows = isTorneo(f) ? results(f, work, compute(f)).map(function (r) { return { p: r.p, pl: r.pl, b: r.b, a: r.a, n: r.n }; }) : manualResults(f, work);
       if (!rows.length) { ui.confirm = null; toast('No hay jugadores con puesto para sumar.'); return; }
-      f.results = rows; f.status = 'cerrada'; if (f.mode !== 'vivo') delete f.man;
+      f.results = rows; f.status = 'cerrada'; if (!isTorneo(f)) delete f.man;
       ui.confirm = null; saveDraft(); toast('Fecha cerrada. Toca “Guardar y publicar” para actualizar el ranking.'); return;
     }
-    case 'draw': {
-      var L = f.live; L.pairs = shuffle(L.pairs.slice()); L.sc = {}; ui.confirm = null; saveDraft(); toast('Grupos sorteados.'); return;
+    case 'tomb-draw': {
+      if (Object.keys(f.sc || {}).length) return;
+      f.tomb = shuffle(range(1, fmtOf(f).np));
+      saveDraft();
+      toast(pairsDone(f) === fmtOf(f).np ? 'Tómbola lista. Grupos, partidos y canchas armados.' : 'Números sorteados. Completa las parejas que faltan.');
+      return;
     }
-    case 'quick-add': { var np = addPlayer(ui.quick); if (np) { ui.quick = ''; toast(np.name + ' agregado. Ya puedes elegirlo.'); return; } return; }
-    case 'padd': { var p2 = addPlayer(ui.newName, ui.newSide); if (p2) { ui.newName = ''; ui.newSide = ''; toast(p2.name + ' agregado.'); return; } return; }
+    case 'tomb-clear': if (Object.keys(f.sc || {}).length) return; f.tomb = nulls(f.pairs.length); saveDraft(); break;
+    case 'tomb-redo': f.sc = {}; f.tomb = nulls(f.pairs.length); ui.confirm = null; saveDraft(); toast('Números y resultados borrados. Vuelve a hacer la tómbola.'); return;
+    case 'quick-add': { var qp = addPlayer(ui.quick); if (qp) { ui.quick = ''; toast(qp.name + ' agregado. Ya puedes elegirlo.'); } return; }
+    case 'padd': { var p2 = addPlayer(ui.newName, ui.newSide); if (p2) { ui.newName = ''; ui.newSide = ''; toast(p2.name + ' agregado.'); } return; }
     case 'pdel': work.players = work.players.filter(function (p) { return p.id !== ui.player; }); ui.player = null; ui.confirm = null; saveDraft(); break;
     case 'fadd': {
       var fs = fechasSorted(work), lastF = fs[fs.length - 1], d0 = lastF ? pd(lastF.date) : new Date();
       d0.setDate(d0.getDate() + 7);
-      var iso = d0.getFullYear() + '-' + String(d0.getMonth() + 1).padStart(2, '0') + '-' + String(d0.getDate()).padStart(2, '0');
-      work.fechas.push({ n: lastF ? lastF.n + 1 : 1, date: iso, cat: 'Open', status: 'pendiente' }); saveDraft(); break;
+      work.fechas.push({ n: lastF ? lastF.n + 1 : 1, date: isoD(d0), cat: 'Open', status: 'pendiente' }); saveDraft(); break;
     }
     case 'fdel': work.fechas = work.fechas.filter(function (x) { return !(x.n === Number(v) && x.status === 'pendiente'); }); if (ui.fecha === Number(v)) ui.fecha = null; saveDraft(); break;
   }
@@ -1053,18 +1816,35 @@ function onField(el) {
   switch (k) {
     case 'fcat': { var ff = getF(work, Number(el.getAttribute('data-n'))); if (ff && ff.status !== 'cerrada') ff.cat = val; break; }
     case 'cdate': { var fd = getF(work, Number(el.getAttribute('data-n'))); if (fd && /^\d{4}-\d{2}-\d{2}$/.test(val)) fd.date = val; break; }
-    case 'pair': f.live.pairs[+el.getAttribute('data-i')][+el.getAttribute('data-j')] = val; break;
+    case 'pnp': ui.pnp[Number(el.getAttribute('data-n'))] = Number(val); render(); return;
+    case 'fstart': if (f && /^\d{2}:\d{2}$/.test(val)) f.start = val; break;
+    case 'fslot': if (f && val !== '') f.slot = Math.max(5, Math.round(Number(val)) || 20); break;
+    case 'fnp': {
+      if (!f || Object.keys(f.sc || {}).length) break;
+      var np = Number(val) === 16 ? 16 : 12;
+      f.pairs = f.pairs.slice(0, np).concat(emptyPairs(Math.max(0, np - f.pairs.length)));
+      f.tomb = nulls(np); f.np = np; break;
+    }
+    case 'pair': f.pairs[+el.getAttribute('data-i')][+el.getAttribute('data-j')] = val; break;
+    case 'tomb': {
+      if (!f || Object.keys(f.sc || {}).length) break;
+      f.tomb[+el.getAttribute('data-i')] = val ? Number(val) : null;
+      saveDraft();
+      if (isReady(f)) { toast('Tómbola lista. Grupos, partidos y canchas armados.'); return; }
+      break;
+    }
     case 'sc': {
-      var L = f.live, id = el.getAttribute('data-id'), side = el.getAttribute('data-s'), pa = +el.getAttribute('data-pa'), pb = +el.getAttribute('data-pb');
-      var s = L.sc[id];
-      if (!s || s.pa !== pa || s.pb !== pb) s = L.sc[id] = { pa: pa, pb: pb };
+      var id = el.getAttribute('data-id'), side = el.getAttribute('data-s'), pa = +el.getAttribute('data-pa'), pb = +el.getAttribute('data-pb');
+      f.sc = f.sc || {};
+      var s = f.sc[id];
+      if (!s || s.pa !== pa || s.pb !== pb) s = f.sc[id] = { pa: pa, pb: pb };
       s[side] = val === '' ? '' : Math.max(0, Math.round(Number(val)));
       if (num(s.a) == null || num(s.a) !== num(s.b)) { delete s.ta; delete s.tb; }
-      if (['a', 'b', 'ta', 'tb'].every(function (x) { return s[x] === '' || s[x] == null; })) delete L.sc[id];
+      if (['a', 'b', 'ta', 'tb'].every(function (x) { return s[x] === '' || s[x] == null; })) delete f.sc[id];
       break;
     }
     case 'ex': {
-      var ex = f.live.ex || (f.live.ex = {}), pid = el.getAttribute('data-pid'), o = ex[pid] || (ex[pid] = {});
+      var ex = f.ex || (f.ex = {}), pid = el.getAttribute('data-pid'), o = ex[pid] || (ex[pid] = {});
       if (el.getAttribute('data-s') === 'v') o.v = val === '' ? '' : Math.round(Number(val)); else o.n = val;
       if ((o.v === '' || o.v == null || o.v === 0) && !o.n) delete ex[pid];
       break;
@@ -1080,7 +1860,7 @@ function onField(el) {
     case 'mn': f.man.rows[+el.getAttribute('data-i')].n[+el.getAttribute('data-j')] = val; break;
     case 'pname': { var p = PM.get(el.getAttribute('data-id')); if (p && val.trim()) p.name = val; break; }
     case 'pside': { var p3 = PM.get(el.getAttribute('data-id')); if (p3) p3.side = val; break; }
-    case 'set': { var path = el.getAttribute('data-k').split('.'); work[path[0]][path[1]] = val; break; }
+    case 'set': { var path = el.getAttribute('data-k').split('.'); if (path[1] === 'start' && !/^\d{2}:\d{2}$/.test(val)) return; work[path[0]][path[1]] = val; break; }
     case 'setn': { var path2 = el.getAttribute('data-k').split('.'); if (val !== '') work[path2[0]][path2[1]] = Math.max(0, Math.round(Number(val)) || 0); break; }
     case 'tbl': if (val !== '') work.tables[el.getAttribute('data-c')][+el.getAttribute('data-i')] = Math.max(0, Math.round(Number(val)) || 0); break;
     default: return;
@@ -1133,18 +1913,24 @@ function morph(a, b) {
   if (a.nodeName === 'INPUT') { var v = b.getAttribute('value') || ''; if (a !== document.activeElement && a.value !== v) a.value = v; }
   if (a.nodeName === 'SELECT') { var sv = b.getAttribute('data-v') || ''; if (a.value !== sv) a.value = sv; }
 }
+function centerIn(sel, on) {
+  var c = app.querySelector(sel + ' ' + on), s = app.querySelector(sel);
+  if (c && s) s.scrollLeft = c.offsetLeft - s.clientWidth / 2 + c.clientWidth / 2;
+}
 function render() {
   PM = new Map(work.players.map(function (p) { return [p.id, p]; }));
   SORTED = work.players.slice().sort(function (x, y) { return x.name.localeCompare(y.name, 'es'); });
+  LCC = new Map(); SS = null;
   var tpl = document.createElement('template');
   tpl.innerHTML = view();
   if (!app.firstChild) app.appendChild(tpl.content);
   else morphChildren(app, tpl.content);
   app.querySelectorAll('select[data-v]').forEach(function (s) { var v = s.getAttribute('data-v'); if (s !== document.activeElement && s.value !== v) s.value = v; });
-  if (stripScroll && ui.tab === 'fechas') {
-    stripScroll = false;
-    var chip = app.querySelector('.fchip.sel'), strip = app.querySelector('.fstrip');
-    if (chip && strip) strip.scrollLeft = chip.offsetLeft - strip.clientWidth / 2 + chip.clientWidth / 2;
+  if (stripScroll) { stripScroll = false; centerIn('.tabs-in', '.tab.on'); centerIn('.fstrip', '.fchip.sel'); centerIn('.steps', '.step.on'); }
+  if (jump) {
+    jump = false;
+    var st = app.querySelector('.steps');
+    if (st) { var y = st.getBoundingClientRect().top + window.scrollY - 64; if (window.scrollY > y) window.scrollTo(0, Math.max(0, y)); }
   }
 }
 
