@@ -11,7 +11,7 @@ Página de la Liga de Pádel El Garito, Temporada Clausura 2026: ranking individ
 | Archivo | Qué es |
 | --- | --- |
 | `index.html` | La página, publicada con GitHub Pages. Trae una copia de los datos para mostrarse al instante. |
-| `config.js` | La dirección del servidor. Aquí va la URL de Apps Script. |
+| `config.js` | Las direcciones de los servidores: el de la liga y el de Inscripción. |
 | `logo.png` | El logo de la liga. |
 | `Codigo.gs` | El servidor, que corre en Google Apps Script. Este archivo es solo una copia de referencia: el que funciona es el que pegas en Apps Script. |
 
@@ -48,6 +48,8 @@ Es un proyecto aparte del de Inscripción, con su propia planilla. Así uno no a
 
 Mientras `config.js` esté vacío, la página muestra la copia de datos que trae `index.html` y no tiene modo organizador.
 
+En el mismo archivo va la dirección de Inscripción, `window.INSCRIPCION_API`, que es la misma de su `config.js`. De ahí el registro de cada fecha trae las parejas anotadas. Si se deja vacía, las parejas se eligen a mano.
+
 ## 3. Primera vez como organizador
 
 1. Abre la página y baja hasta el final.
@@ -60,8 +62,12 @@ Ese teléfono queda en modo organizador hasta que toques *Salir del modo organiz
 
 1. Entra a **Fechas** y elige la fecha.
 2. Elige la categoría y el formato (12 parejas, o 16 en las fechas especiales) y toca **Armar torneo**.
-3. **Registro:** elige los dos jugadores de cada pareja. Si falta alguien en la lista, escríbelo en *¿Jugador nuevo?* y toca *Agregar*.
-4. Toca **Sortear tómbola**. Si la tómbola se hizo en el club, elige el número de cada pareja. Los grupos, los partidos y las canchas se arman solos.
+3. **Registro:** las parejas llegan solas desde Inscripción, en el mismo orden de su lista: los campeones primero y luego los titulares.
+   - Si un nombre de Inscripción no está en la lista de jugadores, aparece en un cuadro para que elijas quién es o lo agregues como jugador nuevo. La próxima vez se reconoce solo.
+   - Los nombres que se asociaron por parecido (por ejemplo, «Lucas» con Lucas Troya) se muestran para que los revises.
+   - Si la lista de Inscripción cambia, por una baja o un Partner completado, la página avisa. Toca **Actualizar desde Inscripción** para traerla de nuevo.
+   - También puedes cambiar cualquier pareja a mano.
+4. **Tómbola, en vivo el día de la fecha:** toca **Sortear tómbola** o elige el número que sacó cada pareja. Los grupos, los partidos y las canchas se arman solos. Después de la tómbola ya no se traen parejas desde Inscripción; si hace falta, primero toca *Borrar números*.
 5. **Resultados:** carga los games de cada partido, ronda por ronda. Si empatan, aparece el tie-break. Las tablas, la clasificación a copas y los cruces se actualizan solos.
 6. **Final:** revisa la clasificación y toca **Cerrar fecha y sumar al ranking**. Si hay que corregir algo, puedes reabrirla.
 

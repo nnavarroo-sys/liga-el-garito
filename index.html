@@ -490,6 +490,13 @@ button.fin-nm:hover,.link.tl:hover{text-decoration:underline;text-underline-offs
 .bk{list-style:none;margin:0;padding:0}
 .bk li{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line);font-size:14px}
 .bk li .confirm{flex-basis:100%}
+.note.insc>span{flex:1 1 220px}
+.insc-miss{margin:10px 0}
+.insc-miss .lab{margin:0 0 8px}
+.imiss{list-style:none;margin:0 0 8px;padding:0;display:grid;gap:12px}
+.imiss li{display:grid;gap:6px}
+.imiss-a{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.imiss-a select{flex:1 1 200px;min-width:0}
 </style>
 </head>
 <body>
@@ -1141,6 +1148,188 @@ function googleCard() {
   return h + '</div>';
 }
 
+/* ---------- Inscripción: el registro trae las parejas anotadas. La tómbola no se toca: se hace en vivo el día de la fecha. ---------- */
+var INSC = (window.claude && typeof window.claude.use === 'function') ? '' : String(window.INSCRIPCION_API || '').trim();
+var insc = { st: null, at: 0, loading: false, err: '', errAt: 0, cbs: [] };
+var ZDTF = null;
+function zwall(ms) {
+  if (!ZDTF) ZDTF = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Santiago', hourCycle: 'h23', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' });
+  var p = {};
+  ZDTF.formatToParts(new Date(ms)).forEach(function (x) { p[x.type] = x.value; });
+  return { y: +p.year, m: +p.month, d: +p.day, h: (+p.hour) % 24, mi: +p.minute, s: +p.second };
+}
+function zoff(ms) { var b = ms - (((ms % 1000) + 1000) % 1000), w = zwall(b); return Date.UTC(w.y, w.m - 1, w.d, w.h, w.mi, w.s) - b; }
+function zoned(y, m, d, h, mi) { var g = Date.UTC(y, m - 1, d, h || 0, mi || 0); return g - zoff(g - zoff(g)); }
+function zdayAt(s, k, h, mi) { var p = String(s).split('-').map(Number), u = new Date(Date.UTC(p[0], p[1] - 1, p[2] + k)); return zoned(u.getUTCFullYear(), u.getUTCMonth() + 1, u.getUTCDate(), h, mi); }
+
+/* Nombres: la misma limpieza que usa Inscripción */
+var EMOJI = /[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu;
+function cleanIn(s) { return String(s || '').replace(EMOJI, '').replace(/\(\s*cupo campeones\s*\)/ig, '').replace(/\(?\s*por confirmar\s*\)?/ig, '').replace(/\s+/g, ' ').trim(); }
+function ntoks(s) { return norm(s).replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter(Boolean); }
+function nkey(s) { return ntoks(s).join(' '); }
+function isPartnerName(s) { var k = nkey(s); return !k || k === 'partner'; }
+function within(A, B) { return A.every(function (w) { return B.indexOf(w) >= 0; }); }
+function suspLevel(x, s) {
+  if (isPartnerName(x) || isPartnerName(s)) return 0;
+  var X = ntoks(x), S = ntoks(s), base = ntoks(String(s).replace(/\([^)]*\)/g, ' ')), al = /\(([^)]+)\)/.exec(String(s)), A = al ? ntoks(al[1]) : [];
+  if (!X.length || !S.length) return 0;
+  if (within(S, X) || (base.length && within(base, X)) || (A.length && X.join(' ') === A.join(' '))) return 2;
+  if (within(X, S)) return X.length >= 2 ? 2 : 1;
+  return 0;
+}
+function suspended(susp, names) { return (susp || []).some(function (s) { return names.some(function (x) { return suspLevel(x, s) === 2; }); }); }
+
+/* La lista en el mismo orden que muestra Inscripción: campeones en el cupo 1, luego por hora de inscripción.
+   Una pareja que se anotó con Partner y no lo completó antes del viernes a las 12:00 pasa detrás de las demás. */
+function inscList(st, n) {
+  var cal = (st.calendar || []).filter(function (c) { return c.n === n; })[0], L = st.lists && st.lists[n];
+  if (!cal || !L) return null;
+  var t = st.now || Date.now(), deadline = zdayAt(cal.date, -4, 12, 0), after = t >= deadline, rows = [];
+  (L.entries || []).forEach(function (e) {
+    if (suspended(L.susp, [e.a, e.b])) return;
+    var pending = isPartnerName(e.a) || isPartnerName(e.b);
+    var late = !!(e.p0 && !pending && e.pt != null && e.pt > deadline);
+    var penal = after && !e.ok && !!e.p0 && e.t < deadline && (pending || late);
+    rows.push({ a: e.a, b: e.b, k: penal ? deadline : e.t, s: e.s || 0 });
+  });
+  rows.sort(function (x, y) { return (x.k - y.k) || (x.s - y.s); });
+  var ch = L.champs || [], champ = L.hold && String(ch[0] || '').trim() && String(ch[1] || '').trim();
+  return { date: cal.date, cupos: Math.max(1, Math.round(+L.cupos) || 12), champOk: !!L.champOk,
+    list: (champ ? [{ a: ch[0], b: ch[1], champ: true }] : []).concat(rows) };
+}
+
+/* Jugadores: nombre completo, nombre sin apodo, apodo entre paréntesis y nombres aprendidos de Inscripción */
+function pkeys(p) {
+  var al = /\(([^)]+)\)/.exec(p.name);
+  return [nkey(p.name), nkey(p.name.replace(/\([^)]*\)/g, ' '))].concat(al ? [nkey(al[1])] : [], p.aka || []).filter(Boolean);
+}
+function ptoks(p) {
+  var al = /\(([^)]+)\)/.exec(p.name);
+  return [ntoks(p.name), ntoks(p.name.replace(/\([^)]*\)/g, ' '))].concat(al ? [ntoks(al[1])] : []).filter(function (a) { return a.length; });
+}
+function eqTok(a, b) { return a === b || (a.length === 1 && b.charAt(0) === a) || (b.length === 1 && a.charAt(0) === b); }
+/* Todas las palabras calzan (una inicial sirve por una palabra) y al menos una palabra completa es igual. */
+function tokIn(A, B) { return A.length > 0 && A.every(function (a) { return B.some(function (b) { return eqTok(a, b); }); }) && A.some(function (a) { return a.length > 1 && B.indexOf(a) >= 0; }); }
+function learnAka(pid, raw) {
+  var p = PM.get(pid) || work.players.find(function (x) { return x.id === pid; }), k = nkey(raw);
+  if (!p || !k || pkeys(p).indexOf(k) >= 0) return;
+  p.aka = (p.aka || []).concat([k]);
+}
+
+function inscSig(I, N) { return I.list.slice(0, N).map(function (r) { return nkey(cleanIn(r.a)) + '+' + nkey(cleanIn(r.b)); }).join('|'); }
+
+/* Arma el registro con la lista de Inscripción. Nunca toca la tómbola. */
+function inscApply(f, st) {
+  var I = inscList(st, f.n);
+  if (!I) return 'Inscripción no tiene la Fecha ' + f.n + '.';
+  var N = fmtOf(f).np, rows = I.list.slice(0, N);
+  if (!rows.length) return 'Todavía no hay parejas anotadas en Inscripción para la Fecha ' + f.n + '.';
+  var slots = [], taken = new Set(), miss = [], approx = [], partner = [], notes = [];
+  rows.forEach(function (r, i) { [r.a, r.b].forEach(function (x, j) { slots.push({ i: i, j: j, raw: cleanIn(x) }); }); });
+  slots.forEach(function (s) {
+    if (isPartnerName(s.raw)) { s.partner = true; return; }
+    var k = nkey(s.raw), ex = work.players.filter(function (p) { return !taken.has(p.id) && pkeys(p).indexOf(k) >= 0; });
+    if (ex.length === 1) { s.id = ex[0].id; taken.add(s.id); }
+  });
+  slots.forEach(function (s) {
+    if (s.id || s.partner) return;
+    var X = ntoks(s.raw), c = work.players.filter(function (p) { return !taken.has(p.id) && ptoks(p).some(function (P) { return tokIn(X, P) || tokIn(P, X); }); });
+    if (c.length === 1) { s.id = c[0].id; taken.add(s.id); approx.push([s.i, s.j, s.raw, s.id]); }
+    else miss.push([s.i, s.j, s.raw]);
+  });
+  slots.forEach(function (s) { if (s.partner) partner.push([s.i, s.j, cleanIn(rows[s.i][s.j ? 'a' : 'b'])]); });
+  var pairs = emptyPairs(N);
+  slots.forEach(function (s) { if (s.id) pairs[s.i][s.j] = s.id; });
+  if (rows[0] && rows[0].champ && !I.champOk) notes.push('Los campeones aún no confirman su cupo en Inscripción.');
+  if (rows.length > I.cupos) notes.push('Inscripción tiene ' + I.cupos + ' cupos titulares: se agregaron ' + plural(rows.length - I.cupos, 'pareja de la reserva', 'parejas de la reserva') + '.');
+  if (rows.length < N) notes.push('Inscripción tiene ' + plural(rows.length, 'pareja', 'parejas') + ': faltan ' + (N - rows.length) + ' para completar ' + N + '.');
+  if (I.date !== f.date) notes.push('En Inscripción, la Fecha ' + f.n + ' es el ' + fLong(I.date) + '.');
+  f.pairs = pairs;
+  f.insc = { at: new Date().toISOString(), sig: inscSig(I, N), miss: miss, approx: approx, partner: partner, notes: notes };
+  return '';
+}
+
+function inscFetch(cb) {
+  if (cb) insc.cbs.push(cb);
+  if (insc.loading) return;
+  insc.loading = true; insc.err = ''; render();
+  fetch(INSC + (INSC.indexOf('?') < 0 ? '?' : '&') + 'action=state&t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (r) {
+    insc.loading = false;
+    if (r && r.ok && r.lists) { insc.st = r; insc.at = Date.now(); }
+    else { insc.err = (r && r.msg) || 'Inscripción respondió con un error.'; insc.errAt = Date.now(); }
+    done();
+  }, function () { insc.loading = false; insc.err = 'No se pudo conectar con Inscripción. Revisa la conexión y vuelve a intentar.'; insc.errAt = Date.now(); done(); });
+  function done() { var cbs = insc.cbs; insc.cbs = []; cbs.forEach(function (c) { try { c(); } catch (e) {} }); render(); }
+}
+
+/* Fecha en el paso Registro, antes de la tómbola, donde se pueden traer las parejas */
+function inscTarget() {
+  if (!INSC || !canEdit || ui.tab !== 'fechas' || ui.fecha == null) return null;
+  var f = getF(work, ui.fecha);
+  if (!f || !isTorneo(f) || f.status === 'cerrada' || Object.keys(f.sc || {}).length || slotsOf(f).count) return null;
+  return (ui.sub[f.n] || defStep(f, lcOf(f), true)) === 'registro' ? f : null;
+}
+function anyPair(f) { return (f.pairs || []).some(function (p) { return p && (p[0] || p[1]); }); }
+function inscAuto(f) {
+  if (f.insc || anyPair(f) || !insc.st) return;
+  var err = inscApply(f, insc.st);
+  if (!err) { saveDraft(); toast('Traje ' + plural(f.pairs.filter(function (p) { return p[0] || p[1]; }).length, 'pareja', 'parejas') + ' de Inscripción. La tómbola queda para el día de la fecha.'); }
+}
+/* Revisa Inscripción al abrir el registro (como máximo una vez por minuto). Si el registro está vacío, trae las parejas solo. */
+function inscTick() {
+  var f = inscTarget();
+  if (!f || insc.loading) return;
+  if (insc.st && Date.now() - insc.at < 60000) { inscAuto(f); return; }
+  if (insc.err && Date.now() - insc.errAt < 60000) return;
+  var n = f.n;
+  inscFetch(function () { var g = inscTarget(); if (g && g.n === n) inscAuto(g); });
+}
+function inscNow(f) {
+  var n = f.n;
+  insc.at = 0;
+  inscFetch(function () {
+    var g = getF(work, n);
+    if (!g || !insc.st) return;
+    if (slotsOf(g).count || Object.keys(g.sc || {}).length) { toast('La tómbola ya tiene números: bórralos para volver a traer las parejas.'); return; }
+    var err = inscApply(g, insc.st);
+    if (err) { toast(err); return; }
+    saveDraft(); toast('Registro actualizado con la lista de Inscripción.');
+  });
+}
+
+function inscBox(f, used, S, hasSc) {
+  if (!INSC || hasSc) return '';
+  var I = f.insc, h = '';
+  if (S.count) {
+    return I ? '<p class="muted small">Parejas traídas de Inscripción el ' + esc(fWhen(I.at)) + '. Para volver a traerlas, primero borra los números de la tómbola.</p>' : '';
+  }
+  var cur = insc.st && inscList(insc.st, f.n), changed = !!(I && cur && inscSig(cur, fmtOf(f).np) !== I.sig);
+  h += '<div class="note insc"><span>' + (insc.loading ? 'Buscando las parejas en Inscripción…' :
+    I ? (changed ? '<b>La lista de Inscripción cambió</b> desde que trajiste las parejas (' + esc(fWhen(I.at)) + ').' : 'Parejas traídas de Inscripción el ' + esc(fWhen(I.at)) + '.') :
+    'Las parejas se traen de Inscripción. La tómbola se hace en vivo el día de la fecha.') + '</span>';
+  if (!insc.loading) {
+    h += anyPair(f) ? confirmBtn('insc-' + f.n, I ? 'Actualizar desde Inscripción' : 'Traer de Inscripción', 'insc-apply', 'Se reemplazan las parejas del registro por la lista actual de Inscripción. Lo que cambiaste a mano aquí se pierde. La tómbola no se toca.', 'sm', 'Sí, traer la lista') :
+      '<button class="btn sm" data-act="insc-get">Traer parejas de Inscripción</button>';
+  }
+  h += '</div>';
+  if (insc.err && !insc.loading) h += '<p class="note warn">' + esc(insc.err) + '</p>';
+  if (!I) return h;
+  var miss = (I.miss || []).filter(function (m) { return f.pairs[m[0]] && !f.pairs[m[0]][m[1]]; });
+  if (miss.length) {
+    h += '<div class="card pad insc-miss"><h4 class="lab">Nombres de Inscripción que no encontré en la lista de jugadores</h4><ul class="imiss">' + miss.map(function (m) {
+      return '<li data-k="im' + m[0] + '-' + m[1] + '"><span><b>«' + esc(m[2]) + '»</b> · pareja ' + (m[0] + 1) + '</span><span class="imiss-a">' +
+        playerSelect('im-' + m[0] + '-' + m[1], '', used, 'imap', 'data-i="' + m[0] + '" data-j="' + m[1] + '"') +
+        '<button class="btn sm" data-act="insc-new" data-i="' + m[0] + '" data-j="' + m[1] + '">Agregar como jugador nuevo</button></span></li>';
+    }).join('') + '</ul><p class="muted small">Elige quién es o agrégalo como jugador nuevo. La próxima vez se reconoce solo.</p></div>';
+  }
+  var approx = (I.approx || []).filter(function (m) { return f.pairs[m[0]] && f.pairs[m[0]][m[1]] === m[3]; });
+  if (approx.length) h += '<p class="note">Revisa estos nombres, los asocié por parecido: ' + approx.map(function (m) { return '«' + esc(m[2]) + '» → ' + esc(nm(m[3])); }).join(' · ') + '. Si alguno no es, cámbialo en su pareja.</p>';
+  var partner = (I.partner || []).filter(function (m) { return f.pairs[m[0]] && !f.pairs[m[0]][m[1]]; });
+  if (partner.length) h += '<p class="note">Falta el Partner de ' + partner.map(function (m) { return esc(m[2] || 'pareja ' + (m[0] + 1)) + ' (pareja ' + (m[0] + 1) + ')'; }).join(', ') + '.</p>';
+  (I.notes || []).forEach(function (t) { h += '<p class="note">' + esc(t) + '</p>'; });
+  return h;
+}
+
 function startGas() {
   if (saved.updated) { srv.updated = saved.updated; delete saved.updated; delete work.updated; SAVED_STR = JSON.stringify(saved); }
   pin = lsGet(K_PIN) || '';
@@ -1424,11 +1613,12 @@ function stRegistro(f, lc, edit) {
     '<div class="sum"><span class="lab">Tómbola</span><span class="val n">' + S.count + ' de ' + N + '</span><span class="sub">' + (S.full ? 'Números asignados' : 'Números por sortear') + '</span></div>' +
     '<div class="sum"><span class="lab">Grupos</span><span class="val">' + (ready ? 'Listos' : 'Por armar') + '</span><span class="sub">' + (ready ? F.groups.length + ' grupos · ' + lc.gTotal + ' partidos' : 'Se arman con la tómbola') + '</span></div></div>';
   if (edit) {
+    h += inscBox(f, used, S, hasSc);
     h += '<div class="toolbar">';
     if (hasSc) h += confirmBtn('retomb-' + f.n, 'Rehacer tómbola', 'tomb-redo', 'Ya hay resultados cargados. Rehacer la tómbola borra los números y todos los resultados de la fecha.', 'danger', 'Sí, rehacer y borrar');
     else h += '<button class="btn primary" data-act="tomb-draw">' + (S.count ? 'Volver a sortear la tómbola' : 'Sortear tómbola') + '</button>' + (S.count ? '<button class="btn" data-act="tomb-clear">Borrar números</button>' : '');
     h += quickAdd() + '</div>';
-    h += '<p class="muted small">Registra las ' + N + ' parejas y toca “Sortear tómbola”, o elige el número que sacó cada pareja si la tómbola se hizo en el club. ' + F.groups.map(function (G, gi) { return 'Del ' + (gi * 4 + 1) + ' al ' + (gi * 4 + 4) + ': Grupo ' + G; }).join(' · ') + '.</p>';
+    h += '<p class="muted small">' + (INSC ? 'La tómbola se hace en vivo el día de la fecha: toca “Sortear tómbola” o elige el número que sacó cada pareja. ' : 'Registra las ' + N + ' parejas y toca “Sortear tómbola”, o elige el número que sacó cada pareja si la tómbola se hizo en el club. ') + F.groups.map(function (G, gi) { return 'Del ' + (gi * 4 + 1) + ' al ' + (gi * 4 + 4) + ': Grupo ' + G; }).join(' · ') + '.</p>';
   }
   h += '<ol class="reg">' + f.pairs.map(function (p, i) {
     var n = Number(f.tomb[i]), has = n >= 1 && n <= N, slot = has ? slotName(n - 1) : '';
@@ -2065,7 +2255,7 @@ function manFromResults(f) {
     return { pl: pl, p: [rs[0] ? rs[0].p : '', rs[1] ? rs[1].p : ''], a: [rs[0] ? rs[0].a : 0, rs[1] ? rs[1].a : 0], n: [rs[0] ? rs[0].n || '' : '', rs[1] ? rs[1].n || '' : ''] };
   }) };
 }
-function clearTorneo(f) { ['np', 'start', 'slot', 'pairs', 'tomb', 'sc', 'ex', 'man', 'results', 'mode', 'imp'].forEach(function (k) { delete f[k]; }); }
+function clearTorneo(f) { ['np', 'start', 'slot', 'pairs', 'tomb', 'sc', 'ex', 'man', 'results', 'mode', 'imp', 'insc'].forEach(function (k) { delete f[k]; }); }
 
 function act(a, el) {
   var v = el.getAttribute('data-v');
@@ -2111,7 +2301,7 @@ function act(a, el) {
       clearTorneo(f);
       f.mode = 'torneo'; f.status = 'en juego'; f.np = np; f.start = work.settings.start || '20:30'; f.slot = work.settings.slot || 20;
       f.pairs = emptyPairs(np); f.tomb = nulls(np); f.sc = {}; f.ex = {};
-      ui.sub[f.n] = 'registro'; ui.confirm = null; saveDraft(); toast('Torneo armado. Registra las parejas.'); return;
+      ui.sub[f.n] = 'registro'; ui.confirm = null; saveDraft(); toast(INSC ? 'Torneo armado. Buscando las parejas en Inscripción…' : 'Torneo armado. Registra las parejas.'); return;
     }
     case 'f-manual': clearTorneo(f); f.mode = 'manual'; f.status = 'en juego'; f.man = { np: 12, rows: mkRows(12) }; ui.confirm = null; saveDraft(); break;
     case 'f-reset': clearTorneo(f); f.status = 'pendiente'; delete ui.sub[f.n]; delete ui.rd[f.n]; ui.confirm = null; saveDraft(); break;
@@ -2136,6 +2326,15 @@ function act(a, el) {
     }
     case 'tomb-clear': if (Object.keys(f.sc || {}).length) return; f.tomb = nulls(f.pairs.length); saveDraft(); break;
     case 'tomb-redo': f.sc = {}; f.tomb = nulls(f.pairs.length); ui.confirm = null; saveDraft(); toast('Números y resultados borrados. Vuelve a hacer la tómbola.'); return;
+    case 'insc-get': if (f) inscNow(f); return;
+    case 'insc-apply': ui.confirm = null; if (f) inscNow(f); render(); return;
+    case 'insc-new': {
+      var ii = +el.getAttribute('data-i'), jj = +el.getAttribute('data-j'), mm = f && f.insc && (f.insc.miss || []).filter(function (m) { return m[0] === ii && m[1] === jj; })[0];
+      if (!mm) return;
+      var np2 = addPlayer(mm[2]);
+      if (np2) { f.pairs[ii][jj] = np2.id; saveDraft(); toast(np2.name + ' agregado a la lista de jugadores.'); }
+      return;
+    }
     case 'quick-add': { var qp = addPlayer(ui.quick); if (qp) { ui.quick = ''; toast(qp.name + ' agregado. Ya puedes elegirlo.'); } return; }
     case 'padd': { var p2 = addPlayer(ui.newName, ui.newSide); if (p2) { ui.newName = ''; ui.newSide = ''; toast(p2.name + ' agregado.'); } return; }
     case 'pdel': work.players = work.players.filter(function (p) { return p.id !== ui.player; }); ui.player = null; ui.confirm = null; saveDraft(); break;
@@ -2166,7 +2365,19 @@ function onField(el) {
       f.pairs = f.pairs.slice(0, np).concat(emptyPairs(Math.max(0, np - f.pairs.length)));
       f.tomb = nulls(np); f.np = np; break;
     }
-    case 'pair': f.pairs[+el.getAttribute('data-i')][+el.getAttribute('data-j')] = val; break;
+    case 'pair': {
+      var pi2 = +el.getAttribute('data-i'), pj2 = +el.getAttribute('data-j'), was = f.pairs[pi2][pj2];
+      f.pairs[pi2][pj2] = val;
+      if (!was && val && f.insc) (f.insc.miss || []).forEach(function (m) { if (m[0] === pi2 && m[1] === pj2) learnAka(val, m[2]); });
+      break;
+    }
+    case 'imap': {
+      var mi = +el.getAttribute('data-i'), mj = +el.getAttribute('data-j');
+      if (!f || !val || f.pairs[mi][mj]) break;
+      f.pairs[mi][mj] = val;
+      (f.insc && f.insc.miss || []).forEach(function (m) { if (m[0] === mi && m[1] === mj) learnAka(val, m[2]); });
+      break;
+    }
     case 'tomb': {
       if (!f || Object.keys(f.sc || {}).length) break;
       f.tomb[+el.getAttribute('data-i')] = val ? Number(val) : null;
@@ -2268,6 +2479,7 @@ function render() {
   else morphChildren(app, tpl.content);
   app.querySelectorAll('select[data-v]').forEach(function (s) { var v = s.getAttribute('data-v'); if (s !== document.activeElement && s.value !== v) s.value = v; });
   if (stripScroll) { stripScroll = false; centerIn('.tabs-in', '.tab.on'); centerIn('.fstrip', '.fchip.sel'); centerIn('.steps', '.step.on'); }
+  if (INSC && canEdit) setTimeout(inscTick, 0);
   if (jump) {
     jump = false;
     var st = app.querySelector('.steps');
