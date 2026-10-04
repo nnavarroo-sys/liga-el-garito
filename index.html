@@ -278,6 +278,7 @@ button.pl-row:hover{background:var(--surface-2)}
 .modal-c{background:var(--surface);border-radius:14px;padding:16px;width:min(560px,100%);display:flex;flex-direction:column;gap:10px}
 .modal textarea{width:100%;min-height:240px;font:13px/1.45 ui-monospace,Menlo,monospace;background:var(--surface-2)}
 @media (prefers-reduced-motion: reduce){*{scroll-behavior:auto!important;transition:none!important}}
+.ins-frame{display:block;width:calc(100% + 32px);margin:-18px -16px 0;border:0;background:var(--bg);min-height:480px}
 
 
 /* Torneos: additions on top of the Ranking stylesheet (same tokens, same components) */
@@ -775,6 +776,7 @@ function normalize(d) {
 
 var TITLE = '<title>Ranking El Garito</title>';
 var DRAFT_KEY = 'garito-liga-draft-v2', UI_KEY = 'garito-liga-ui-v2';
+var INS_URL = 'https://nnavarroo-sys.github.io/Inscripci-n-Liga-El-Garito/', insH = 900;
 var saved = normalize(JSON.parse(document.getElementById('liga-data').textContent));
 var SAVED_STR = JSON.stringify(saved);
 var HASH = (function (s) { var h = 5381; for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return (h >>> 0).toString(36) + s.length.toString(36); })(SAVED_STR);
@@ -794,6 +796,10 @@ function fLong(s) { var d = pd(s); return WDL[d.getDay()] + ' ' + d.getDate() + 
 function fDM(s) { var d = pd(s); return d.getDate() + ' ' + MO[d.getMonth()]; }
 function dd(s) { return String(s).slice(8, 10) + '/' + String(s).slice(5, 7); }
 function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+function insUrl() { var u = String((work && work.league && work.league.inscripcion) || INS_URL).trim(); return /\/$/.test(u) ? u : u + '/'; }
+function insOrigin() { try { return new URL(insUrl()).origin; } catch (e) { return ''; } }
+/* The sign-up page shows inside the tab only where both pages share an origin (the league's GitHub site); elsewhere the tab links to it. */
+function insEmbeddable() { try { return /^https?:$/.test(location.protocol) && location.origin === insOrigin(); } catch (e) { return false; } }
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
 function norm(s) { return String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); }
 function slug(s) { return norm(s).replace(/[^a-z0-9]+/g, '-'); }
@@ -900,7 +906,7 @@ function winnersOf(f) { return (f.results || []).filter(function (r) { return r.
 /* ---------- shell ---------- */
 function view() {
   RK = rankInfo();
-  var body = ui.tab === 'fechas' ? vFechas() : ui.tab === 'jugadores' ? vPlayers() : ui.tab === 'stats' ? vStatsTab() : (ui.tab === 'ajustes' && canEdit) ? vSettings() : vRanking();
+  var body = ui.tab === 'inscripcion' ? vInscripcion() : ui.tab === 'fechas' ? vFechas() : ui.tab === 'jugadores' ? vPlayers() : ui.tab === 'stats' ? vStatsTab() : (ui.tab === 'ajustes' && canEdit) ? vSettings() : vRanking();
   var dirty = canEdit && isDirty();
   return header() + tabs() + '<main class="wrap main">' + notices() + body + '</main>' +
     '<datalist id="motivos"><option value="Atraso"><option value="Sanción"><option value="Corrección"><option value="No se presentó"></datalist>' +
@@ -918,11 +924,18 @@ function header() {
 }
 
 function tabs() {
-  var t = [['ranking', 'Ranking'], ['fechas', 'Fechas'], ['jugadores', 'Jugadores'], ['stats', 'Estadísticas']];
+  var t = [['ranking', 'Ranking'], ['inscripcion', 'Inscripción'], ['fechas', 'Fechas'], ['jugadores', 'Jugadores'], ['stats', 'Estadísticas']];
   if (canEdit) t.push(['ajustes', 'Ajustes']);
   return '<nav class="tabs" aria-label="Secciones"><div class="wrap tabs-in">' + t.map(function (x) {
     return '<button class="tab' + (ui.tab === x[0] ? ' on' : '') + '" data-act="tab" data-v="' + x[0] + '" aria-current="' + (ui.tab === x[0] ? 'page' : 'false') + '">' + x[1] + '</button>';
   }).join('') + '</div></nav>';
+}
+
+function vInscripcion() {
+  var u = insUrl();
+  if (insEmbeddable()) return '<iframe class="ins-frame" id="ins-frame" data-k="ins-frame" title="Inscripción a la próxima fecha" src="' + esc(u + '?embed=1') + '" style="height:' + insH + 'px"></iframe>';
+  return '<div class="card pad"><h3 class="gh">Inscripción</h3><p>Los jugadores se anotan a cada fecha en la página de inscripción: 12 titulares y reservas, cupo de campeones y plazo para completar el Partner.</p>' +
+    '<div class="btns"><a class="btn primary" href="' + esc(u) + '" target="_blank" rel="noopener">Abrir inscripción</a></div><p class="small muted">' + esc(u) + '</p></div>';
 }
 
 function notices() {
@@ -1948,6 +1961,14 @@ app.addEventListener('keydown', function (e) {
   if (id === 'new-name') { e.preventDefault(); act('padd', e.target); }
 });
 
+window.addEventListener('message', function (e) {
+  var d = e.data;
+  if (!d || d.type !== 'garito-ins' || e.origin !== insOrigin()) return;
+  if (d.h > 0) { insH = Math.ceil(d.h); var fr = document.getElementById('ins-frame'); if (fr) fr.style.height = insH + 'px'; }
+  if (d.toast) toast(String(d.toast).slice(0, 200));
+  if (d.top) { var f2 = document.getElementById('ins-frame'); if (f2) { var y = f2.getBoundingClientRect().top + window.scrollY - 56; if (window.scrollY > y) window.scrollTo(0, Math.max(0, y)); } }
+});
+try { if (location.hash === '#inscripcion') ui.tab = 'inscripcion'; } catch (e) {}
 render();
 if (ui.scroll) { var sy = ui.scroll; delete ui.scroll; requestAnimationFrame(function () { window.scrollTo(0, sy); }); }
 
