@@ -475,11 +475,27 @@ button.fin-nm:hover,.link.tl:hover{text-decoration:underline;text-underline-offs
 .courts.c8{grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr))}
 .half{overflow-wrap:break-word}
 .ht td .muted.small{display:block}
+/* Google: modo organizador y estado del guardado */
+.foot{display:flex;flex-direction:column;gap:8px;padding-block:4px 40px;font-size:14px;color:var(--muted)}
+.foot p{max-width:62ch}
+.pinrow{display:flex;flex-wrap:wrap;gap:8px}
+.pinrow input{flex:0 1 13rem}
+.err{color:var(--down);font-weight:600}
+.sync{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;display:flex;align-items:center;gap:8px;padding:9px 13px;border-radius:999px;background:var(--court);color:#fff;font:600 13px/1 var(--f-body);box-shadow:0 4px 14px rgba(0,0,0,.22)}
+.sync.ok{background:var(--surface);color:var(--up);border:1px solid var(--line)}
+.sync .dot{width:8px;height:8px;border-radius:50%;background:var(--ball);animation:syncpulse 1s ease-in-out infinite}
+@keyframes syncpulse{50%{opacity:.3}}
+@media (prefers-reduced-motion: reduce){.sync .dot{animation:none}}
+.savebar.warn{background:var(--warn-soft);color:var(--ink);border-top-color:var(--warn)}
+.bk{list-style:none;margin:0;padding:0}
+.bk li{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line);font-size:14px}
+.bk li .confirm{flex-basis:100%}
 </style>
 </head>
 <body>
 <div id="app"></div>
 <script type="application/json" id="liga-data">{"v":2,"league":{"name":"Liga El Garito","season":"Clausura 2026","web":"https://nnavarroo-sys.github.io/liga-el-garito/"},"settings":{"bonus60":20,"cap":4,"qualify":24,"start":"20:30","slot":20},"cats":["Challenger","Open","Master","Master Finals","Open Special"],"tables":{"Challenger":[150,130,110,90,80,70,60,50,40,30,20,10],"Open":[240,200,180,160,140,120,100,80,60,50,30,20],"Master":[320,280,250,230,210,190,170,140,100,80,60,40],"Master Finals":[640,500,420,360,290,260,220,200,160,140,100,80],"Open Special":[280,240,210,190,170,150,130,115,100,85,70,60,50,40,30,20]},"players":[{"id":"j1","name":"Rodrigo Nuñez","side":"AM"},{"id":"j2","name":"Rodrigo Rosas","side":""},{"id":"j3","name":"Amaro Taucan","side":"DR"},{"id":"j4","name":"Arturo Fuenzalida","side":"RV"},{"id":"j5","name":"Diego Garces","side":"RV"},{"id":"j6","name":"Aaron Encina","side":"DR"},{"id":"j7","name":"Alvaro Pérez","side":"DR"},{"id":"j9","name":"Jaime Gómez","side":"RV"},{"id":"j10","name":"Diego Díaz","side":"DR"},{"id":"j11","name":"Nelson Navarro","side":"RV"},{"id":"j12","name":"Jose Manuel Valencia","side":"DR"},{"id":"j13","name":"Esteban Ayala","side":"AM"},{"id":"j14","name":"Martin Carroz","side":"RV"},{"id":"j15","name":"Rodolfo Guajardo","side":"AM"},{"id":"j16","name":"Patricio Lobos","side":""},{"id":"j17","name":"Gustavo Isea","side":"RV"},{"id":"j18","name":"Daniel Bolados","side":"DR"},{"id":"j19","name":"Guillermo Tudezca (Memo)","side":"DR"},{"id":"j20","name":"Patricio Catalan","side":""},{"id":"j21","name":"Mauricio Perez","side":"DR"},{"id":"j22","name":"Seba Yañez","side":""},{"id":"j23","name":"Tomas Polloni","side":"DR"},{"id":"j24","name":"Pablo Aguayo","side":""},{"id":"j25","name":"Seba Quezada","side":""},{"id":"j26","name":"Ivan Neira","side":"DR"},{"id":"j27","name":"David Neira","side":"RV"},{"id":"j28","name":"Vicente Ramirez","side":""},{"id":"j29","name":"Camilo Fontova","side":"DR"},{"id":"j30","name":"Nico Guerra","side":""},{"id":"j31","name":"Daniel Belmar","side":"DR"},{"id":"j32","name":"Cristobal","side":"RV"},{"id":"j33","name":"Boris Morales","side":"AM"},{"id":"j34","name":"Seba Ogas","side":"RV"},{"id":"j35","name":"Miguel Partner de Seba","side":""},{"id":"j36","name":"Mauro Bouquet","side":"DR"},{"id":"j37","name":"Luis Reyes","side":"DR"},{"id":"j38","name":"Jorge Casas","side":"DR"},{"id":"j39","name":"Mirko Posavac","side":""},{"id":"j40","name":"Ale K","side":"DR"},{"id":"j41","name":"Vincenzo","side":""},{"id":"j42","name":"Jona Cooper","side":"RV"},{"id":"j43","name":"Alex Flores","side":"DR"},{"id":"j44","name":"Gonzalo Torres","side":"RV"},{"id":"j45","name":"Tomy Latorre","side":"RV"},{"id":"j46","name":"Nene","side":""},{"id":"j47","name":"Byron","side":"DR"},{"id":"j48","name":"Jorge Alvarado","side":""},{"id":"j49","name":"Benja Cabrera","side":""},{"id":"j50","name":"Juan Javia","side":"RV"},{"id":"j51","name":"Martin El Bueno","side":""},{"id":"j52","name":"Alfredo Viola","side":"DR"},{"id":"j53","name":"Lautaro Rodriguez","side":""},{"id":"j54","name":"Nico Moreno","side":""},{"id":"j55","name":"Carlos Amaro","side":"RV"},{"id":"j56","name":"Nico D","side":""},{"id":"j57","name":"Mauricio Encina","side":""},{"id":"j58","name":"Felipe O","side":""},{"id":"j59","name":"Carlos Barrera","side":"DR"},{"id":"j60","name":"Jota","side":"RV"},{"id":"j61","name":"Hector","side":"RV"},{"id":"j62","name":"Coke Castro","side":"RV"},{"id":"j63","name":"Rene Tobar (Coto)","side":"RV"},{"id":"j64","name":"Maldonado","side":"DR"},{"id":"j65","name":"Jose E","side":""},{"id":"j66","name":"Diego Rosales","side":"RV"},{"id":"j67","name":"Lucas Troya","side":""},{"id":"j69","name":"Joaquin Alegria","side":"RV"},{"id":"j70","name":"Alexis Gonzalez","side":"AM"},{"id":"j72","name":"Berti","side":"DR"},{"id":"j73","name":"Gonzalo Benavente","side":"RV"},{"id":"j75","name":"Mati C","side":""},{"id":"j76","name":"Cesar Jorquera","side":"DR"},{"id":"j77","name":"Nico Vega","side":""},{"id":"j78","name":"Seba B","side":""},{"id":"j79","name":"Rodrigo SC","side":""},{"id":"j80","name":"Byron Maipu","side":"RV"},{"id":"j81","name":"Gonza","side":"RV"},{"id":"j82","name":"Alex Marambio","side":"DR"},{"id":"j83","name":"Roy","side":""},{"id":"j84","name":"Carlos Villar","side":"RV"},{"id":"j85","name":"Martinoski","side":""},{"id":"j86","name":"Nico Campo","side":""},{"id":"j87","name":"Claudio Arce","side":"DR"},{"id":"j88","name":"Daniel Retuert","side":"DR"},{"id":"j89","name":"Nacho Rojo","side":""},{"id":"j90","name":"Super Jona","side":"DR"},{"id":"j91","name":"Pablo Muñoz","side":"DR"},{"id":"j92","name":"Fonck","side":"RV"},{"id":"j93","name":"German F","side":"RV"},{"id":"j94","name":"Joan Guzman","side":"RV"},{"id":"j95","name":"Nico Vilches","side":""},{"id":"j96","name":"Nico Fernandez","side":""},{"id":"j97","name":"Diego Rebolledo","side":"RV"},{"id":"j98","name":"Jaca","side":"RV"},{"id":"j99","name":"Alonso","side":"DR"},{"id":"j100","name":"Mario","side":""},{"id":"j101","name":"Juan Pablo","side":""},{"id":"j102","name":"Sandrino","side":""},{"id":"j103","name":"Seba Z","side":""},{"id":"j104","name":"Sziklai","side":""},{"id":"j105","name":"Marcelo","side":""},{"id":"j106","name":"Nico Makuc","side":""},{"id":"j107","name":"Seba Delmar","side":""},{"id":"j108","name":"Matias E","side":"DR"},{"id":"j109","name":"Felipe de Amaro","side":"RV"}],"fechas":[{"n":1,"date":"2026-08-04","cat":"Open","status":"cerrada","mode":"torneo","results":[{"p":"j66","pl":1,"b":240,"a":0,"n":""},{"p":"j31","pl":1,"b":240,"a":0,"n":""},{"p":"j19","pl":2,"b":200,"a":0,"n":""},{"p":"j63","pl":2,"b":200,"a":0,"n":""},{"p":"j50","pl":3,"b":180,"a":0,"n":""},{"p":"j85","pl":3,"b":180,"a":0,"n":""},{"p":"j27","pl":4,"b":160,"a":0,"n":""},{"p":"j67","pl":4,"b":160,"a":0,"n":""},{"p":"j3","pl":5,"b":140,"a":20,"n":"Bonificación 6–0"},{"p":"j109","pl":5,"b":140,"a":20,"n":"Bonificación 6–0"},{"p":"j46","pl":6,"b":120,"a":0,"n":""},{"p":"j83","pl":6,"b":120,"a":0,"n":""},{"p":"j22","pl":7,"b":100,"a":0,"n":""},{"p":"j21","pl":7,"b":100,"a":0,"n":""},{"p":"j82","pl":8,"b":80,"a":-20,"n":"Penalización simple"},{"p":"j84","pl":8,"b":80,"a":-20,"n":"Penalización simple"},{"p":"j23","pl":9,"b":60,"a":0,"n":""},{"p":"j62","pl":9,"b":60,"a":0,"n":""},{"p":"j15","pl":10,"b":50,"a":0,"n":""},{"p":"j4","pl":10,"b":50,"a":0,"n":""},{"p":"j34","pl":11,"b":30,"a":0,"n":""},{"p":"j45","pl":11,"b":30,"a":0,"n":""},{"p":"j43","pl":12,"b":20,"a":0,"n":""},{"p":"j42","pl":12,"b":20,"a":0,"n":""}],"np":12,"start":"20:30","slot":20,"pairs":[["j50","j85"],["j3","j109"],["j34","j45"],["j27","j67"],["j46","j83"],["j31","j66"],["j15","j4"],["j23","j62"],["j43","j42"],["j19","j63"],["j82","j84"],["j22","j21"]],"tomb":[1,2,3,4,5,6,7,8,9,10,11,12],"sc":{"A1":{"pa":0,"pb":1,"a":6,"b":5},"A2":{"pa":2,"pb":3,"a":4,"b":6},"B1":{"pa":4,"pb":5,"a":2,"b":6},"B2":{"pa":6,"pb":7,"a":4,"b":6},"C1":{"pa":8,"pb":9,"a":1,"b":6},"C2":{"pa":10,"pb":11,"a":6,"b":4},"A3":{"pa":0,"pb":2,"a":6,"b":2},"A4":{"pa":1,"pb":3,"a":1,"b":6},"B3":{"pa":4,"pb":6,"a":5,"b":6},"B4":{"pa":5,"pb":7,"a":6,"b":1},"C3":{"pa":8,"pb":10,"a":4,"b":5},"C4":{"pa":9,"pb":11,"a":6,"b":5},"A5":{"pa":0,"pb":3,"a":4,"b":6},"A6":{"pa":1,"pb":2,"a":6,"b":3},"B5":{"pa":4,"pb":7,"a":6,"b":2},"B6":{"pa":5,"pb":6,"a":6,"b":2},"C5":{"pa":8,"pb":11,"a":3,"b":5},"C6":{"pa":9,"pb":10,"a":6,"b":2},"ORO-S1":{"pa":5,"pb":0,"a":6,"b":4},"ORO-S2":{"pa":9,"pb":3,"a":6,"b":1},"PLATA-S1":{"pa":10,"pb":1,"a":0,"b":6},"PLATA-S2":{"pa":4,"pb":11,"a":6,"b":4},"CACA-S1":{"pa":6,"pb":2,"a":6,"b":4},"CACA-S2":{"pa":7,"pb":8,"a":6,"b":5},"ORO-F":{"pa":5,"pb":9,"a":6,"b":3},"ORO-3":{"pa":0,"pb":3,"a":6,"b":4},"PLATA-F":{"pa":1,"pb":4,"a":6,"b":5},"PLATA-3":{"pa":10,"pb":11,"a":1,"b":6},"CACA-F":{"pa":6,"pb":7,"a":4,"b":6},"CACA-3":{"pa":2,"pb":8,"a":6,"b":1}},"ex":{}},{"n":2,"date":"2026-08-11","cat":"Challenger","status":"cerrada","mode":"torneo","results":[{"p":"j61","pl":1,"b":150,"a":0,"n":""},{"p":"j13","pl":1,"b":150,"a":0,"n":""},{"p":"j31","pl":2,"b":130,"a":0,"n":""},{"p":"j66","pl":2,"b":130,"a":0,"n":""},{"p":"j50","pl":3,"b":110,"a":0,"n":""},{"p":"j64","pl":3,"b":110,"a":0,"n":""},{"p":"j14","pl":4,"b":90,"a":20,"n":"Bonificación 6–0"},{"p":"j37","pl":4,"b":90,"a":20,"n":"Bonificación 6–0"},{"p":"j33","pl":5,"b":80,"a":0,"n":""},{"p":"j46","pl":5,"b":80,"a":0,"n":""},{"p":"j15","pl":6,"b":70,"a":0,"n":""},{"p":"j86","pl":6,"b":70,"a":0,"n":""},{"p":"j3","pl":7,"b":60,"a":20,"n":"Bonificación 6–0"},{"p":"j62","pl":7,"b":60,"a":20,"n":"Bonificación 6–0"},{"p":"j108","pl":8,"b":50,"a":0,"n":""},{"p":"j87","pl":8,"b":50,"a":0,"n":""},{"p":"j63","pl":9,"b":40,"a":-20,"n":"Penalización simple"},{"p":"j1","pl":9,"b":40,"a":-20,"n":"Penalización simple"},{"p":"j30","pl":10,"b":30,"a":20,"n":"Bonificación 6–0"},{"p":"j34","pl":10,"b":30,"a":20,"n":"Bonificación 6–0"},{"p":"j21","pl":11,"b":20,"a":0,"n":""},{"p":"j22","pl":11,"b":20,"a":0,"n":""},{"p":"j88","pl":12,"b":10,"a":-40,"n":"Penalización doble"},{"p":"j45","pl":12,"b":10,"a":-40,"n":"Penalización doble"}],"np":12,"start":"20:30","slot":20,"pairs":[["j61","j13"],["j30","j34"],["j14","j37"],["j21","j22"],["j108","j87"],["j31","j66"],["j3","j62"],["j63","j1"],["j88","j45"],["j50","j64"],["j15","j86"],["j33","j46"]],"tomb":[1,2,3,4,5,6,7,8,9,10,11,12],"sc":{"A1":{"pa":0,"pb":1,"a":6,"b":3},"A2":{"pa":2,"pb":3,"a":6,"b":0},"B1":{"pa":4,"pb":5,"a":4,"b":5},"B2":{"pa":6,"pb":7,"a":6,"b":0},"C1":{"pa":8,"pb":9,"a":3,"b":6},"C2":{"pa":10,"pb":11,"a":6,"b":1},"A3":{"pa":0,"pb":2,"a":6,"b":2},"A4":{"pa":1,"pb":3,"a":5,"b":6},"B3":{"pa":4,"pb":6,"a":5,"b":3},"B4":{"pa":5,"pb":7,"a":6,"b":2},"C3":{"pa":8,"pb":10,"a":6,"b":5},"C4":{"pa":9,"pb":11,"a":4,"b":5},"A5":{"pa":0,"pb":3,"a":6,"b":3},"A6":{"pa":1,"pb":2,"a":3,"b":5},"B5":{"pa":4,"pb":7,"a":6,"b":5},"B6":{"pa":5,"pb":6,"a":5,"b":4},"C5":{"pa":8,"pb":11,"a":4,"b":5},"C6":{"pa":9,"pb":10,"a":5,"b":3},"ORO-S1":{"pa":0,"pb":2,"a":6,"b":1},"ORO-S2":{"pa":5,"pb":9,"a":6,"b":1},"PLATA-S1":{"pa":4,"pb":10,"a":2,"b":6},"PLATA-S2":{"pa":11,"pb":6,"a":6,"b":3},"CACA-S1":{"pa":3,"pb":7,"a":4,"b":6},"CACA-S2":{"pa":8,"pb":1,"a":0,"b":6},"ORO-F":{"pa":0,"pb":5,"a":6,"b":1},"ORO-3":{"pa":2,"pb":9,"a":4,"b":6},"PLATA-F":{"pa":10,"pb":11,"a":2,"b":6},"PLATA-3":{"pa":4,"pb":6,"a":1,"b":6},"CACA-F":{"pa":7,"pb":1,"a":6,"b":4},"CACA-3":{"pa":3,"pb":8,"a":6,"b":0}},"ex":{}},{"n":3,"date":"2026-08-18","cat":"Open","status":"cerrada","mode":"torneo","results":[{"p":"j55","pl":1,"b":240,"a":20,"n":"Bonificación 6–0"},{"p":"j66","pl":1,"b":240,"a":20,"n":"Bonificación 6–0"},{"p":"j86","pl":2,"b":200,"a":0,"n":""},{"p":"j15","pl":2,"b":200,"a":0,"n":""},{"p":"j108","pl":3,"b":180,"a":20,"n":"Bonificación 6–0"},{"p":"j87","pl":3,"b":180,"a":20,"n":"Bonificación 6–0"},{"p":"j13","pl":4,"b":160,"a":0,"n":""},{"p":"j37","pl":4,"b":160,"a":-20,"n":"Atraso"},{"p":"j26","pl":5,"b":140,"a":-20,"n":"Penalización simple"},{"p":"j62","pl":5,"b":140,"a":-20,"n":"Penalización simple"},{"p":"j46","pl":6,"b":120,"a":0,"n":""},{"p":"j33","pl":6,"b":120,"a":0,"n":""},{"p":"j34","pl":7,"b":100,"a":0,"n":""},{"p":"j50","pl":7,"b":100,"a":0,"n":""},{"p":"j29","pl":8,"b":80,"a":0,"n":""},{"p":"j22","pl":8,"b":80,"a":0,"n":""},{"p":"j89","pl":9,"b":60,"a":0,"n":""},{"p":"j21","pl":9,"b":60,"a":0,"n":""},{"p":"j19","pl":10,"b":50,"a":20,"n":"Bonificación 6–0"},{"p":"j63","pl":10,"b":50,"a":20,"n":"Bonificación 6–0"},{"p":"j3","pl":11,"b":30,"a":0,"n":""},{"p":"j4","pl":11,"b":30,"a":0,"n":""},{"p":"j18","pl":12,"b":20,"a":-40,"n":"Penalización doble"},{"p":"j1","pl":12,"b":20,"a":-40,"n":"Penalización doble"}],"np":12,"start":"20:30","slot":20,"pairs":[["j13","j37"],["j18","j1"],["j55","j66"],["j19","j63"],["j86","j15"],["j46","j33"],["j34","j50"],["j89","j21"],["j29","j22"],["j108","j87"],["j3","j4"],["j26","j62"]],"tomb":[1,2,3,4,5,6,7,8,9,10,11,12],"sc":{"A1":{"pa":0,"pb":1,"a":6,"b":3},"A2":{"pa":2,"pb":3,"a":5,"b":4},"B1":{"pa":4,"pb":5,"a":6,"b":2},"B2":{"pa":6,"pb":7,"a":4,"b":5},"C1":{"pa":8,"pb":9,"a":6,"b":3},"C2":{"pa":10,"pb":11,"a":3,"b":5},"A3":{"pa":0,"pb":2,"a":4,"b":6},"A4":{"pa":1,"pb":3,"a":6,"b":4},"B3":{"pa":4,"pb":6,"a":3,"b":6},"B4":{"pa":5,"pb":7,"a":5,"b":4},"C3":{"pa":8,"pb":10,"a":4,"b":6},"C4":{"pa":9,"pb":11,"a":6,"b":0},"A5":{"pa":0,"pb":3,"a":6,"b":1},"A6":{"pa":1,"pb":2,"a":0,"b":6},"B5":{"pa":4,"pb":7,"a":6,"b":3},"B6":{"pa":5,"pb":6,"a":6,"b":5},"C5":{"pa":8,"pb":11,"a":4,"b":5},"C6":{"pa":9,"pb":10,"a":6,"b":3},"ORO-S1":{"pa":2,"pb":0,"a":6,"b":3},"ORO-S2":{"pa":9,"pb":4,"a":3,"b":6},"PLATA-S1":{"pa":5,"pb":8,"a":6,"b":5},"PLATA-S2":{"pa":11,"pb":6,"a":6,"b":3},"CACA-S1":{"pa":1,"pb":3,"a":0,"b":6},"CACA-S2":{"pa":7,"pb":10,"a":6,"b":5},"ORO-F":{"pa":2,"pb":4,"a":6,"b":3},"ORO-3":{"pa":0,"pb":9,"a":4,"b":6},"PLATA-F":{"pa":5,"pb":11,"a":4,"b":6},"PLATA-3":{"pa":8,"pb":6,"a":4,"b":6},"CACA-F":{"pa":3,"pb":7,"a":3,"b":6},"CACA-3":{"pa":1,"pb":10,"a":4,"b":6}},"ex":{"j37":{"v":-20,"n":"Atraso"}}},{"n":4,"date":"2026-08-25","cat":"Master","status":"cerrada","mode":"torneo","results":[{"p":"j13","pl":1,"b":320,"a":0,"n":""},{"p":"j61","pl":1,"b":320,"a":0,"n":""},{"p":"j90","pl":2,"b":280,"a":0,"n":""},{"p":"j70","pl":2,"b":280,"a":0,"n":""},{"p":"j50","pl":3,"b":250,"a":0,"n":""},{"p":"j64","pl":3,"b":250,"a":0,"n":""},{"p":"j15","pl":4,"b":230,"a":0,"n":""},{"p":"j86","pl":4,"b":230,"a":0,"n":""},{"p":"j66","pl":5,"b":210,"a":0,"n":""},{"p":"j55","pl":5,"b":210,"a":0,"n":""},{"p":"j46","pl":6,"b":190,"a":0,"n":""},{"p":"j83","pl":6,"b":190,"a":0,"n":""},{"p":"j31","pl":7,"b":170,"a":0,"n":""},{"p":"j14","pl":7,"b":170,"a":0,"n":""},{"p":"j19","pl":8,"b":140,"a":0,"n":""},{"p":"j63","pl":8,"b":140,"a":0,"n":""},{"p":"j33","pl":9,"b":100,"a":0,"n":""},{"p":"j37","pl":9,"b":100,"a":0,"n":""},{"p":"j45","pl":10,"b":80,"a":0,"n":""},{"p":"j34","pl":10,"b":80,"a":0,"n":""},{"p":"j108","pl":11,"b":60,"a":0,"n":""},{"p":"j62","pl":11,"b":60,"a":0,"n":""},{"p":"j84","pl":12,"b":40,"a":0,"n":""},{"p":"j82","pl":12,"b":40,"a":0,"n":""}],"np":12,"start":"20:30","slot":20,"pairs":[["j45","j34"],["j33","j37"],["j90","j70"],["j46","j83"],["j31","j14"],["j15","j86"],["j50","j64"],["j108","j62"],["j84","j82"],["j19","j63"],["j13","j61"],["j66","j55"]],"tomb":[1,2,3,4,5,6,7,8,9,10,11,12],"sc":{"A1":{"pa":0,"pb":1,"a":3,"b":5},"A2":{"pa":2,"pb":3,"a":6,"b":2},"B1":{"pa":4,"pb":5,"a":4,"b":5},"B2":{"pa":6,"pb":7,"a":6,"b":1},"C1":{"pa":8,"pb":9,"a":3,"b":5},"C2":{"pa":10,"pb":11,"a":6,"b":5},"A3":{"pa":0,"pb":2,"a":1,"b":6},"A4":{"pa":1,"pb":3,"a":2,"b":6},"B3":{"pa":4,"pb":6,"a":6,"b":4},"B4":{"pa":5,"pb":7,"a":6,"b":1},"C3":{"pa":8,"pb":10,"a":1,"b":6},"C4":{"pa":9,"pb":11,"a":4,"b":5},"A5":{"pa":0,"pb":3,"a":5,"b":6},"A6":{"pa":1,"pb":2,"a":1,"b":6},"B5":{"pa":4,"pb":7,"a":6,"b":5},"B6":{"pa":5,"pb":6,"a":3,"b":5},"C5":{"pa":8,"pb":11,"a":4,"b":6},"C6":{"pa":9,"pb":10,"a":4,"b":5},"ORO-S1":{"pa":2,"pb":5,"a":6,"b":2},"ORO-S2":{"pa":10,"pb":6,"a":6,"b":3},"PLATA-S1":{"pa":11,"pb":9,"a":6,"b":3},"PLATA-S2":{"pa":3,"pb":4,"a":6,"b":4},"CACA-S1":{"pa":1,"pb":7,"a":6,"b":3},"CACA-S2":{"pa":0,"pb":8,"a":6,"b":5},"ORO-F":{"pa":2,"pb":10,"a":4,"b":6},"ORO-3":{"pa":5,"pb":6,"a":4,"b":6},"PLATA-F":{"pa":11,"pb":3,"a":6,"b":2},"PLATA-3":{"pa":9,"pb":4,"a":1,"b":6},"CACA-F":{"pa":1,"pb":0,"a":6,"b":2},"CACA-3":{"pa":7,"pb":8,"a":6,"b":2}},"ex":{}},{"n":5,"date":"2026-09-01","cat":"Open","status":"cerrada","mode":"torneo","results":[{"p":"j50","pl":1,"b":240,"a":0,"n":""},{"p":"j91","pl":1,"b":240,"a":0,"n":""},{"p":"j86","pl":2,"b":200,"a":0,"n":""},{"p":"j15","pl":2,"b":200,"a":0,"n":""},{"p":"j88","pl":3,"b":180,"a":0,"n":""},{"p":"j93","pl":3,"b":180,"a":0,"n":""},{"p":"j13","pl":4,"b":160,"a":20,"n":"Bonificación 6–0"},{"p":"j45","pl":4,"b":160,"a":20,"n":"Bonificación 6–0"},{"p":"j66","pl":5,"b":140,"a":20,"n":"Bonificación 6–0"},{"p":"j90","pl":5,"b":140,"a":20,"n":"Bonificación 6–0"},{"p":"j43","pl":6,"b":120,"a":0,"n":""},{"p":"j46","pl":6,"b":120,"a":0,"n":""},{"p":"j92","pl":7,"b":100,"a":0,"n":""},{"p":"j37","pl":7,"b":100,"a":0,"n":""},{"p":"j34","pl":8,"b":80,"a":0,"n":""},{"p":"j36","pl":8,"b":80,"a":0,"n":""},{"p":"j63","pl":9,"b":60,"a":0,"n":""},{"p":"j11","pl":9,"b":60,"a":0,"n":""},{"p":"j4","pl":10,"b":50,"a":-20,"n":"Penalización simple"},{"p":"j3","pl":10,"b":50,"a":-20,"n":"Penalización simple"},{"p":"j95","pl":11,"b":30,"a":-20,"n":"Penalización simple"},{"p":"j96","pl":11,"b":30,"a":-20,"n":"Penalización simple"},{"p":"j108","pl":12,"b":20,"a":0,"n":""},{"p":"j94","pl":12,"b":20,"a":0,"n":""}],"np":12,"start":"20:30","slot":20,"pairs":[["j108","j94"],["j63","j11"],["j86","j15"],["j92","j37"],["j34","j36"],["j88","j93"],["j13","j45"],["j95","j96"],["j43","j46"],["j4","j3"],["j66","j90"],["j50","j91"]],"tomb":[1,2,3,4,5,6,7,8,9,10,11,12],"sc":{"A1":{"pa":0,"pb":1,"a":5,"b":4},"A2":{"pa":2,"pb":3,"a":5,"b":4},"B1":{"pa":4,"pb":5,"a":4,"b":5},"B2":{"pa":6,"pb":7,"a":6,"b":0},"C1":{"pa":8,"pb":9,"a":6,"b":2},"C2":{"pa":10,"pb":11,"a":3,"b":5},"A3":{"pa":0,"pb":2,"a":3,"b":6},"A4":{"pa":1,"pb":3,"a":4,"b":5},"B3":{"pa":4,"pb":6,"a":2,"b":6},"B4":{"pa":5,"pb":7,"a":5,"b":3},"C3":{"pa":8,"pb":10,"a":4,"b":5},"C4":{"pa":9,"pb":11,"a":2,"b":6},"A5":{"pa":0,"pb":3,"a":2,"b":6},"A6":{"pa":1,"pb":2,"a":2,"b":6},"B5":{"pa":4,"pb":7,"a":5,"b":3},"B6":{"pa":5,"pb":6,"a":5,"b":4},"C5":{"pa":8,"pb":11,"a":3,"b":5},"C6":{"pa":9,"pb":10,"a":0,"b":6},"ORO-S1":{"pa":11,"pb":6,"a":6,"b":2},"ORO-S2":{"pa":2,"pb":5,"a":6,"b":2},"PLATA-S1":{"pa":10,"pb":4,"a":6,"b":3},"PLATA-S2":{"pa":3,"pb":8,"a":1,"b":6},"CACA-S1":{"pa":0,"pb":9,"a":6,"b":7},"CACA-S2":{"pa":1,"pb":7,"a":6,"b":3},"ORO-F":{"pa":11,"pb":2,"a":6,"b":3},"ORO-3":{"pa":6,"pb":5,"a":3,"b":6},"PLATA-F":{"pa":10,"pb":8,"a":6,"b":1},"PLATA-3":{"pa":4,"pb":3,"a":3,"b":6},"CACA-F":{"pa":9,"pb":1,"a":4,"b":6},"CACA-3":{"pa":0,"pb":7,"a":4,"b":6}},"ex":{}},{"n":6,"date":"2026-09-08","cat":"Challenger","status":"cerrada","mode":"torneo","results":[{"p":"j90","pl":1,"b":150,"a":20,"n":"Bonificación 6–0"},{"p":"j55","pl":1,"b":150,"a":20,"n":"Bonificación 6–0"},{"p":"j66","pl":2,"b":130,"a":0,"n":""},{"p":"j61","pl":2,"b":130,"a":0,"n":""},{"p":"j22","pl":3,"b":110,"a":0,"n":""},{"p":"j47","pl":3,"b":110,"a":0,"n":""},{"p":"j23","pl":4,"b":90,"a":-20,"n":"Penalización simple"},{"p":"j62","pl":4,"b":90,"a":-20,"n":"Penalización simple"},{"p":"j13","pl":5,"b":80,"a":0,"n":""},{"p":"j4","pl":5,"b":80,"a":0,"n":""},{"p":"j50","pl":6,"b":70,"a":0,"n":""},{"p":"j88","pl":6,"b":70,"a":0,"n":""},{"p":"j34","pl":7,"b":60,"a":0,"n":""},{"p":"j36","pl":7,"b":60,"a":0,"n":""},{"p":"j84","pl":8,"b":50,"a":0,"n":""},{"p":"j82","pl":8,"b":50,"a":0,"n":""},{"p":"j91","pl":9,"b":40,"a":20,"n":"Bonificación 6–0"},{"p":"j98","pl":9,"b":40,"a":20,"n":"Bonificación 6–0"},{"p":"j11","pl":10,"b":30,"a":-20,"n":"Penalización simple"},{"p":"j33","pl":10,"b":30,"a":-20,"n":"Penalización simple"},{"p":"j30","pl":11,"b":20,"a":0,"n":""},{"p":"j43","pl":11,"b":20,"a":0,"n":""},{"p":"j97","pl":12,"b":10,"a":0,"n":""},{"p":"j21","pl":12,"b":10,"a":0,"n":""}],"np":12,"start":"20:30","slot":20,"pairs":[["j97","j21"],["j90","j55"],["j91","j98"],["j13","j4"],["j84","j82"],["j66","j61"],["j34","j36"],["j30","j43"],["j11","j33"],["j50","j88"],["j22","j47"],["j23","j62"]],"tomb":[1,2,3,4,5,6,7,8,9,10,11,12],"sc":{"A1":{"pa":0,"pb":1,"a":1,"b":6},"A2":{"pa":2,"pb":3,"a":1,"b":6},"B1":{"pa":4,"pb":5,"a":3,"b":6},"B2":{"pa":6,"pb":7,"a":6,"b":5},"C1":{"pa":8,"pb":9,"a":1,"b":6},"C2":{"pa":10,"pb":11,"a":6,"b":5},"A3":{"pa":0,"pb":2,"a":1,"b":6},"A4":{"pa":1,"pb":3,"a":6,"b":4},"B3":{"pa":4,"pb":6,"a":5,"b":6},"B4":{"pa":5,"pb":7,"a":6,"b":4},"C3":{"pa":8,"pb":10,"a":4,"b":5},"C4":{"pa":9,"pb":11,"a":1,"b":6},"A5":{"pa":0,"pb":3,"a":2,"b":6},"A6":{"pa":1,"pb":2,"a":6,"b":1},"B5":{"pa":4,"pb":7,"a":6,"b":3},"B6":{"pa":5,"pb":6,"a":6,"b":3},"C5":{"pa":8,"pb":11,"a":2,"b":6},"C6":{"pa":9,"pb":10,"a":5,"b":6},"ORO-S1":{"pa":1,"pb":11,"a":6,"b":0},"ORO-S2":{"pa":5,"pb":10,"a":6,"b":2},"PLATA-S1":{"pa":3,"pb":4,"a":6,"b":1},"PLATA-S2":{"pa":6,"pb":9,"a":3,"b":6},"CACA-S1":{"pa":2,"pb":0,"a":6,"b":4},"CACA-S2":{"pa":7,"pb":8,"a":3,"b":6},"ORO-F":{"pa":1,"pb":5,"a":6,"b":2},"ORO-3":{"pa":11,"pb":10,"a":4,"b":6},"PLATA-F":{"pa":3,"pb":9,"a":6,"b":3},"PLATA-3":{"pa":4,"pb":6,"a":4,"b":6},"CACA-F":{"pa":2,"pb":8,"a":6,"b":0},"CACA-3":{"pa":0,"pb":7,"a":4,"b":6}},"ex":{}},{"n":7,"date":"2026-09-15","cat":"Open","status":"cerrada","mode":"torneo","results":[{"p":"j55","pl":1,"b":240,"a":20,"n":"Bonificación 6–0"},{"p":"j90","pl":1,"b":240,"a":20,"n":"Bonificación 6–0"},{"p":"j99","pl":2,"b":200,"a":0,"n":""},{"p":"j100","pl":2,"b":200,"a":0,"n":""},{"p":"j31","pl":3,"b":180,"a":-20,"n":"Penalización simple"},{"p":"j66","pl":3,"b":180,"a":-20,"n":"Penalización simple"},{"p":"j13","pl":4,"b":160,"a":0,"n":""},{"p":"j76","pl":4,"b":160,"a":0,"n":""},{"p":"j37","pl":5,"b":140,"a":0,"n":""},{"p":"j80","pl":5,"b":140,"a":0,"n":""},{"p":"j98","pl":6,"b":120,"a":0,"n":""},{"p":"j91","pl":6,"b":120,"a":0,"n":""},{"p":"j22","pl":7,"b":100,"a":0,"n":""},{"p":"j47","pl":7,"b":100,"a":0,"n":""},{"p":"j40","pl":8,"b":80,"a":0,"n":""},{"p":"j12","pl":8,"b":80,"a":0,"n":""},{"p":"j45","pl":9,"b":60,"a":0,"n":""},{"p":"j34","pl":9,"b":60,"a":0,"n":""},{"p":"j62","pl":10,"b":50,"a":0,"n":""},{"p":"j102","pl":10,"b":50,"a":0,"n":""},{"p":"j46","pl":11,"b":30,"a":20,"n":"Bonificación 6–0"},{"p":"j33","pl":11,"b":30,"a":20,"n":"Bonificación 6–0"},{"p":"j3","pl":12,"b":20,"a":-20,"n":"Penalización simple"},{"p":"j101","pl":12,"b":20,"a":-20,"n":"Penalización simple"}],"np":12,"start":"20:30","slot":20,"pairs":[["j13","j76"],["j46","j33"],["j37","j80"],["j31","j66"],["j98","j91"],["j99","j100"],["j3","j101"],["j22","j47"],["j45","j34"],["j55","j90"],["j40","j12"],["j62","j102"]],"tomb":[1,2,3,4,5,6,7,8,9,10,11,12],"sc":{"A1":{"pa":0,"pb":1,"a":6,"b":3},"A2":{"pa":2,"pb":3,"a":4,"b":5},"B1":{"pa":4,"pb":5,"a":5,"b":4},"B2":{"pa":6,"pb":7,"a":2,"b":6},"C1":{"pa":8,"pb":9,"a":1,"b":6},"C2":{"pa":10,"pb":11,"a":5,"b":4},"A3":{"pa":0,"pb":2,"a":6,"b":4},"A4":{"pa":1,"pb":3,"a":1,"b":6},"B3":{"pa":4,"pb":6,"a":6,"b":3},"B4":{"pa":5,"pb":7,"a":6,"b":2},"C3":{"pa":8,"pb":10,"a":3,"b":4},"C4":{"pa":9,"pb":11,"a":6,"b":3},"A5":{"pa":0,"pb":3,"a":5,"b":4},"A6":{"pa":1,"pb":2,"a":3,"b":6},"B5":{"pa":4,"pb":7,"a":3,"b":5},"B6":{"pa":5,"pb":6,"a":6,"b":1},"C5":{"pa":8,"pb":11,"a":5,"b":3},"C6":{"pa":9,"pb":10,"a":6,"b":3},"ORO-S1":{"pa":9,"pb":3,"a":6,"b":0},"ORO-S2":{"pa":0,"pb":5,"a":4,"b":6},"PLATA-S1":{"pa":7,"pb":2,"a":1,"b":6},"PLATA-S2":{"pa":10,"pb":4,"a":5,"b":6},"CACA-S1":{"pa":8,"pb":6,"a":6,"b":4},"CACA-S2":{"pa":11,"pb":1,"a":6,"b":4},"ORO-F":{"pa":9,"pb":5,"a":6,"b":3},"ORO-3":{"pa":3,"pb":0,"a":6,"b":2},"PLATA-F":{"pa":2,"pb":4,"a":6,"b":3},"PLATA-3":{"pa":7,"pb":10,"a":6,"b":4},"CACA-F":{"pa":8,"pb":11,"a":6,"b":4},"CACA-3":{"pa":6,"pb":1,"a":0,"b":6}},"ex":{}},{"n":8,"date":"2026-09-22","cat":"Master","status":"cerrada","mode":"torneo","results":[{"p":"j90","pl":1,"b":320,"a":0,"n":""},{"p":"j33","pl":1,"b":320,"a":0,"n":""},{"p":"j19","pl":2,"b":280,"a":20,"n":"Bonificación 6–0"},{"p":"j96","pl":2,"b":280,"a":20,"n":"Bonificación 6–0"},{"p":"j13","pl":3,"b":250,"a":0,"n":""},{"p":"j50","pl":3,"b":250,"a":0,"n":""},{"p":"j37","pl":4,"b":230,"a":0,"n":""},{"p":"j22","pl":4,"b":230,"a":0,"n":""},{"p":"j108","pl":5,"b":210,"a":0,"n":""},{"p":"j34","pl":5,"b":210,"a":0,"n":""},{"p":"j47","pl":6,"b":190,"a":0,"n":""},{"p":"j1","pl":6,"b":190,"a":0,"n":""},{"p":"j82","pl":7,"b":170,"a":20,"n":"Bonificación 6–0"},{"p":"j98","pl":7,"b":170,"a":20,"n":"Bonificación 6–0"},{"p":"j43","pl":8,"b":140,"a":-20,"n":"Penalización simple"},{"p":"j66","pl":8,"b":140,"a":-20,"n":"Penalización simple"},{"p":"j23","pl":9,"b":100,"a":0,"n":""},{"p":"j15","pl":9,"b":100,"a":0,"n":""},{"p":"j91","pl":10,"b":80,"a":-20,"n":"Penalización simple"},{"p":"j84","pl":10,"b":80,"a":-20,"n":"Penalización simple"},{"p":"j88","pl":11,"b":60,"a":0,"n":""},{"p":"j45","pl":11,"b":60,"a":0,"n":""},{"p":"j76","pl":12,"b":40,"a":0,"n":""},{"p":"j46","pl":12,"b":40,"a":0,"n":""}],"np":12,"start":"20:30","slot":20,"pairs":[["j23","j15"],["j76","j46"],["j90","j33"],["j13","j50"],["j108","j34"],["j88","j45"],["j47","j1"],["j37","j22"],["j19","j96"],["j43","j66"],["j82","j98"],["j91","j84"]],"tomb":[1,2,3,4,5,6,7,8,9,10,11,12],"sc":{"A1":{"pa":0,"pb":1,"a":4,"b":5},"A2":{"pa":2,"pb":3,"a":4,"b":5},"B1":{"pa":4,"pb":5,"a":3,"b":5},"B2":{"pa":6,"pb":7,"a":5,"b":6},"C1":{"pa":8,"pb":9,"a":5,"b":4},"C2":{"pa":10,"pb":11,"a":2,"b":6},"A3":{"pa":0,"pb":2,"a":5,"b":6},"A4":{"pa":1,"pb":3,"a":3,"b":5},"B3":{"pa":4,"pb":6,"a":6,"b":5},"B4":{"pa":5,"pb":7,"a":2,"b":6},"C3":{"pa":8,"pb":10,"a":4,"b":5},"C4":{"pa":9,"pb":11,"a":6,"b":1},"A5":{"pa":0,"pb":3,"a":3,"b":6},"A6":{"pa":1,"pb":2,"a":1,"b":6},"B5":{"pa":4,"pb":7,"a":4,"b":5},"B6":{"pa":5,"pb":6,"a":2,"b":6},"C5":{"pa":8,"pb":11,"a":6,"b":0},"C6":{"pa":9,"pb":10,"a":4,"b":5},"ORO-S1":{"pa":3,"pb":2,"a":3,"b":6},"ORO-S2":{"pa":7,"pb":8,"a":4,"b":6},"PLATA-S1":{"pa":10,"pb":4,"a":3,"b":6},"PLATA-S2":{"pa":6,"pb":9,"a":6,"b":2},"CACA-S1":{"pa":1,"pb":0,"a":5,"b":6},"CACA-S2":{"pa":5,"pb":11,"a":3,"b":6},"ORO-F":{"pa":2,"pb":8,"a":6,"b":2},"ORO-3":{"pa":3,"pb":7,"a":6,"b":4},"PLATA-F":{"pa":4,"pb":6,"a":6,"b":3},"PLATA-3":{"pa":10,"pb":9,"a":6,"b":0},"CACA-F":{"pa":0,"pb":11,"a":7,"b":6},"CACA-3":{"pa":1,"pb":5,"a":5,"b":6}},"ex":{}},{"n":9,"date":"2026-09-29","cat":"Open Special","status":"cerrada","mode":"torneo","results":[{"p":"j90","pl":1,"b":280,"a":0,"n":""},{"p":"j66","pl":1,"b":280,"a":0,"n":""},{"p":"j50","pl":2,"b":240,"a":0,"n":""},{"p":"j64","pl":2,"b":240,"a":0,"n":""},{"p":"j13","pl":3,"b":210,"a":0,"n":""},{"p":"j4","pl":3,"b":210,"a":0,"n":""},{"p":"j23","pl":4,"b":190,"a":0,"n":""},{"p":"j62","pl":4,"b":190,"a":0,"n":""},{"p":"j45","pl":5,"b":170,"a":0,"n":""},{"p":"j61","pl":5,"b":170,"a":0,"n":""},{"p":"j103","pl":6,"b":150,"a":0,"n":""},{"p":"j98","pl":6,"b":150,"a":0,"n":""},{"p":"j55","pl":7,"b":130,"a":0,"n":""},{"p":"j104","pl":7,"b":130,"a":0,"n":""},{"p":"j37","pl":8,"b":115,"a":0,"n":""},{"p":"j38","pl":8,"b":115,"a":0,"n":""},{"p":"j108","pl":9,"b":100,"a":0,"n":""},{"p":"j105","pl":9,"b":100,"a":0,"n":""},{"p":"j15","pl":10,"b":85,"a":20,"n":"Bonificación 6–0"},{"p":"j31","pl":10,"b":85,"a":20,"n":"Bonificación 6–0"},{"p":"j22","pl":11,"b":70,"a":0,"n":""},{"p":"j29","pl":11,"b":70,"a":0,"n":""},{"p":"j106","pl":12,"b":60,"a":0,"n":""},{"p":"j107","pl":12,"b":60,"a":0,"n":""},{"p":"j26","pl":13,"b":50,"a":0,"n":""},{"p":"j14","pl":13,"b":50,"a":0,"n":""},{"p":"j34","pl":14,"b":40,"a":0,"n":""},{"p":"j36","pl":14,"b":40,"a":0,"n":""},{"p":"j1","pl":15,"b":30,"a":0,"n":""},{"p":"j47","pl":15,"b":30,"a":0,"n":""},{"p":"j88","pl":16,"b":20,"a":-20,"n":"Penalización simple"},{"p":"j63","pl":16,"b":20,"a":-20,"n":"Penalización simple"}],"note":"Fecha especial","np":16,"start":"20:30","slot":20,"pairs":[["j66","j90"],["j26","j14"],["j106","j107"],["j61","j45"],["j50","j64"],["j108","j105"],["j34","j36"],["j37","j38"],["j55","j104"],["j23","j62"],["j1","j47"],["j22","j29"],["j13","j4"],["j31","j15"],["j88","j63"],["j98","j103"]],"tomb":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],"sc":{"A1":{"pa":0,"pb":1,"a":6,"b":2},"A2":{"pa":2,"pb":3,"a":4,"b":5},"B1":{"pa":4,"pb":5,"a":5,"b":3},"B2":{"pa":6,"pb":7,"a":3,"b":6},"C1":{"pa":8,"pb":9,"a":4,"b":5},"C2":{"pa":10,"pb":11,"a":4,"b":5},"D1":{"pa":12,"pb":13,"a":6,"b":2},"D2":{"pa":14,"pb":15,"a":4,"b":5},"A3":{"pa":0,"pb":2,"a":6,"b":1},"A4":{"pa":1,"pb":3,"a":3,"b":5},"B3":{"pa":4,"pb":6,"a":6,"b":2},"B4":{"pa":5,"pb":7,"a":5,"b":4},"C3":{"pa":8,"pb":10,"a":6,"b":2},"C4":{"pa":9,"pb":11,"a":6,"b":4},"D3":{"pa":12,"pb":14,"a":3,"b":5},"D4":{"pa":13,"pb":15,"a":1,"b":6},"A5":{"pa":0,"pb":3,"a":6,"b":5},"A6":{"pa":1,"pb":2,"a":1,"b":6},"B5":{"pa":4,"pb":7,"a":4,"b":5},"B6":{"pa":5,"pb":6,"a":6,"b":3},"C5":{"pa":8,"pb":11,"a":6,"b":1},"C6":{"pa":9,"pb":10,"a":5,"b":4},"D5":{"pa":12,"pb":15,"a":5,"b":2},"D6":{"pa":13,"pb":14,"a":6,"b":0},"ORO-S1":{"pa":0,"pb":12,"a":6,"b":5},"ORO-S2":{"pa":9,"pb":4,"a":5,"b":6},"PLATA-S1":{"pa":8,"pb":3,"a":4,"b":6},"PLATA-S2":{"pa":7,"pb":15,"a":2,"b":6},"CARTON-S1":{"pa":5,"pb":11,"a":6,"b":3},"CARTON-S2":{"pa":2,"pb":13,"a":4,"b":6},"CACA-S1":{"pa":14,"pb":1,"a":6,"b":7},"CACA-S2":{"pa":10,"pb":6,"a":1,"b":6},"ORO-F":{"pa":0,"pb":4,"a":6,"b":2},"ORO-3":{"pa":12,"pb":9,"a":6,"b":1},"PLATA-F":{"pa":3,"pb":15,"a":6,"b":3},"PLATA-3":{"pa":8,"pb":7,"a":6,"b":3},"CARTON-F":{"pa":5,"pb":13,"a":6,"b":2},"CARTON-3":{"pa":11,"pb":2,"a":7,"b":5},"CACA-F":{"pa":1,"pb":6,"a":7,"b":6},"CACA-3":{"pa":14,"pb":10,"a":3,"b":6}},"ex":{}},{"n":10,"date":"2026-10-06","cat":"Challenger","status":"pendiente"},{"n":11,"date":"2026-10-13","cat":"Open","status":"pendiente"},{"n":12,"date":"2026-10-20","cat":"Master","status":"pendiente"},{"n":13,"date":"2026-10-27","cat":"Open","status":"pendiente"},{"n":14,"date":"2026-11-03","cat":"Challenger","status":"pendiente"},{"n":15,"date":"2026-11-10","cat":"Open","status":"pendiente"},{"n":16,"date":"2026-11-17","cat":"Master","status":"pendiente"},{"n":17,"date":"2026-11-24","cat":"Open","status":"pendiente"},{"n":18,"date":"2026-12-01","cat":"Challenger","status":"pendiente"},{"n":19,"date":"2026-12-08","cat":"Open","status":"pendiente"},{"n":20,"date":"2026-12-15","cat":"Master","status":"pendiente"},{"n":21,"date":"2026-12-22","cat":"Master Finals","status":"pendiente"}]}</script>
+<script src="config.js"></script>
 <script id="liga-app">
 (function () {
 'use strict';
@@ -825,6 +841,321 @@ function uiPersist() { return { tab: ui.tab, fecha: ui.fecha, sub: ui.sub, rd: u
 
 var canEdit = false, artifactNS = null, DL = null, saving = false, toastTimer = null, stripScroll = true, jump = false;
 
+/* ---------- Google: datos en vivo y modo organizador (página de GitHub) ---------- */
+var API = String(window.LIGA_API || '').trim();
+var GAS = !!API && !(window.claude && typeof window.claude.use === 'function');
+var K_PIN = 'garito-liga-pin-v1', GDRAFT = 'garito-liga-gdraft-v1';
+var pin = '';
+var srv = { v: null, updated: '', at: 0, ok: false, err: '', loaded: false, pulling: false, saving: false, pending: false, seed: false,
+  fails: 0, conflicts: 0, saveT: null, retryT: null, savedAt: 0, sheet: '', busy: false, backups: null, draftDone: false };
+
+function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+function lsSet(k, v) { try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {} }
+function apiGet(q) { return fetch(API + (API.indexOf('?') < 0 ? '?' : '&') + q + '&t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.json(); }); }
+/* POST como texto plano: así el navegador no hace la consulta previa de CORS, que Apps Script no responde. */
+function apiPost(p) { return fetch(API, { method: 'POST', body: JSON.stringify(p) }).then(function (r) { return r.json(); }); }
+function pad2(n) { return String(n).padStart(2, '0'); }
+function fWhen(iso) { var d = new Date(iso); return isNaN(d) ? '' : WD[d.getDay()] + ' ' + d.getDate() + ' ' + MO[d.getMonth()] + ' a las ' + pad2(d.getHours()) + ':' + pad2(d.getMinutes()); }
+
+/* Fusión de tres vías: aplica sobre la copia del servidor lo que cambió en este teléfono desde la copia base.
+   Las listas de jugadores (id) y de fechas (n) se combinan elemento por elemento; si los dos cambiaron lo mismo, gana este teléfono. */
+function isObj(x) { return !!x && typeof x === 'object' && !Array.isArray(x); }
+function deq(a, b) {
+  if (a === b) return true;
+  if (Array.isArray(a)) { if (!Array.isArray(b) || a.length !== b.length) return false; for (var i = 0; i < a.length; i++) if (!deq(a[i], b[i])) return false; return true; }
+  if (isObj(a)) {
+    if (!isObj(b)) return false;
+    var ka = Object.keys(a), kb = Object.keys(b);
+    if (ka.length !== kb.length) return false;
+    for (var j = 0; j < ka.length; j++) if (!Object.prototype.hasOwnProperty.call(b, ka[j]) || !deq(a[ka[j]], b[ka[j]])) return false;
+    return true;
+  }
+  return false;
+}
+function clone(x) { return x === undefined ? undefined : JSON.parse(JSON.stringify(x)); }
+function listKey(arr) {
+  if (!arr.length) return null;
+  if (arr.every(function (o) { return isObj(o) && o.id != null; })) return 'id';
+  if (arr.every(function (o) { return isObj(o) && typeof o.n === 'number' && o.date != null; })) return 'n';
+  return null;
+}
+function merge3(b, l, r) {
+  if (deq(l, b)) return clone(r);
+  if (deq(r, b) || deq(l, r)) return clone(l);
+  if (isObj(l) && isObj(r)) {
+    var bo = isObj(b) ? b : {}, out = {}, keys = Object.keys(r).concat(Object.keys(l).filter(function (k) { return !(k in r); }));
+    keys.forEach(function (k) {
+      var inL = k in l, inR = k in r, inB = k in bo;
+      if (inL && inR) out[k] = merge3(bo[k], l[k], r[k]);
+      else if (inR) { if (!(inB && deq(r[k], bo[k]))) out[k] = clone(r[k]); }
+      else if (inL) { if (!(inB && deq(l[k], bo[k]))) out[k] = clone(l[k]); }
+    });
+    return out;
+  }
+  if (Array.isArray(l) && Array.isArray(r)) {
+    var key = listKey(l.concat(r));
+    if (key) {
+      var idx = function (a) { var o = {}; (Array.isArray(a) ? a : []).forEach(function (x) { if (isObj(x)) o[x[key]] = x; }); return o; };
+      var B = idx(b), L = idx(l), R = idx(r), ids = [];
+      r.forEach(function (x) { ids.push(x[key]); });
+      l.forEach(function (x) { if (ids.indexOf(x[key]) < 0) ids.push(x[key]); });
+      var res = [];
+      ids.forEach(function (id) {
+        var bv = B[id], lv = L[id], rv = R[id];
+        if (lv && rv) res.push(merge3(bv, lv, rv));
+        else if (lv) { if (!(bv && deq(lv, bv))) res.push(clone(lv)); }
+        else if (rv) { if (!(bv && deq(rv, bv))) res.push(clone(rv)); }
+      });
+      return res;
+    }
+  }
+  return clone(l);
+}
+
+/* Toma la respuesta del servidor. Devuelve true si cambió lo que se ve. */
+function adopt(r) {
+  srv.ok = true; srv.err = ''; srv.at = Date.now();
+  if (r.updated) srv.updated = r.updated;
+  if (r.same) return false;
+  if (r.doc == null) { if (srv.v == null) srv.v = 0; return false; }
+  var d = r.doc; delete d.updated; d = normalize(d);
+  var s = JSON.stringify(d);
+  if (canEdit && (isDirty() || srv.saving)) {
+    if (srv.v != null) return false;
+    /* Primer contacto con cambios ya hechos: se rebasan sobre la copia del servidor. */
+    work = normalize(merge3(JSON.parse(SAVED_STR), work, d)); saved = d; SAVED_STR = s; srv.v = r.v;
+    writeGasDraft(); queueSave(300);
+    return true;
+  }
+  srv.v = r.v;
+  if (s === SAVED_STR) return false;
+  saved = d; SAVED_STR = s; work = JSON.parse(s);
+  return true;
+}
+
+function pull(first) {
+  if (!GAS || srv.pulling) return;
+  srv.pulling = true;
+  apiGet('since=' + (srv.v == null ? '' : srv.v)).then(function (r) {
+    srv.pulling = false;
+    var changed = false;
+    if (r && r.ok) changed = adopt(r);
+    else { srv.err = (r && r.msg) || 'El servidor respondió con un error.'; srv.at = Date.now(); }
+    if (first) afterFirstPull();
+    if (changed || first || !srv.ok) render();
+  }, function () {
+    srv.pulling = false; srv.err = 'net'; srv.at = Date.now();
+    if (first) afterFirstPull();
+    render();
+  });
+}
+function afterFirstPull() {
+  if (srv.loaded) return;
+  srv.loaded = true;
+  if (!canEdit) return;
+  loadGasDraft();
+  if (srv.v === 0) srv.seed = true;
+  if (isDirty() || srv.seed) queueSave(0);
+}
+
+function writeGasDraft() {
+  try {
+    var s = JSON.stringify(work);
+    if (s === SAVED_STR) localStorage.removeItem(GDRAFT);
+    else localStorage.setItem(GDRAFT, JSON.stringify({ v: srv.v, base: SAVED_STR, data: s, at: Date.now() }));
+  } catch (e) {}
+}
+function loadGasDraft() {
+  if (srv.draftDone) return;
+  srv.draftDone = true;
+  var dr = null;
+  try { dr = JSON.parse(lsGet(GDRAFT) || 'null'); } catch (e) { dr = null; }
+  if (!dr || !dr.data) return;
+  try {
+    var local = JSON.parse(dr.data), base = dr.base ? JSON.parse(dr.base) : null;
+    if (srv.v == null) {
+      /* Sin conexión: se retoma tal cual quedó. */
+      if (base) { saved = normalize(base); SAVED_STR = JSON.stringify(saved); }
+      srv.v = dr.v == null ? null : dr.v;
+      work = normalize(local);
+    } else {
+      work = normalize(base ? merge3(base, local, JSON.parse(SAVED_STR)) : local);
+    }
+    if (JSON.stringify(work) === SAVED_STR) { lsSet(GDRAFT, null); return; }
+    ui.notice = 'Recuperé cambios de este teléfono que no alcanzaron a guardarse. Ya se están guardando.';
+  } catch (e) { lsSet(GDRAFT, null); }
+}
+
+function queueSave(ms) {
+  if (!GAS || !canEdit) return;
+  clearTimeout(srv.saveT);
+  srv.saveT = setTimeout(flushSave, ms == null ? 1200 : ms);
+}
+function flushSave() {
+  clearTimeout(srv.saveT); clearTimeout(srv.retryT);
+  if (!GAS || !canEdit) return;
+  if (srv.saving) { srv.pending = true; return; }
+  if (!srv.seed && !isDirty()) return;
+  if (srv.v == null) { pull(); srv.retryT = setTimeout(flushSave, 4000); return; }
+  var sent = JSON.stringify(work), doc = JSON.parse(sent);
+  doc.updated = new Date().toISOString();
+  srv.saving = true; srv.pending = false; render();
+  apiPost({ action: 'save', pin: pin, base: srv.v, doc: doc }).then(function (r) {
+    srv.saving = false;
+    if (r && r.ok) {
+      srv.fails = 0; srv.conflicts = 0; srv.err = ''; srv.ok = true; srv.v = r.v; srv.updated = r.updated || srv.updated;
+      srv.savedAt = srv.at = Date.now();
+      saved = JSON.parse(sent); SAVED_STR = sent;
+      if (srv.seed) { srv.seed = false; toast('Listo: la liga quedó guardada en Google. Desde ahora los cambios se guardan solos.'); }
+      writeGasDraft();
+      if (isDirty() || srv.pending) queueSave(400);
+      setTimeout(render, 2700);
+    } else if (r && r.kind === 'conflict') {
+      srv.conflicts++;
+      if (r.doc == null) { srv.v = 0; srv.seed = true; }
+      else {
+        var remote = r.doc; delete remote.updated; remote = normalize(remote);
+        work = normalize(merge3(JSON.parse(SAVED_STR), work, remote));
+        saved = remote; SAVED_STR = JSON.stringify(remote); srv.v = r.v; srv.updated = r.updated || srv.updated; srv.seed = false;
+      }
+      writeGasDraft();
+      if (srv.conflicts > 4) srv.err = 'Otro teléfono está guardando al mismo tiempo. Toca Reintentar.';
+      else queueSave(250);
+    } else if (r && r.kind === 'pin') {
+      logoutOrganizer();
+      ui.notice = 'El PIN del organizador cambió. Vuelve a entrar para seguir editando: tus cambios quedan guardados en este teléfono.';
+    } else if (r && r.kind === 'busy') {
+      retryLater();
+    } else {
+      srv.err = (r && r.msg) || 'No se pudo guardar.';
+    }
+    render();
+  }, function () { srv.saving = false; retryLater(); render(); });
+}
+function retryLater() {
+  srv.fails++; srv.err = 'net';
+  var wait = Math.min(60000, 3000 * Math.pow(2, Math.min(srv.fails, 5) - 1));
+  clearTimeout(srv.retryT); srv.retryT = setTimeout(flushSave, wait);
+}
+
+function login() {
+  var p = String(ui.pinVal || '').trim();
+  if (!p || srv.busy) return;
+  srv.busy = true; ui.pinErr = ''; render();
+  apiPost({ action: 'check', pin: p }).then(function (r) {
+    srv.busy = false;
+    if (r && r.ok) {
+      pin = p; lsSet(K_PIN, p); canEdit = true; ui.pinOpen = false; ui.pinVal = ''; srv.sheet = r.sheet || '';
+      if (r.v === 0) { srv.v = 0; srv.seed = true; }
+      else if (srv.v !== r.v) pull();
+      loadGasDraft();
+      if (srv.seed || isDirty()) flushSave();
+      if (!srv.seed) toast('Modo organizador activo. Los cambios se guardan solos.');
+    } else {
+      ui.pinErr = (r && r.msg) || 'No se pudo entrar.';
+    }
+    render();
+  }, function () { srv.busy = false; ui.pinErr = 'No hubo respuesta del servidor. Revisa tu conexión y vuelve a intentar.'; render(); });
+}
+function logoutOrganizer() {
+  pin = ''; lsSet(K_PIN, null); canEdit = false; srv.backups = null; srv.draftDone = false; ui.confirm = null;
+  clearTimeout(srv.saveT); clearTimeout(srv.retryT);
+  if (ui.tab === 'ajustes') ui.tab = 'ranking';
+}
+function verifyPin() {
+  apiPost({ action: 'check', pin: pin }).then(function (r) {
+    if (r && r.ok) { srv.sheet = r.sheet || ''; render(); }
+    else if (r && r.kind === 'pin') { logoutOrganizer(); ui.notice = 'El PIN del organizador cambió. Vuelve a entrar en «Soy el organizador», al final de la página.'; render(); }
+  }, function () {});
+}
+function loadBackups() {
+  srv.backups = 'loading'; render();
+  apiPost({ action: 'backups', pin: pin }).then(function (r) {
+    srv.backups = r && r.ok ? r.list : null;
+    if (!(r && r.ok)) toast((r && r.msg) || 'No se pudieron cargar las copias.');
+    render();
+  }, function () { srv.backups = null; toast('No hubo respuesta del servidor.'); render(); });
+}
+function restoreBackup(v) {
+  if (isDirty() || srv.saving) { toast('Espera a que se guarden los cambios y vuelve a intentar.'); return; }
+  srv.busy = true; ui.confirm = null; render();
+  apiPost({ action: 'restore', pin: pin, version: v }).then(function (r) {
+    srv.busy = false;
+    if (r && r.ok) { srv.v = null; srv.backups = null; toast('Listo: la liga volvió a esa copia.'); pull(); }
+    else toast((r && r.msg) || 'No se pudo restaurar.');
+    render();
+  }, function () { srv.busy = false; toast('No hubo respuesta del servidor.'); render(); });
+}
+
+function pollTick() {
+  if (!GAS || document.hidden || srv.pulling) return;
+  if (canEdit && (isDirty() || srv.saving || srv.seed)) return;
+  var live = work.fechas.some(function (f) { return f.status === 'en juego'; });
+  if (Date.now() - srv.at >= (live ? 30000 : 300000)) pull();
+}
+
+function syncBar() {
+  if (!GAS || !canEdit) return '';
+  var dirty = isDirty() || srv.seed;
+  if (srv.err && dirty && !srv.saving) {
+    var msg = srv.err === 'net' ? 'Sin conexión. Los cambios quedan en este teléfono y se guardan solos al volver la señal.' : srv.err;
+    return '<div class="spacer"></div><div class="savebar warn"><div class="wrap sb-in"><span>' + esc(msg) + '</span><div class="btns"><button class="btn ball" data-act="sync-retry">Reintentar</button></div></div></div>';
+  }
+  if (srv.saving || dirty) return '<div class="sync" role="status"><span class="dot"></span>Guardando…</div>';
+  if (srv.savedAt && Date.now() - srv.savedAt < 2500) return '<div class="sync ok" role="status">Guardado ✓</div>';
+  return '';
+}
+
+function footer() {
+  if (!GAS) return '';
+  var h = '<footer class="wrap foot">';
+  if (canEdit) {
+    h += '<p>Modo organizador activo en este teléfono. Los cambios se guardan solos en Google y los jugadores los ven al momento.</p>' +
+      '<div><button class="btn ghost sm" data-act="logout">Salir del modo organizador</button></div>';
+  } else {
+    if (!srv.ok && srv.err) h += '<p>' + (srv.err === 'net' ? 'No se pudo conectar con el servidor: se muestra la última copia publicada.' : esc(srv.err)) + '</p>';
+    else if (srv.updated) h += '<p>Datos actualizados el ' + esc(fWhen(srv.updated)) + '.</p>';
+    h += '<div><button class="link" data-act="pin-open" aria-expanded="' + !!ui.pinOpen + '">Soy el organizador</button></div>';
+    if (ui.pinOpen) {
+      h += '<div class="pinrow"><input id="pin-in" type="password" data-f="ui:pinVal" autocomplete="current-password" placeholder="PIN" aria-label="PIN del organizador" value="' + esc(ui.pinVal || '') + '">' +
+        '<button class="btn primary sm" data-act="login"' + (srv.busy ? ' disabled' : '') + '>' + (srv.busy ? 'Entrando…' : 'Entrar') + '</button></div>' +
+        (ui.pinErr ? '<p class="err" role="alert">' + esc(ui.pinErr) + '</p>' : '');
+    }
+  }
+  return h + '</footer>';
+}
+
+function googleCard() {
+  var h = '<div class="card pad"><h3 class="gh">Datos en Google</h3>' +
+    '<p class="small">La página lee y guarda todo en tu planilla de Google. Los jugadores ven los cambios al momento, sin subir nada a GitHub.</p>' +
+    (srv.updated ? '<p class="muted small">Última versión guardada: ' + esc(fWhen(srv.updated)) + (srv.v ? ' (n.º ' + srv.v + ')' : '') + '.</p>' : '') +
+    '<div class="toolbar">' + (srv.sheet ? '<a class="btn" href="' + esc(srv.sheet) + '" target="_blank" rel="noopener">Abrir la planilla</a>' : '') +
+    '<button class="btn" data-act="bk-load"' + (srv.backups === 'loading' ? ' disabled' : '') + '>' + (srv.backups && srv.backups !== 'loading' ? 'Actualizar copias' : 'Ver copias de seguridad') + '</button></div>';
+  if (srv.backups === 'loading') h += '<p class="muted small">Cargando copias…</p>';
+  else if (Array.isArray(srv.backups)) {
+    h += srv.backups.length ? '<p class="muted small">Se guarda una copia al cerrar o reabrir una fecha y cada 6 horas con cambios. Restaurar deja la liga como estaba en ese momento; lo de ahora queda como otra copia.</p><ul class="bk">' + srv.backups.map(function (b) {
+      return '<li data-k="bk' + b.v + '"><span><b class="n">' + esc(b.when.slice(0, 16)) + '</b> · ' + esc(b.why) + '</span>' +
+        confirmBtn('bk-' + b.v, 'Restaurar', 'bk-restore', 'La liga vuelve a como estaba el ' + b.when.slice(0, 16) + '. Lo de ahora queda guardado como otra copia.', 'danger sm', 'Sí, restaurar') + '</li>';
+    }).join('') + '</ul>' : '<p class="muted small">Todavía no hay copias de seguridad.</p>';
+  }
+  return h + '</div>';
+}
+
+function startGas() {
+  if (saved.updated) { srv.updated = saved.updated; delete saved.updated; delete work.updated; SAVED_STR = JSON.stringify(saved); }
+  pin = lsGet(K_PIN) || '';
+  if (pin) { canEdit = true; verifyPin(); }
+  render();
+  pull(true);
+  setInterval(pollTick, 10000);
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden || Date.now() - srv.at < 20000) return;
+    if (canEdit && (isDirty() || srv.seed)) flushSave(); else if (!srv.saving) pull();
+  });
+  window.addEventListener('online', function () { if (canEdit && (isDirty() || srv.seed)) flushSave(); else pull(); });
+}
+
+
 function rankInfo() {
   var cl = closedF(work), R = computeRanking(work), last = cl[cl.length - 1];
   if (last && cl.length > 1) {
@@ -904,7 +1235,7 @@ function view() {
   var dirty = canEdit && isDirty();
   return header() + tabs() + '<main class="wrap main">' + notices() + body + '</main>' +
     '<datalist id="motivos"><option value="Atraso"><option value="Sanción"><option value="Corrección"><option value="No se presentó"></datalist>' +
-    (dirty ? '<div class="spacer"></div>' + saveBar() : '') +
+    footer() + (GAS ? syncBar() : dirty ? '<div class="spacer"></div>' + saveBar() : '') +
     '<div class="toast" role="status" aria-live="polite">' + esc(ui.toast) + '</div>' + copyModal();
 }
 
@@ -1593,6 +1924,7 @@ function copyModal() {
 
 /* ---------- public website (outside Claude) ---------- */
 function webCard(full) {
+  if (GAS) return full ? googleCard() : '';
   var dirty = isDirty(), web = String(work.league.web || '').trim();
   var btn = DL ? '<button class="btn primary" data-act="dl-web"' + (dirty ? ' disabled' : '') + '>Descargar página web (index.html)</button>'
     : '<span class="muted small">La descarga se activa al abrir la app desde Claude.</span>';
@@ -1700,6 +2032,7 @@ function toast(msg) { ui.toast = msg; render(); clearTimeout(toastTimer); toastT
 
 /* ---------- state changes ---------- */
 function saveDraft() {
+  if (GAS) { writeGasDraft(); queueSave(); return; }
   try {
     var s = JSON.stringify(work);
     if (s === SAVED_STR) localStorage.removeItem(DRAFT_KEY);
@@ -1755,7 +2088,15 @@ function act(a, el) {
     case 'notice-x': ui.notice = ''; break;
     case 'draft-restore': try { work = normalize(JSON.parse(ui.oldDraft.data)); } catch (e) {} ui.oldDraft = null; saveDraft(); break;
     case 'draft-drop': ui.oldDraft = null; try { localStorage.removeItem(DRAFT_KEY); } catch (e) {} break;
-    case 'save': save(); return;
+    case 'save': if (GAS) flushSave(); else save(); return;
+    case 'pin-open': ui.pinOpen = !ui.pinOpen; ui.pinErr = ''; render(); if (ui.pinOpen) { var pinEl = document.getElementById('pin-in'); if (pinEl) pinEl.focus(); } return;
+    case 'login': login(); return;
+    case 'logout':
+      if (isDirty() || srv.saving || srv.seed) { toast('Espera a que se guarden los cambios antes de salir.'); return; }
+      logoutOrganizer(); toast('Saliste del modo organizador.'); return;
+    case 'sync-retry': srv.fails = 0; srv.conflicts = 0; srv.err = ''; flushSave(); return;
+    case 'bk-load': loadBackups(); return;
+    case 'bk-restore': restoreBackup(Number(String(ui.confirm || '').slice(3))); return;
     case 'dl-web': downloadWeb(); return;
     case 'discard': work = JSON.parse(SAVED_STR); ui.confirm = null; try { localStorage.removeItem(DRAFT_KEY); } catch (e) {} toast('Cambios descartados.'); return;
     case 'copy-rank': copy(rankText()); return;
@@ -1784,7 +2125,7 @@ function act(a, el) {
       var rows = isTorneo(f) ? results(f, work, compute(f)).map(function (r) { return { p: r.p, pl: r.pl, b: r.b, a: r.a, n: r.n }; }) : manualResults(f, work);
       if (!rows.length) { ui.confirm = null; toast('No hay jugadores con puesto para sumar.'); return; }
       f.results = rows; f.status = 'cerrada'; if (!isTorneo(f)) delete f.man;
-      ui.confirm = null; saveDraft(); toast('Fecha cerrada. Toca “Guardar y publicar” para actualizar el ranking.'); return;
+      ui.confirm = null; saveDraft(); toast(GAS ? 'Fecha cerrada y sumada al ranking.' : 'Fecha cerrada. Toca “Guardar y publicar” para actualizar el ranking.'); return;
     }
     case 'tomb-draw': {
       if (Object.keys(f.sc || {}).length) return;
@@ -1946,6 +2287,7 @@ app.addEventListener('keydown', function (e) {
   var id = e.target && e.target.id;
   if (id === 'quick-name') { e.preventDefault(); act('quick-add', e.target); }
   if (id === 'new-name') { e.preventDefault(); act('padd', e.target); }
+  if (id === 'pin-in') { e.preventDefault(); login(); }
 });
 
 render();
@@ -1959,6 +2301,8 @@ try {
     if (typeof hot.ready === 'function') hot.ready(applyHot); else applyHot(hot.data);
   }
 } catch (e) {}
+
+if (GAS) startGas();
 
 (function initEdit() {
   try {
