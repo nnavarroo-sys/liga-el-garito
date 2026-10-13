@@ -510,12 +510,14 @@ button.fin-nm:hover,.link.tl:hover{text-decoration:underline;text-underline-offs
 /* Group stage: 1v2 3v4 (R1), 1v3 2v4 (R2), 1v4 2v3 (R3). Courts rotate so every group uses 2 courts per round. */
 var GM = [[0, 1, 1], [2, 3, 1], [0, 2, 2], [1, 3, 2], [0, 3, 3], [1, 2, 3]];
 var FMT = {
+  8: { np: 8, groups: ['A', 'B'], courts: 4, copas: ['ORO', 'PLATA'], gc: { A: [1, 2, 3, 4, 1, 2], B: [3, 4, 1, 2, 3, 4] }, seed: 'cross', tie: 'gf' },
   12: { np: 12, groups: ['A', 'B', 'C'], courts: 6, copas: ['ORO', 'PLATA', 'CACA'], gc: { A: [1, 2, 3, 4, 5, 6], B: [3, 4, 5, 6, 1, 2], C: [5, 6, 1, 2, 3, 4] }, seed: 'mix', tie: 'gc' },
   16: { np: 16, groups: ['A', 'B', 'C', 'D'], courts: 8, copas: ['ORO', 'PLATA', 'CARTON', 'CACA'], gc: { A: [1, 2, 3, 4, 5, 6], B: [3, 4, 5, 6, 7, 8], C: [5, 6, 7, 8, 1, 2], D: [7, 8, 1, 2, 3, 4] }, seed: 'pos', tie: 'gf' }
 };
 var COPA_NAME = { ORO: 'ORO', PLATA: 'PLATA', CARTON: 'CARTÓN', CACA: 'CACA' };
 
 function fmtOf(f) { return FMT[f && f.np] || FMT[12]; }
+function defNp(f) { return f.cat === 'Open Special 2.0' ? 8 : f.cat === 'Open Special' ? 16 : 12; }
 function num(v) { return (v === '' || v == null || isNaN(v)) ? null : Number(v); }
 function inc(o, k) { o[k] = (o[k] || 0) + 1; }
 function signed(v) { return (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v); }
@@ -603,6 +605,8 @@ function compute(f) {
   };
   var T = [0, 1, 2, 3].map(tier), S = {};
   if (F.seed === 'mix') S = { ORO: [T[0][0], T[0][1], T[0][2], T[1][0]], PLATA: [T[1][1], T[1][2], T[2][0], T[2][1]], CACA: [T[2][2], T[3][0], T[3][1], T[3][2]] };
+  /* 2 grupos: ORO con 1° y 2° de cada grupo, PLATA con 3° y 4°. Semis cruzadas: 1°A–2°B y 1°B–2°A (3°A–4°B y 3°B–4°A). */
+  else if (F.seed === 'cross') F.copas.forEach(function (C, ci) { var k = ci * 2, ta = out.tables[G[0]], tb = out.tables[G[1]]; S[C] = [ta[k], tb[k], ta[k + 1], tb[k + 1]]; });
   else F.copas.forEach(function (C, ci) { S[C] = T[ci]; });
   out.tiers = T;
   F.copas.forEach(function (C, ci) {
@@ -626,8 +630,9 @@ function compute(f) {
     };
     var W = function (m) { return m.w ? (m.w === 'a' ? m.pa : m.pb) : null; };
     var L = function (m) { return m.w ? (m.w === 'a' ? m.pb : m.pa) : null; };
-    var s1 = mk(C + '-S1', 'S', 'Semi 1 · 1 vs 4', ci * 2 + 1, sd[0], sd[3], 'Siembra 1', 'Siembra 4');
-    var s2 = mk(C + '-S2', 'S', 'Semi 2 · 2 vs 3', ci * 2 + 2, sd[1], sd[2], 'Siembra 2', 'Siembra 3');
+    var SL = F.seed === 'cross' ? [0, 1, 2, 3].map(function (k) { return (ci * 2 + 1 + (k >> 1)) + '° Grupo ' + G[k % 2]; }) : ['Siembra 1', 'Siembra 2', 'Siembra 3', 'Siembra 4'];
+    var s1 = mk(C + '-S1', 'S', F.seed === 'cross' ? 'Semi 1 · ' + SL[0].replace('Grupo ', '') + ' vs ' + SL[3].replace('Grupo ', '') : 'Semi 1 · 1 vs 4', ci * 2 + 1, sd[0], sd[3], SL[0], SL[3]);
+    var s2 = mk(C + '-S2', 'S', F.seed === 'cross' ? 'Semi 2 · ' + SL[1].replace('Grupo ', '') + ' vs ' + SL[2].replace('Grupo ', '') : 'Semi 2 · 2 vs 3', ci * 2 + 2, sd[1], sd[2], SL[1], SL[2]);
     var fi = mk(C + '-F', 'F', 'Final · ' + (base + 1) + '° y ' + (base + 2) + '°', ci * 2 + 1, W(s1), W(s2), 'Ganador semi 1', 'Ganador semi 2');
     var th = mk(C + '-3', 'T', '3er puesto · ' + (base + 3) + '° y ' + (base + 4) + '°', ci * 2 + 2, L(s1), L(s2), 'Perdedor semi 1', 'Perdedor semi 2');
     if (fi.w) { out.places[base] = W(fi); out.places[base + 1] = L(fi); }
@@ -777,6 +782,9 @@ function normalize(d) {
   if (S.qualify == null) S.qualify = 24;
   if (!S.start) S.start = '20:30';
   if (!S.slot) S.slot = 20;
+  /* Open Special 2.0: 8 parejas en 4 canchas, con la tabla Open del 1° al 8° */
+  if (Array.isArray(d.cats) && d.cats.indexOf('Open Special 2.0') < 0) d.cats.push('Open Special 2.0');
+  if (d.tables && !d.tables['Open Special 2.0']) d.tables['Open Special 2.0'] = [240, 200, 180, 160, 140, 120, 100, 80];
   (d.fechas || []).forEach(function (f) {
     if (f.mode === 'vivo' && f.live) {   /* older Ranking live mode: pairs were already in group order */
       f.mode = 'torneo'; f.np = 12; f.pairs = f.live.pairs || []; f.tomb = f.pairs.map(function (_, i) { return i + 1; });
@@ -1241,6 +1249,7 @@ function inscApply(f, st) {
   var pairs = emptyPairs(N);
   slots.forEach(function (s) { if (s.id) pairs[s.i][s.j] = s.id; });
   if (rows[0] && rows[0].champ && !I.champOk) notes.push('Los campeones aún no confirman su cupo en Inscripción.');
+  if (I.list.length > N && N < I.cupos) notes.push('Inscripción tiene ' + I.list.length + ' parejas: se trajeron las primeras ' + N + '.');
   if (rows.length > I.cupos) notes.push('Inscripción tiene ' + I.cupos + ' cupos titulares: se agregaron ' + plural(rows.length - I.cupos, 'pareja de la reserva', 'parejas de la reserva') + '.');
   if (rows.length < N) notes.push('Inscripción tiene ' + plural(rows.length, 'pareja', 'parejas') + ': faltan ' + (N - rows.length) + ' para completar ' + N + '.');
   if (I.date !== f.date) notes.push('En Inscripción, la Fecha ' + f.n + ' es el ' + fLong(I.date) + '.');
@@ -1536,9 +1545,9 @@ function vFecha(f) {
 
 function vPending(f) {
   if (!canEdit) return empty('Esta fecha aún no se juega', 'Está programada para el ' + fLong(f.date) + '.');
-  var np = ui.pnp[f.n] || (f.cat === 'Open Special' ? 16 : 12), F = FMT[np];
+  var np = ui.pnp[f.n] || defNp(f), F = FMT[np];
   return '<div class="card pad"><div class="grid2"><label class="fld"><span>Categoría</span>' + catSelect(f) + '</label>' +
-    '<label class="fld"><span>Formato</span><select id="pnp-' + f.n + '" data-f="pnp" data-n="' + f.n + '" data-v="' + np + '"><option value="12">12 parejas · 3 grupos · 6 canchas</option><option value="16">16 parejas · 4 grupos · 8 canchas</option></select></label></div>' +
+    '<label class="fld"><span>Formato</span><select id="pnp-' + f.n + '" data-f="pnp" data-n="' + f.n + '" data-v="' + np + '"><option value="8">8 parejas · 2 grupos · 4 canchas</option><option value="12">12 parejas · 3 grupos · 6 canchas</option><option value="16">16 parejas · 4 grupos · 8 canchas</option></select></label></div>' +
     '<p class="muted small">Puntos por jugador (' + esc(f.cat) + '): ' + esc(pointsPreview(f.cat, np)) + '</p>' + tableWarn(f.cat, np) +
     '<p class="muted small">' + F.groups.length + ' grupos de 4 parejas, 3 partidos de grupo por pareja y copas ' + F.copas.map(function (c) { return COPA_NAME[c]; }).join(', ').replace(/, ([^,]+)$/, ' y $1') + ' con semis, final y 3er puesto: 5 rondas desde las ' + esc(work.settings.start) + '.</p>' +
     '<div class="btns"><button class="btn primary" data-act="f-torneo">Armar torneo</button><button class="btn" data-act="f-manual">Cargar puestos directamente</button></div>' +
@@ -1579,7 +1588,7 @@ function vTorneo(f) {
       '<label class="fld inline"><span>Categoría</span>' + catSelect(f) + '</label>' +
       '<label class="fld inline"><span>Inicio</span><input id="ts-' + f.n + '" type="time" data-f="fstart" value="' + esc(f.start) + '"></label>' +
       '<label class="fld inline"><span>Min. por ronda</span><input id="tl-' + f.n + '" class="ni sm" type="number" inputmode="numeric" min="5" data-f="fslot" value="' + esc(f.slot) + '"></label>' +
-      (hasSc ? '' : '<label class="fld inline"><span>Formato</span><select id="tf-' + f.n + '" data-f="fnp" data-v="' + f.np + '"><option value="12">12 parejas</option><option value="16">16 parejas</option></select></label>') +
+      (hasSc ? '' : '<label class="fld inline"><span>Formato</span><select id="tf-' + f.n + '" data-f="fnp" data-v="' + f.np + '"><option value="8">8 parejas</option><option value="12">12 parejas</option><option value="16">16 parejas</option></select></label>') +
       '</div>' + (f.results ? '' : confirmBtn('reset-' + f.n, 'Descartar fecha', 'f-reset', 'Se borran las parejas, la tómbola y los resultados, y la fecha queda pendiente.', 'danger sm', 'Sí, descartar')) + '</div>';
     h += tableWarn(f.cat, F.np);
   }
@@ -1786,9 +1795,11 @@ function stCopas(f, lc) {
   if (!isReady(f)) return notReady(f);
   var F = lc.F, left = lc.gTotal - lc.done;
   var h = '<div class="sec-row"><h3 class="sec">Clasificación a copas</h3>' + (lc.seeds ? '<span class="pill p-cerrada">Definitiva</span>' : '<span class="pill">Provisoria · ' + plural(left, 'partido pendiente', 'partidos pendientes') + '</span>') + '</div>';
-  h += '<p class="muted small">' + (F.seed === 'mix'
+  h += '<p class="muted small">' + (F.seed === 'cross'
+    ? 'ORO: el 1° y el 2° de cada grupo. PLATA: el 3° y el 4° de cada grupo. Semis cruzadas: en ORO, 1° A vs 2° B y 1° B vs 2° A; en PLATA, 3° A vs 4° B y 3° B vs 4° A.</p>'
+    : (F.seed === 'mix'
     ? 'ORO: los 3 primeros y el mejor 2°. PLATA: los otros dos 2° y los 2 mejores 3°. CACA: el peor 3° y los tres 4°. Para comparar parejas de distintos grupos: partidos ganados, diferencia de games y menos games en contra.'
-    : 'ORO: los 1° de cada grupo. PLATA: los 2°. CARTÓN: los 3°. CACA: los 4°. Dentro de cada copa se siembra por partidos ganados, diferencia de games y games a favor.') + ' El número junto a la copa es la siembra: semis 1 vs 4 y 2 vs 3.</p>';
+    : 'ORO: los 1° de cada grupo. PLATA: los 2°. CARTÓN: los 3°. CACA: los 4°. Dentro de cada copa se siembra por partidos ganados, diferencia de games y games a favor.') + ' El número junto a la copa es la siembra: semis 1 vs 4 y 2 vs 3.</p>');
   h += '<div class="tiers">' + [0, 1, 2, 3].map(function (k) { return tierCard(f, lc, k); }).join('') + '</div>';
   h += '<div class="sec-row"><h3 class="sec">Semifinales y finales</h3>' + (lc.seeds ? '<button class="btn sm" data-act="copy-cruces">Copiar cruces para WhatsApp</button>' : '') + '</div>';
   if (!lc.seeds) return h + empty('Los cuadros se arman al terminar los grupos', 'Faltan ' + plural(left, 'partido', 'partidos') + ' de grupo. Con el último resultado se completan las semifinales de cada copa.');
@@ -2297,7 +2308,7 @@ function act(a, el) {
     case 'copy-cruces': copy(crucesText(f)); return;
     case 'copy-res': copy(resultsText(f)); return;
     case 'f-torneo': {
-      var np = Number(ui.pnp[f.n] || (f.cat === 'Open Special' ? 16 : 12)) === 16 ? 16 : 12;
+      var np = Number(ui.pnp[f.n] || defNp(f)); if (!FMT[np]) np = 12;
       clearTorneo(f);
       f.mode = 'torneo'; f.status = 'en juego'; f.np = np; f.start = work.settings.start || '20:30'; f.slot = work.settings.slot || 20;
       f.pairs = emptyPairs(np); f.tomb = nulls(np); f.sc = {}; f.ex = {};
@@ -2361,7 +2372,7 @@ function onField(el) {
     case 'fslot': if (f && val !== '') f.slot = Math.max(5, Math.round(Number(val)) || 20); break;
     case 'fnp': {
       if (!f || Object.keys(f.sc || {}).length) break;
-      var np = Number(val) === 16 ? 16 : 12;
+      var np = FMT[Number(val)] ? Number(val) : 12;
       f.pairs = f.pairs.slice(0, np).concat(emptyPairs(Math.max(0, np - f.pairs.length)));
       f.tomb = nulls(np); f.np = np; break;
     }
