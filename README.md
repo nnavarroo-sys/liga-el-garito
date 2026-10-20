@@ -61,10 +61,11 @@ Ese teléfono queda en modo organizador hasta que toques *Salir del modo organiz
 ## 4. Armar el torneo de cada fecha
 
 1. Entra a **Fechas** y elige la fecha.
-2. Elige la categoría y el formato, y toca **Armar torneo**. Hay tres formatos:
+2. Elige la categoría y el formato, y toca **Armar torneo**. Hay cuatro formatos:
    - **12 parejas:** 3 grupos en 6 canchas, copas Oro, Plata y Caca.
    - **16 parejas:** 4 grupos en 8 canchas, para el Open Special.
    - **8 parejas:** 2 grupos en 4 canchas, para el Open Special 2.0. A la Copa de Oro van el 1° y el 2° de cada grupo (semis 1° A vs 2° B y 1° B vs 2° A) y a la Copa de Plata el 3° y el 4° (3° A vs 4° B y 3° B vs 4° A). Reparte la tabla Open del 1° al 8°, que se puede cambiar en Ajustes.
+   - **10 parejas:** 2 grupos de 5 en 5 canchas, para el Master Special 2.0. Son 4 rondas de grupo sin parejas libres: en cada ronda juegan 2 partidos por grupo y la pareja libre de un grupo juega contra la libre del otro; ese partido suma en la tabla de su grupo. En la ronda 5 se juega la final por puestos: 1° A vs 1° B define el 1° y 2° de la fecha, 2° A vs 2° B el 3° y 4°, y así hasta el 9° y 10°. Cada pareja juega 4 partidos, así que no todas se enfrentan con todas las de su grupo. Reparte la tabla Master del 1° al 10°.
 3. **Registro:** las parejas llegan solas desde Inscripción, en el mismo orden de su lista: los campeones primero y luego los titulares.
    - Si un nombre de Inscripción no está en la lista de jugadores, aparece en un cuadro para que elijas quién es o lo agregues como jugador nuevo. La próxima vez se reconoce solo.
    - Los nombres que se asociaron por parecido (por ejemplo, «Lucas» con Lucas Troya) se muestran para que los revises.

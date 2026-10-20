@@ -512,16 +512,22 @@ var GM = [[0, 1, 1], [2, 3, 1], [0, 2, 2], [1, 3, 2], [0, 3, 3], [1, 2, 3]];
 var FMT = {
   8: { np: 8, groups: ['A', 'B'], courts: 4, copas: ['ORO', 'PLATA'], gc: { A: [1, 2, 3, 4, 1, 2], B: [3, 4, 1, 2, 3, 4] }, seed: 'cross', tie: 'gf' },
   12: { np: 12, groups: ['A', 'B', 'C'], courts: 6, copas: ['ORO', 'PLATA', 'CACA'], gc: { A: [1, 2, 3, 4, 5, 6], B: [3, 4, 5, 6, 1, 2], C: [5, 6, 1, 2, 3, 4] }, seed: 'mix', tie: 'gc' },
-  16: { np: 16, groups: ['A', 'B', 'C', 'D'], courts: 8, copas: ['ORO', 'PLATA', 'CARTON', 'CACA'], gc: { A: [1, 2, 3, 4, 5, 6], B: [3, 4, 5, 6, 7, 8], C: [5, 6, 7, 8, 1, 2], D: [7, 8, 1, 2, 3, 4] }, seed: 'pos', tie: 'gf' }
+  16: { np: 16, groups: ['A', 'B', 'C', 'D'], courts: 8, copas: ['ORO', 'PLATA', 'CARTON', 'CACA'], gc: { A: [1, 2, 3, 4, 5, 6], B: [3, 4, 5, 6, 7, 8], C: [5, 6, 7, 8, 1, 2], D: [7, 8, 1, 2, 3, 4] }, seed: 'pos', tie: 'gf' },
+  /* Master Special 2.0: 2 grupos de 5 en 5 canchas. 4 rondas de grupo: en cada una, 2 partidos por grupo y la pareja libre
+     de A juega contra la libre de B (cuenta en la tabla de cada grupo). Ronda 5: final por puestos, 1° A vs 1° B … 5° A vs 5° B. */
+  10: { np: 10, gs: 5, gr: 4, kind: 'pos', groups: ['A', 'B'], courts: 5, copas: [], tie: 'gf',
+    rr: [[0, [1, 4], [2, 3]], [3, [0, 1], [2, 4]], [1, [0, 2], [3, 4]], [4, [0, 3], [1, 2]]],
+    rc: [[1, 2, 3, 4, 5], [3, 4, 5, 1, 2], [5, 1, 2, 3, 4], [2, 3, 4, 5, 1]] }
 };
 var COPA_NAME = { ORO: 'ORO', PLATA: 'PLATA', CARTON: 'CARTÓN', CACA: 'CACA' };
 
 function fmtOf(f) { return FMT[f && f.np] || FMT[12]; }
-function defNp(f) { return f.cat === 'Open Special 2.0' ? 8 : f.cat === 'Open Special' ? 16 : 12; }
+function defNp(f) { return f.cat === 'Master Special 2.0' ? 10 : f.cat === 'Open Special 2.0' ? 8 : f.cat === 'Open Special' ? 16 : 12; }
 function num(v) { return (v === '' || v == null || isNaN(v)) ? null : Number(v); }
 function inc(o, k) { o[k] = (o[k] || 0) + 1; }
 function signed(v) { return (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v); }
-function slotName(pi) { return 'ABCD'.charAt(Math.floor(pi / 4)) + (pi % 4 + 1); }
+function gsOf(f) { return fmtOf(f).gs || 4; }
+function slotName(pi, f) { var gs = f ? gsOf(f) : 4; return 'ABCD'.charAt(Math.floor(pi / gs)) + (pi % gs + 1); }
 
 /* Tómbola: f.pairs is the registration list; f.tomb[i] is the number drawn by pair i.
    Number n goes to slot n-1: 1-4 Grupo A, 5-8 B, 9-12 C, 13-16 D. */
@@ -558,6 +564,7 @@ function decide(s) {
 
 function compute(f) {
   var F = fmtOf(f), sc = f.sc || {}, G = F.groups;
+  if (F.kind === 'pos') return computePos(f, F);
   var out = { F: F, gm: [], tables: {}, notes: {}, done: 0, gTotal: G.length * 6, tiers: null, assign: {}, seeds: null, origin: {}, po: [], poDone: 0, poTotal: F.copas.length * 4, places: new Array(F.np).fill(null), f60: {}, c60: {}, net: {}, complete: false };
   G.forEach(function (g, gi) {
     GM.forEach(function (m, k) {
@@ -638,6 +645,89 @@ function compute(f) {
     if (fi.w) { out.places[base] = W(fi); out.places[base + 1] = L(fi); }
     if (th.w) { out.places[base + 2] = W(th); out.places[base + 3] = L(th); }
   });
+  out.gm.concat(out.po).forEach(function (m) {
+    if (!m.w || !m.s) return;
+    var a = num(m.s.a), b = num(m.s.b);
+    if (a === 6 && b === 0) { inc(out.f60, m.pa); inc(out.c60, m.pb); }
+    if (b === 6 && a === 0) { inc(out.f60, m.pb); inc(out.c60, m.pa); }
+  });
+  for (var p = 0; p < F.np; p++) out.net[p] = (out.f60[p] || 0) - (out.c60[p] || 0);
+  out.complete = out.poDone === out.poTotal;
+  return out;
+}
+
+/* Master Special 2.0: grupos de 5 sin parejas libres y final por puestos */
+function computePos(f, F) {
+  var sc = f.sc || {}, G = F.groups, gs = F.gs;
+  var out = { F: F, gm: [], tables: {}, notes: {}, gcount: {}, done: 0, gTotal: 0, tiers: null, assign: {}, seeds: null, origin: {}, po: [], poDone: 0, poTotal: gs, places: new Array(F.np).fill(null), f60: {}, c60: {}, net: {}, complete: false };
+  F.rr.forEach(function (rd, ri) {
+    var c = F.rc[ri], r = ri + 1;
+    G.forEach(function (g, gi) {
+      [rd[1], rd[2]].forEach(function (mp, j) {
+        var id = g + (ri * 2 + j + 1), s = sc[id] || null;
+        out.gm.push({ id: id, stage: 'G', g: g, r: r, court: c[gi * 2 + j], pa: gi * gs + mp[0], pb: gi * gs + mp[1], s: s, w: decide(s), ready: true });
+      });
+    });
+    var xid = 'X' + r, xs = sc[xid] || null;
+    out.gm.push({ id: xid, stage: 'G', g: 'X', x: true, r: r, court: c[4], pa: rd[0], pb: gs + rd[0], s: xs, w: decide(xs), ready: true });
+  });
+  out.gTotal = out.gm.length;
+  out.gm.forEach(function (m) { if (m.w) out.done++; });
+  var grpOf = function (pi) { return G[Math.floor(pi / gs)]; };
+  G.forEach(function (g, gi) {
+    var rows = Array.from({ length: gs }, function (_, si) { return { pi: gi * gs + si, seed: si, gi: gi, g: g, pj: 0, pg: 0, pp: 0, gf: 0, gc: 0, dg: 0, h2h: 0 }; });
+    var by = {}; rows.forEach(function (r) { by[r.pi] = r; });
+    var mine = out.gm.filter(function (m) { return m.g === g || (m.x && (grpOf(m.pa) === g || grpOf(m.pb) === g)); });
+    var played = mine.filter(function (m) { return m.w; });
+    out.gcount[g] = { played: played.length, total: mine.length };
+    played.forEach(function (m) {
+      var a = num(m.s.a), b = num(m.s.b);
+      [[m.pa, a, b, m.w === 'a'], [m.pb, b, a, m.w === 'b']].forEach(function (x) {
+        var R = by[x[0]];
+        if (!R) return;
+        R.pj++; R.gf += x[1]; R.gc += x[2];
+        if (x[3]) R.pg++; else R.pp++;
+      });
+    });
+    rows.forEach(function (r) { r.dg = r.gf - r.gc; });
+    var intra = played.filter(function (m) { return !m.x; });
+    rows.forEach(function (r) {
+      rows.forEach(function (q) {
+        if (q === r || q.pg !== r.pg || q.dg !== r.dg) return;
+        intra.forEach(function (m) { if ((m.pa === r.pi && m.pb === q.pi && m.w === 'a') || (m.pb === r.pi && m.pa === q.pi && m.w === 'b')) r.h2h++; });
+      });
+    });
+    rows.sort(function (x, y) { return y.pg - x.pg || y.dg - x.dg || y.h2h - x.h2h || y.gf - x.gf || x.seed - y.seed; });
+    rows.forEach(function (r, i) { r.pos = i + 1; });
+    var notes = [];
+    if (played.length === mine.length) {
+      for (var i = 1; i < rows.length; i++) {
+        var a = rows[i - 1], b = rows[i];
+        if (a.pg !== b.pg || a.dg !== b.dg) continue;
+        notes.push({ hi: i + 1, c: a.h2h !== b.h2h ? 'h2h' : a.gf !== b.gf ? 'gf' : 'orden' });
+      }
+    }
+    out.tables[g] = rows; out.notes[g] = notes;
+  });
+  for (var k = 0; k < gs; k++) {
+    var ra = out.tables[G[0]][k], rb = out.tables[G[1]][k];
+    var aFirst = (rb.pg - ra.pg || rb.dg - ra.dg || rb.gf - ra.gf) <= 0;
+    [[ra, aFirst ? 1 : 2], [rb, aFirst ? 2 : 1]].forEach(function (x) {
+      var r = x[0];
+      out.assign[r.pi] = { copa: '', seed: r.pos, overall: 2 * k + x[1], pos: r.pos, g: r.g, pg: r.pg, dg: r.dg, gf: r.gf, gc: r.gc };
+    });
+  }
+  if (out.done === out.gTotal) { out.seeds = {}; out.origin = out.assign; }
+  for (var q = 0; q < gs; q++) {
+    var pa = out.seeds ? out.tables[G[0]][q].pi : null, pb = out.seeds ? out.tables[G[1]][q].pi : null;
+    var id = 'P' + (q + 1), s = sc[id], ready = pa != null && pb != null;
+    var ok = !!(ready && s && s.pa === pa && s.pb === pb);
+    var stale = !!(ready && s && !ok && (num(s.a) != null || num(s.b) != null));
+    var m = { id: id, stage: 'P', ci: q, r: F.gr + 1, label: (q + 1) + '° A vs ' + (q + 1) + '° B · Puestos ' + (2 * q + 1) + '° y ' + (2 * q + 2) + '°', court: q + 1, pa: pa, pb: pb,
+      la: (q + 1) + '° Grupo A', lb: (q + 1) + '° Grupo B', s: ok ? s : null, stale: stale, w: ok ? decide(s) : null, ready: ready };
+    if (m.w) { out.poDone++; out.places[2 * q] = m.w === 'a' ? pa : pb; out.places[2 * q + 1] = m.w === 'a' ? pb : pa; }
+    out.po.push(m);
+  }
   out.gm.concat(out.po).forEach(function (m) {
     if (!m.w || !m.s) return;
     var a = num(m.s.a), b = num(m.s.b);
@@ -785,6 +875,9 @@ function normalize(d) {
   /* Open Special 2.0: 8 parejas en 4 canchas, con la tabla Open del 1° al 8° */
   if (Array.isArray(d.cats) && d.cats.indexOf('Open Special 2.0') < 0) d.cats.push('Open Special 2.0');
   if (d.tables && !d.tables['Open Special 2.0']) d.tables['Open Special 2.0'] = [240, 200, 180, 160, 140, 120, 100, 80];
+  /* Master Special 2.0: 10 parejas en 5 canchas, con la tabla Master del 1° al 10° */
+  if (Array.isArray(d.cats) && d.cats.indexOf('Master Special 2.0') < 0) d.cats.push('Master Special 2.0');
+  if (d.tables && !d.tables['Master Special 2.0']) d.tables['Master Special 2.0'] = [320, 280, 250, 230, 210, 190, 170, 140, 100, 80];
   (d.fechas || []).forEach(function (f) {
     if (f.mode === 'vivo' && f.live) {   /* older Ranking live mode: pairs were already in group order */
       f.mode = 'torneo'; f.np = 12; f.pairs = f.live.pairs || []; f.tomb = f.pairs.map(function (_, i) { return i + 1; });
@@ -1188,7 +1281,8 @@ function suspLevel(x, s) {
 function suspended(susp, names) { return (susp || []).some(function (s) { return names.some(function (x) { return suspLevel(x, s) === 2; }); }); }
 
 /* La lista en el mismo orden que muestra Inscripción: campeones en el cupo 1, luego por hora de inscripción.
-   Una pareja que se anotó con Partner y no lo completó antes del viernes a las 12:00 pasa detrás de las demás. */
+   Una pareja que se anotó con Partner y no lo completó antes del viernes a las 12:00 pasa detrás de las demás.
+   Los morosos van al final (también los campeones) y los movimientos a mano del organizador fijan su lugar. */
 function inscList(st, n) {
   var cal = (st.calendar || []).filter(function (c) { return c.n === n; })[0], L = st.lists && st.lists[n];
   if (!cal || !L) return null;
@@ -1198,12 +1292,15 @@ function inscList(st, n) {
     var pending = isPartnerName(e.a) || isPartnerName(e.b);
     var late = !!(e.p0 && !pending && e.pt != null && e.pt > deadline);
     var penal = after && !e.ok && !!e.p0 && e.t < deadline && (pending || late);
-    rows.push({ a: e.a, b: e.b, k: penal ? deadline : e.t, s: e.s || 0 });
+    var man = e.mk != null && !(penal && (e.mt || 0) < deadline);
+    if (man) penal = false;
+    rows.push({ a: e.a, b: e.b, mor: e.pago === 'moroso', k: man ? e.mk : penal ? deadline : e.t, sk: man && e.ms != null ? e.ms : (e.s || 0) });
   });
-  rows.sort(function (x, y) { return (x.k - y.k) || (x.s - y.s); });
-  var ch = L.champs || [], champ = L.hold && String(ch[0] || '').trim() && String(ch[1] || '').trim();
+  var ch = L.champs || [], champ = L.hold && String(ch[0] || '').trim() && String(ch[1] || '').trim() ? { a: ch[0], b: ch[1], champ: true, mor: L.champPago === 'moroso' } : null;
+  if (champ && champ.mor) { champ.k = L.champOk ? L.champOk.t : zdayAt(cal.date, -6, st.apertura != null ? Number(st.apertura) : 9, 0); champ.sk = -1; rows.push(champ); }
+  rows.sort(function (x, y) { return ((x.mor ? 1 : 0) - (y.mor ? 1 : 0)) || (x.k - y.k) || (x.sk - y.sk); });
   return { date: cal.date, cupos: Math.max(1, Math.round(+L.cupos) || 12), champOk: !!L.champOk,
-    list: (champ ? [{ a: ch[0], b: ch[1], champ: true }] : []).concat(rows) };
+    list: (champ && !champ.mor ? [champ] : []).concat(rows) };
 }
 
 /* Jugadores: nombre completo, nombre sin apodo, apodo entre paréntesis y nombres aprendidos de Inscripción */
@@ -1248,7 +1345,7 @@ function inscApply(f, st) {
   slots.forEach(function (s) { if (s.partner) partner.push([s.i, s.j, cleanIn(rows[s.i][s.j ? 'a' : 'b'])]); });
   var pairs = emptyPairs(N);
   slots.forEach(function (s) { if (s.id) pairs[s.i][s.j] = s.id; });
-  if (rows[0] && rows[0].champ && !I.champOk) notes.push('Los campeones aún no confirman su cupo en Inscripción.');
+  if (rows.some(function (r) { return r.champ; }) && !I.champOk) notes.push('Los campeones aún no confirman su cupo en Inscripción.');
   if (I.list.length > N && N < I.cupos) notes.push('Inscripción tiene ' + I.list.length + ' parejas: se trajeron las primeras ' + N + '.');
   if (rows.length > I.cupos) notes.push('Inscripción tiene ' + I.cupos + ' cupos titulares: se agregaron ' + plural(rows.length - I.cupos, 'pareja de la reserva', 'parejas de la reserva') + '.');
   if (rows.length < N) notes.push('Inscripción tiene ' + plural(rows.length, 'pareja', 'parejas') + ': faltan ' + (N - rows.length) + ' para completar ' + N + '.');
@@ -1370,10 +1467,10 @@ function pairLines(f, pi) {
   var p = pairOf(f, pi);
   if (p[0] && p[1]) return '<span>' + esc(nm(p[0])) + '</span><span>' + esc(nm(p[1])) + '</span>';
   if (p[0] || p[1]) return '<span>' + esc(nm(p[0] || p[1])) + '</span><span class="muted">Falta compañero</span>';
-  return '<span class="muted">Pareja ' + slotName(pi) + '</span>';
+  return '<span class="muted">Pareja ' + slotName(pi, f) + '</span>';
 }
-function pairCell(f, pi) { return '<div class="pc"><b class="slot n">' + slotName(pi) + '</b><span class="pn">' + pairLines(f, pi) + '</span></div>'; }
-function pairText(f, pi) { var p = pairOf(f, pi); return p[0] && p[1] ? nm(p[0]) + ' / ' + nm(p[1]) : 'Pareja ' + slotName(pi); }
+function pairCell(f, pi) { return '<div class="pc"><b class="slot n">' + slotName(pi, f) + '</b><span class="pn">' + pairLines(f, pi) + '</span></div>'; }
+function pairText(f, pi) { var p = pairOf(f, pi); return p[0] && p[1] ? nm(p[0]) + ' / ' + nm(p[1]) : 'Pareja ' + slotName(pi, f); }
 function copaChip(c) { return c ? '<span class="copa c-' + slug(c) + '">' + COPA_NAME[c] + '</span>' : '<span></span>'; }
 function copaOfPl(np, pl) { var F = FMT[np]; return F ? (F.copas[Math.floor((pl - 1) / 4)] || '') : ''; }
 function npOf(f) { return isTorneo(f) ? fmtOf(f).np : Math.max.apply(null, [0].concat((f.results || []).map(function (r) { return r.pl; }))); }
@@ -1409,11 +1506,12 @@ function tableWarn(cat, np) {
   var t = work.tables[cat] || [];
   return np > t.length ? '<p class="note warn">La tabla ' + esc(cat) + ' tiene puntos hasta el ' + t.length + '° puesto: del ' + (t.length + 1) + '° al ' + np + '° suman 0. Para 16 parejas usa Open Special.</p>' : '';
 }
-function roundMatches(lc, r) { return (r <= 3 ? lc.gm : lc.po).filter(function (m) { return m.r === r; }).sort(function (a, b) { return a.court - b.court; }); }
+function grOf(F) { return (F && F.gr) || 3; }
+function roundMatches(lc, r) { return (r <= grOf(lc.F) ? lc.gm : lc.po).filter(function (m) { return m.r === r; }).sort(function (a, b) { return a.court - b.court; }); }
 function curRound(lc) { for (var r = 1; r <= 5; r++) { if (roundMatches(lc, r).some(function (m) { return !m.w; })) return r; } return 5; }
 function roundOf(f, lc) { var r = ui.rd[f.n]; return r >= 1 && r <= 5 ? r : curRound(lc); }
-function tagOf(m) { return m.stage === 'G' ? 'Grupo ' + m.g : COPA_NAME[m.c] + ' · ' + m.label.split(' · ')[0]; }
-function roundName(r) { return r <= 3 ? 'Fase de grupos' : r === 4 ? 'Semifinales de copa' : 'Finales y 3er puesto'; }
+function tagOf(m) { return m.stage === 'G' ? (m.x ? 'Cruce de grupos' : 'Grupo ' + m.g) : m.stage === 'P' ? 'Final · ' + m.label.split(' · ')[0] : COPA_NAME[m.c] + ' · ' + m.label.split(' · ')[0]; }
+function roundName(r, F) { return r <= grOf(F) ? 'Fase de grupos' : F && F.kind === 'pos' ? 'Final por puestos' : r === 4 ? 'Semifinales de copa' : 'Finales y 3er puesto'; }
 function stageOf(f, lc) {
   var N = lc.F.np, pdn = pairsDone(f);
   if (f.status === 'cerrada') return 'cerrada';
@@ -1547,9 +1645,11 @@ function vPending(f) {
   if (!canEdit) return empty('Esta fecha aún no se juega', 'Está programada para el ' + fLong(f.date) + '.');
   var np = ui.pnp[f.n] || defNp(f), F = FMT[np];
   return '<div class="card pad"><div class="grid2"><label class="fld"><span>Categoría</span>' + catSelect(f) + '</label>' +
-    '<label class="fld"><span>Formato</span><select id="pnp-' + f.n + '" data-f="pnp" data-n="' + f.n + '" data-v="' + np + '"><option value="8">8 parejas · 2 grupos · 4 canchas</option><option value="12">12 parejas · 3 grupos · 6 canchas</option><option value="16">16 parejas · 4 grupos · 8 canchas</option></select></label></div>' +
+    '<label class="fld"><span>Formato</span><select id="pnp-' + f.n + '" data-f="pnp" data-n="' + f.n + '" data-v="' + np + '"><option value="8">8 parejas · 2 grupos · 4 canchas</option><option value="10">10 parejas · 2 grupos de 5 · 5 canchas</option><option value="12">12 parejas · 3 grupos · 6 canchas</option><option value="16">16 parejas · 4 grupos · 8 canchas</option></select></label></div>' +
     '<p class="muted small">Puntos por jugador (' + esc(f.cat) + '): ' + esc(pointsPreview(f.cat, np)) + '</p>' + tableWarn(f.cat, np) +
-    '<p class="muted small">' + F.groups.length + ' grupos de 4 parejas, 3 partidos de grupo por pareja y copas ' + F.copas.map(function (c) { return COPA_NAME[c]; }).join(', ').replace(/, ([^,]+)$/, ' y $1') + ' con semis, final y 3er puesto: 5 rondas desde las ' + esc(work.settings.start) + '.</p>' +
+    '<p class="muted small">' + (F.kind === 'pos'
+      ? '2 grupos de 5 parejas. 4 rondas de grupo sin parejas libres: en cada ronda, la pareja libre de un grupo juega contra la libre del otro. Ronda 5, final por puestos en las 5 canchas: 1° A vs 1° B, 2° A vs 2° B … 5° A vs 5° B. Desde las ' + esc(work.settings.start) + '.'
+      : F.groups.length + ' grupos de 4 parejas, 3 partidos de grupo por pareja y copas ' + F.copas.map(function (c) { return COPA_NAME[c]; }).join(', ').replace(/, ([^,]+)$/, ' y $1') + ' con semis, final y 3er puesto: 5 rondas desde las ' + esc(work.settings.start) + '.') + '</p>' +
     '<div class="btns"><button class="btn primary" data-act="f-torneo">Armar torneo</button><button class="btn" data-act="f-manual">Cargar puestos directamente</button></div>' +
     '<p class="muted small">“Armar torneo” abre el registro con tómbola, grupos, canchas y resultados partido a partido; al cerrarlo, los puntos pasan solos al ranking. Usa “Cargar puestos directamente” si solo tienes la clasificación final.</p></div>';
 }
@@ -1575,7 +1675,7 @@ function stepNav(f, lc, sub) {
   };
   return '<nav class="steps" aria-label="Pasos del torneo">' + STEPS.map(function (s, i) {
     var x = info[s[0]];
-    return '<button class="step' + (sub === s[0] ? ' on' : '') + (x[1] ? ' done' : '') + '" data-k="sp-' + s[0] + '" data-act="sub" data-v="' + s[0] + '" aria-current="' + (sub === s[0] ? 'step' : 'false') + '"><b class="n">' + (x[1] && sub !== s[0] ? '✓' : i + 1) + '</b><span>' + s[1] + '<i>' + esc(x[0]) + '</i></span></button>';
+    return '<button class="step' + (sub === s[0] ? ' on' : '') + (x[1] ? ' done' : '') + '" data-k="sp-' + s[0] + '" data-act="sub" data-v="' + s[0] + '" aria-current="' + (sub === s[0] ? 'step' : 'false') + '"><b class="n">' + (x[1] && sub !== s[0] ? '✓' : i + 1) + '</b><span>' + (s[0] === 'copas' && lc.F.kind === 'pos' ? 'Cruces' : s[1]) + '<i>' + esc(x[0]) + '</i></span></button>';
   }).join('') + '</nav>';
 }
 
@@ -1588,7 +1688,7 @@ function vTorneo(f) {
       '<label class="fld inline"><span>Categoría</span>' + catSelect(f) + '</label>' +
       '<label class="fld inline"><span>Inicio</span><input id="ts-' + f.n + '" type="time" data-f="fstart" value="' + esc(f.start) + '"></label>' +
       '<label class="fld inline"><span>Min. por ronda</span><input id="tl-' + f.n + '" class="ni sm" type="number" inputmode="numeric" min="5" data-f="fslot" value="' + esc(f.slot) + '"></label>' +
-      (hasSc ? '' : '<label class="fld inline"><span>Formato</span><select id="tf-' + f.n + '" data-f="fnp" data-v="' + f.np + '"><option value="8">8 parejas</option><option value="12">12 parejas</option><option value="16">16 parejas</option></select></label>') +
+      (hasSc ? '' : '<label class="fld inline"><span>Formato</span><select id="tf-' + f.n + '" data-f="fnp" data-v="' + f.np + '"><option value="8">8 parejas</option><option value="10">10 parejas</option><option value="12">12 parejas</option><option value="16">16 parejas</option></select></label>') +
       '</div>' + (f.results ? '' : confirmBtn('reset-' + f.n, 'Descartar fecha', 'f-reset', 'Se borran las parejas, la tómbola y los resultados, y la fecha queda pendiente.', 'danger sm', 'Sí, descartar')) + '</div>';
     h += tableWarn(f.cat, F.np);
   }
@@ -1627,10 +1727,10 @@ function stRegistro(f, lc, edit) {
     if (hasSc) h += confirmBtn('retomb-' + f.n, 'Rehacer tómbola', 'tomb-redo', 'Ya hay resultados cargados. Rehacer la tómbola borra los números y todos los resultados de la fecha.', 'danger', 'Sí, rehacer y borrar');
     else h += '<button class="btn primary" data-act="tomb-draw">' + (S.count ? 'Volver a sortear la tómbola' : 'Sortear tómbola') + '</button>' + (S.count ? '<button class="btn" data-act="tomb-clear">Borrar números</button>' : '');
     h += quickAdd() + '</div>';
-    h += '<p class="muted small">' + (INSC ? 'La tómbola se hace en vivo el día de la fecha: toca “Sortear tómbola” o elige el número que sacó cada pareja. ' : 'Registra las ' + N + ' parejas y toca “Sortear tómbola”, o elige el número que sacó cada pareja si la tómbola se hizo en el club. ') + F.groups.map(function (G, gi) { return 'Del ' + (gi * 4 + 1) + ' al ' + (gi * 4 + 4) + ': Grupo ' + G; }).join(' · ') + '.</p>';
+    h += '<p class="muted small">' + (INSC ? 'La tómbola se hace en vivo el día de la fecha: toca “Sortear tómbola” o elige el número que sacó cada pareja. ' : 'Registra las ' + N + ' parejas y toca “Sortear tómbola”, o elige el número que sacó cada pareja si la tómbola se hizo en el club. ') + F.groups.map(function (G, gi) { var gs = F.gs || 4; return 'Del ' + (gi * gs + 1) + ' al ' + (gi * gs + gs) + ': Grupo ' + G; }).join(' · ') + '.</p>';
   }
   h += '<ol class="reg">' + f.pairs.map(function (p, i) {
-    var n = Number(f.tomb[i]), has = n >= 1 && n <= N, slot = has ? slotName(n - 1) : '';
+    var n = Number(f.tomb[i]), has = n >= 1 && n <= N, slot = has ? slotName(n - 1, f) : '';
     var grp = '<span class="reg-g">' + (has ? '<b class="n">' + slot + '</b><i>Grupo ' + slot.charAt(0) + '</i>' : '<i>Sin grupo</i>') + '</span>';
     if (!edit) {
       return '<li class="reg-r ro" data-k="rg' + i + '"><span class="reg-i n">' + (i + 1) + '</span><div class="reg-names">' + (p[0] || p[1] ? '<span>' + esc(p[0] ? nm(p[0]) : '—') + '</span><span>' + esc(p[1] ? nm(p[1]) : '—') + '</span>' : '<span class="muted">Sin registrar</span>') + '</div><div class="reg-t"><span class="reg-num"><span class="lab">N° tómbola</span><b class="n">' + (has ? n : '—') + '</b></span>' + grp + '</div></li>';
@@ -1650,13 +1750,17 @@ function stGrupos(f, lc) {
   var F = lc.F;
   return '<div class="' + (F.np === 16 ? 'groups4' : 'groups3') + '">' + F.groups.map(function (G, gi) {
     var ms = lc.gm.filter(function (m) { return m.g === G; }).sort(function (a, b) { return a.r - b.r || a.court - b.court; });
-    return '<div class="card pad" data-k="gr-' + G + '"><h3 class="gh">Grupo ' + G + '</h3><ol class="grp-p">' + [0, 1, 2, 3].map(function (si) {
-      var pi = gi * 4 + si;
+    return '<div class="card pad" data-k="gr-' + G + '"><h3 class="gh">Grupo ' + G + '</h3><ol class="grp-p">' + range(0, (F.gs || 4) - 1).map(function (si) {
+      var pi = gi * (F.gs || 4) + si;
       return '<li><b class="slot n">' + G + (si + 1) + '</b><span class="grp-n">' + pairLines(f, pi) + '</span><span class="muted small n">N° ' + (pi + 1) + '</span></li>';
     }).join('') + '</ol><h4 class="lab">Partidos</h4><ul class="fx">' + ms.map(function (m) {
-      return '<li><span class="fx-m n">R' + m.r + ' · ' + rStart(f, m.r) + ' · Cancha ' + m.court + '</span><span class="fx-v n"><b>' + slotName(m.pa) + '</b> vs <b>' + slotName(m.pb) + '</b></span><span class="fx-s n">' + (m.w ? score(m.s.a, m.s.b) : '–') + '</span></li>';
+      return '<li><span class="fx-m n">R' + m.r + ' · ' + rStart(f, m.r) + ' · Cancha ' + m.court + '</span><span class="fx-v n"><b>' + slotName(m.pa, f) + '</b> vs <b>' + slotName(m.pb, f) + '</b></span><span class="fx-s n">' + (m.w ? score(m.s.a, m.s.b) : '–') + '</span></li>';
     }).join('') + '</ul></div>';
-  }).join('') + '</div><p class="muted small">Cada pareja juega 3 partidos de grupo: 1 vs 2 y 3 vs 4 en la ronda 1, 1 vs 3 y 2 vs 4 en la ronda 2, 1 vs 4 y 2 vs 3 en la ronda 3. Las canchas rotan para que cada grupo use 2 canchas por ronda.</p>';
+  }).join('') + (F.kind === 'pos' ? '<div class="card pad" data-k="gr-X"><h3 class="gh">Cruces entre grupos</h3><ul class="fx">' + lc.gm.filter(function (m) { return m.x; }).map(function (m) {
+      return '<li><span class="fx-m n">R' + m.r + ' · ' + rStart(f, m.r) + ' · Cancha ' + m.court + '</span><span class="fx-v n"><b>' + slotName(m.pa, f) + '</b> vs <b>' + slotName(m.pb, f) + '</b></span><span class="fx-s n">' + (m.w ? score(m.s.a, m.s.b) : '–') + '</span></li>';
+    }).join('') + '</ul></div>' : '') + '</div>' + (F.kind === 'pos'
+    ? '<p class="muted small">Cada pareja juega 4 partidos. En cada ronda juegan 2 partidos por grupo y la pareja que queda libre juega contra la libre del otro grupo; ese partido suma en la tabla de su grupo. Las canchas rotan en cada ronda.</p>'
+    : '<p class="muted small">Cada pareja juega 3 partidos de grupo: 1 vs 2 y 3 vs 4 en la ronda 1, 1 vs 3 y 2 vs 4 en la ronda 2, 1 vs 4 y 2 vs 3 en la ronda 3. Las canchas rotan para que cada grupo use 2 canchas por ronda.</p>');
 }
 
 /* 3 · Canchas */
@@ -1670,26 +1774,26 @@ function courtCard(f, lc, m) {
   var ready = m.pa != null && m.pb != null, s = m.s || {}, a = num(s.a), b = num(s.b), tie = a != null && a === b;
   var side = function (k, pi, ph) {
     var g = k === 'a' ? a : b, win = m.w === k;
-    var who = '<span class="who">' + (pi == null ? '<span class="ph">' + esc(ph) + '</span>' : '<span class="slot n">' + slotName(pi) + '</span>' + pairLines(f, pi)) + '</span>';
+    var who = '<span class="who">' + (pi == null ? '<span class="ph">' + esc(ph) + '</span>' : '<span class="slot n">' + slotName(pi, f) + '</span>' + pairLines(f, pi)) + '</span>';
     return '<div class="half ' + k + (win ? ' win' : '') + (m.w && !win ? ' lose' : '') + '">' + who +
       (m.w ? '<span class="pg n' + (win ? ' w' : '') + '">' + g + (tie ? '<small>' + num(s['t' + k]) + '</small>' : '') + '</span>' : '') + '</div>';
   };
   return '<article class="court' + (ready ? '' : ' wait') + '" data-k="ct-' + m.id + (ready ? '' : '-w') + '"><header class="court-h"><b>Cancha ' + m.court + '</b><span>' + esc(tagOf(m)) + '</span></header>' +
     '<div class="pitch"><i class="lines" aria-hidden="true"></i><i class="net" aria-hidden="true"></i>' + side('a', m.pa, m.la) + side('b', m.pb, m.lb) + '</div>' +
-    (m.w ? '' : '<p class="court-f">' + (ready ? 'Por jugar' : 'Se define con ' + (m.stage === 'S' ? 'la fase de grupos' : 'las semifinales')) + '</p>') + '</article>';
+    (m.w ? '' : '<p class="court-f">' + (ready ? 'Por jugar' : 'Se define con ' + (m.stage === 'S' || m.stage === 'P' ? 'la fase de grupos' : 'las semifinales')) + '</p>') + '</article>';
 }
 function whereTable(f, lc, cur) {
-  var F = lc.F, rounds = lc.seeds ? [1, 2, 3, 4, 5] : [1, 2, 3], by = {};
+  var F = lc.F, rounds = lc.seeds ? [1, 2, 3, 4, 5] : range(1, grOf(F)), by = {};
   lc.gm.concat(lc.po).forEach(function (m) {
     if (m.pa == null || m.pb == null) return;
     [[m.pa, m.pb], [m.pb, m.pa]].forEach(function (x) { (by[x[0]] = by[x[0]] || {})[m.r] = { c: m.court, o: x[1], m: m }; });
   });
   return '<h3 class="sec">¿Dónde juega cada pareja?</h3><div class="card"><div class="scroll-x"><table class="st where' + (rounds.length > 3 ? ' w5' : '') + '"><thead><tr><th>Pareja</th>' + rounds.map(function (r) { return '<th class="' + (r === cur ? 'cur' : '') + '">R' + r + ' <span class="n">' + rStart(f, r) + '</span></th>'; }).join('') + '</tr></thead><tbody>' +
     range(0, F.np - 1).map(function (pi) {
-      return '<tr' + (pi % 4 === 0 && pi ? ' class="gsep"' : '') + '><td class="gt-p">' + pairCell(f, pi) + '</td>' + rounds.map(function (r) {
+      return '<tr' + (pi % (F.gs || 4) === 0 && pi ? ' class="gsep"' : '') + '><td class="gt-p">' + pairCell(f, pi) + '</td>' + rounds.map(function (r) {
         var x = (by[pi] || {})[r];
         var res = x && x.m.w ? '<span class="rc ' + ((x.m.w === 'a') === (x.m.pa === pi) ? 'w">G' : 'l">P') + '</span>' : '';
-        return '<td class="' + (r === cur ? 'cur' : '') + '">' + (x ? '<b class="n">C' + x.c + '</b> <span class="muted n">vs ' + slotName(x.o) + '</span> ' + res : '<span class="muted">–</span>') + '</td>';
+        return '<td class="' + (r === cur ? 'cur' : '') + '">' + (x ? '<b class="n">C' + x.c + '</b> <span class="muted n">vs ' + slotName(x.o, f) + '</span> ' + res : '<span class="muted">–</span>') + '</td>';
       }).join('') + '</tr>';
     }).join('') + '</tbody></table></div></div>';
 }
@@ -1701,8 +1805,8 @@ function programCard(f, lc) {
       return '<tr><th>' + r + '</th><td>' + rStart(f, r) + '</td>' + range(1, F.courts).map(function (c) {
         var m = byC[c];
         if (!m) return '<td></td>';
-        if (m.stage === 'G') return '<td>' + slotName(m.pa) + '–' + slotName(m.pb) + '</td>';
-        return '<td>' + (m.ready ? slotName(m.pa) + '–' + slotName(m.pb) : '<span class="muted">' + COPA_NAME[m.c] + ' ' + (m.stage === 'S' ? 'S' + m.id.slice(-1) : m.stage === 'F' ? 'F' : '3°') + '</span>') + '</td>';
+        if (m.stage === 'G') return '<td>' + slotName(m.pa, f) + '–' + slotName(m.pb, f) + '</td>';
+        return '<td>' + (m.ready ? slotName(m.pa, f) + '–' + slotName(m.pb, f) : '<span class="muted">' + (m.stage === 'P' ? (m.ci + 1) + '°A–' + (m.ci + 1) + '°B' : COPA_NAME[m.c] + ' ' + (m.stage === 'S' ? 'S' + m.id.slice(-1) : m.stage === 'F' ? 'F' : '3°')) + '</span>') + '</td>';
       }).join('') + '</tr>';
     }).join('') +
     '</tbody></table></div><p class="muted small">Termina a las ' + hm(f.start, 5 * slotOf(f)) + '. Partidos a 1 set de ' + slotOf(f) + ' minutos; si empatan en games, tie-break a 5 sin diferencia.</p><div class="toolbar"><button class="btn" data-act="copy-prog">Copiar programa para WhatsApp</button></div></div>';
@@ -1711,8 +1815,8 @@ function stCanchas(f, lc) {
   if (!isReady(f)) return notReady(f);
   var r = roundOf(f, lc), ms = roundMatches(lc, r), F = lc.F;
   var h = roundSel(f, lc, r);
-  h += '<div class="sec-row"><h3 class="sec">Ronda ' + r + ' <span class="sec-t n">' + rTime(f, r) + ' · ' + roundName(r) + '</span></h3><button class="btn sm" data-act="copy-round">Copiar ronda para WhatsApp</button></div>';
-  if (r >= 4 && !lc.seeds) h += '<p class="note">Los cruces de copa se completan solos al terminar la fase de grupos (' + plural(lc.gTotal - lc.done, 'partido pendiente', 'partidos pendientes') + '). Por ahora ves qué cancha usa cada llave.</p>';
+  h += '<div class="sec-row"><h3 class="sec">Ronda ' + r + ' <span class="sec-t n">' + rTime(f, r) + ' · ' + roundName(r, lc.F) + '</span></h3><button class="btn sm" data-act="copy-round">Copiar ronda para WhatsApp</button></div>';
+  if (r > grOf(F) && !lc.seeds) h += '<p class="note">Los cruces ' + (F.kind === 'pos' ? 'de la final' : 'de copa') + ' se completan solos al terminar la fase de grupos (' + plural(lc.gTotal - lc.done, 'partido pendiente', 'partidos pendientes') + '). Por ahora ves qué cancha usa cada llave.</p>';
   h += '<div class="courts' + (F.courts === 8 ? ' c8' : '') + '">' + ms.map(function (m) { return courtCard(f, lc, m); }).join('') + '</div>';
   h += whereTable(f, lc, r) + programCard(f, lc);
   return h;
@@ -1730,7 +1834,7 @@ function matchCard(f, m, tag, edit) {
       (tie ? '<span class="sb-tb">' + (canIn ? numInput('sc-' + m.id + '-t' + k, tb, attrs('t' + k), 'Tie-break', 'TB') : 'TB ' + (num(tb) == null ? '–' : num(tb))) + '</span>' : '<span></span>') +
       '<span class="sb-g">' + (canIn ? numInput('sc-' + m.id + '-' + k, g, attrs(k), 'Games de ' + (pi == null ? ph : pairText(f, pi))) : (num(g) == null ? '–' : num(g))) + '</span></div>';
   };
-  var slots = m.pa != null && m.pb != null ? slotName(m.pa) + ' vs ' + slotName(m.pb) : '';
+  var slots = m.pa != null && m.pb != null ? slotName(m.pa, f) + ' vs ' + slotName(m.pb, f) : '';
   return '<article class="match' + (ready ? '' : ' wait') + '" data-k="m-' + m.id + (ready ? '' : '-w') + '"><header class="mh"><span>Cancha ' + m.court + (slots ? ' · ' + slots : '') + '</span><span>' + esc(tag) + '</span></header>' + row('a', m.pa, m.la) + row('b', m.pb, m.lb) +
     (tie && !m.w && canIn ? '<p class="mnote">Empate en games: ingresa el tie-break (a 5, sin diferencia).</p>' : '') +
     (m.stale && edit ? '<p class="mnote warn">Los cruces cambiaron después de cargar este partido. Ingresa el resultado de nuevo.</p>' : '') + '</article>';
@@ -1740,12 +1844,12 @@ function stResultados(f, lc, edit) {
   var r = roundOf(f, lc), ms = roundMatches(lc, r), F = lc.F, dn = ms.filter(function (m) { return m.w; }).length;
   var h = roundSel(f, lc, r);
   h += '<div class="sec-row"><h3 class="sec">Ronda ' + r + ' <span class="sec-t n">' + rTime(f, r) + ' · ' + dn + '/' + ms.length + ' cargados</span></h3></div>';
-  if (r >= 4 && !lc.seeds) return h + empty('Faltan ' + plural(lc.gTotal - lc.done, 'partido de grupo', 'partidos de grupo'), 'Las semifinales de copa se arman solas cuando estén los ' + lc.gTotal + ' resultados de la fase de grupos.', '<div class="btns center"><button class="btn" data-act="rd" data-v="' + curRound(lc) + '">Ir a la ronda ' + curRound(lc) + '</button></div>');
+  if (r > grOf(F) && !lc.seeds) return h + empty('Faltan ' + plural(lc.gTotal - lc.done, 'partido de grupo', 'partidos de grupo'), (F.kind === 'pos' ? 'La final por puestos se arma sola' : 'Las semifinales de copa se arman solas') + ' cuando estén los ' + lc.gTotal + ' resultados de la fase de grupos.', '<div class="btns center"><button class="btn" data-act="rd" data-v="' + curRound(lc) + '">Ir a la ronda ' + curRound(lc) + '</button></div>');
   if (edit) h += '<p class="muted small">Ingresa los games de cada pareja. Si empatan, aparece el tie-break. Tablas, clasificación a copas y cruces se actualizan solos.</p>';
   h += '<div class="matches' + (F.np === 16 ? ' m4' : '') + '">' + ms.map(function (m) { return matchCard(f, m, tagOf(m), edit); }).join('') + '</div>';
   if (dn === ms.length) {
     h += '<div class="toolbar">' + (r < 5 ? '<button class="btn primary" data-act="rd" data-v="' + (r + 1) + '">Ir a la ronda ' + (r + 1) + '</button>' : '') +
-      (r === 3 ? '<button class="btn" data-act="sub" data-v="copas">Ver clasificación a copas</button>' : r < 3 ? '<button class="btn" data-act="sub" data-v="tablas">Ver tablas</button>' : '') +
+      (r === grOf(F) ? '<button class="btn" data-act="sub" data-v="copas">' + (F.kind === 'pos' ? 'Ver cruces de la final' : 'Ver clasificación a copas') + '</button>' : r < grOf(F) ? '<button class="btn" data-act="sub" data-v="tablas">Ver tablas</button>' : '') +
       (r === 5 && lc.complete ? '<button class="btn primary" data-act="sub" data-v="final">Ver clasificación final</button>' : '') + '</div>';
   }
   return h;
@@ -1755,7 +1859,7 @@ function stResultados(f, lc, edit) {
 var WHY = { h2h: 'define el partido entre ellos (H2H)', gf: 'define games a favor', orden: 'siguen empatados y queda el orden de la tómbola' };
 function groupTable(f, lc, G) {
   var notes = lc.notes[G] || [], played = lc.gm.filter(function (m) { return m.g === G && m.w; }).length;
-  return '<div class="card pad" data-k="gt-' + G + '"><div class="gt-h"><h3 class="gh">Grupo ' + G + '</h3><span class="muted small n">' + played + '/6 partidos</span></div><table class="gt"><thead><tr><th>#</th><th>Pareja</th><th>PJ</th><th>PG</th><th>PP</th><th>GF</th><th>GC</th><th>DG</th><th>H2H</th></tr></thead><tbody>' +
+  return '<div class="card pad" data-k="gt-' + G + '"><div class="gt-h"><h3 class="gh">Grupo ' + G + '</h3><span class="muted small n">' + (lc.gcount ? lc.gcount[G].played + '/' + lc.gcount[G].total : played + '/6') + ' partidos</span></div><table class="gt"><thead><tr><th>#</th><th>Pareja</th><th>PJ</th><th>PG</th><th>PP</th><th>GF</th><th>GC</th><th>DG</th><th>H2H</th></tr></thead><tbody>' +
     lc.tables[G].map(function (r) {
       return '<tr><td class="n">' + r.pos + '</td><td class="gt-p">' + pairCell(f, r.pi) + '</td><td class="n">' + r.pj + '</td><td class="n"><b>' + r.pg + '</b></td><td class="n">' + r.pp + '</td><td class="n">' + r.gf + '</td><td class="n">' + r.gc + '</td><td class="n">' + signed(r.dg) + '</td><td class="n">' + r.h2h + '</td></tr>';
     }).join('') + '</tbody></table>' +
@@ -1765,7 +1869,7 @@ function stTablas(f, lc) {
   if (!isReady(f)) return notReady(f);
   var F = lc.F;
   return '<div class="' + (F.np === 16 ? 'groups4' : 'groups3') + '">' + F.groups.map(function (G) { return groupTable(f, lc, G); }).join('') + '</div>' +
-    '<p class="muted small">PJ jugados · PG ganados (cada victoria vale 1 punto) · PP perdidos · GF games a favor · GC games en contra · DG diferencia · H2H victorias contra parejas empatadas en PG y DG. Orden: partidos ganados, diferencia de games, H2H y games a favor.</p>';
+    '<p class="muted small">PJ jugados · PG ganados (cada victoria vale 1 punto) · PP perdidos · GF games a favor · GC games en contra · DG diferencia · H2H victorias contra parejas empatadas en PG y DG. Orden: partidos ganados, diferencia de games, H2H y games a favor.' + (F.kind === 'pos' ? ' El partido contra la pareja libre del otro grupo también suma; el H2H cuenta solo partidos dentro del grupo.' : '') + '</p>';
 }
 
 /* 6 · Copas */
@@ -1781,7 +1885,7 @@ function bm(f, lc, m) {
   var s = m.s || {}, tie = num(s.a) != null && num(s.a) === num(s.b);
   var row = function (k, pi, ph) {
     var o = pi != null ? lc.origin[pi] : null;
-    return '<div class="bm-r' + (m.w === k ? ' win' : '') + '"><b class="bm-sd n">' + (o ? o.seed : '') + '</b><span class="bm-p">' + (pi == null ? '<span class="muted">' + esc(ph) + '</span>' : '<span class="n bm-slot">' + slotName(pi) + '</span> ' + esc(pairText(f, pi))) + '</span><span class="bm-g n">' + (m.w ? num(s[k]) + (tie ? '<small>(' + num(s['t' + k]) + ')</small>' : '') : '') + '</span></div>';
+    return '<div class="bm-r' + (m.w === k ? ' win' : '') + '"><b class="bm-sd n">' + (o ? o.seed : '') + '</b><span class="bm-p">' + (pi == null ? '<span class="muted">' + esc(ph) + '</span>' : '<span class="n bm-slot">' + slotName(pi, f) + '</span> ' + esc(pairText(f, pi))) + '</span><span class="bm-g n">' + (m.w ? num(s[k]) + (tie ? '<small>(' + num(s['t' + k]) + ')</small>' : '') : '') + '</span></div>';
   };
   return '<div class="bm' + (m.ready ? '' : ' wait') + '" data-k="bm-' + m.id + '"><div class="bm-h"><span>' + esc(m.label) + '</span><span class="n">C' + m.court + ' · ' + rStart(f, m.r) + '</span></div>' + row('a', m.pa, m.la) + row('b', m.pb, m.lb) + '</div>';
 }
@@ -1791,8 +1895,27 @@ function bracket(f, lc, C, ci) {
   return '<section class="card pad brk" data-k="br-' + C + '"><h3 class="copa-h">' + copaChip(C) + ' Puestos ' + (ci * 4 + 1) + '° a ' + (ci * 4 + 4) + '°</h3>' +
     '<div class="br"><div class="br-semis">' + bm(f, lc, ms[0]) + bm(f, lc, ms[1]) + '</div><div class="br-link" aria-hidden="true"></div><div class="br-fin">' + bm(f, lc, ms[2]) + '</div><div class="br-third">' + bm(f, lc, ms[3]) + '</div></div>' + champ + '</section>';
 }
+function stCruces(f, lc) {
+  var F = lc.F, left = lc.gTotal - lc.done, G = F.groups;
+  var h = '<div class="sec-row"><h3 class="sec">Final por puestos</h3>' + (lc.seeds ? '<span class="pill p-cerrada">Definitiva</span>' : '<span class="pill">Provisoria · ' + plural(left, 'partido pendiente', 'partidos pendientes') + '</span>') + '</div>';
+  h += '<p class="muted small">En la ronda 5 se enfrentan las parejas del mismo puesto de cada grupo: 1° A vs 1° B define el 1° y 2° de la fecha, 2° A vs 2° B el 3° y 4°, y así hasta 5° A vs 5° B, que define el 9° y 10°.</p>';
+  if (!lc.seeds) {
+    h += '<div class="card"><div class="scroll-x"><table class="st"><thead><tr><th>Cruce</th><th>Grupo A</th><th>Grupo B</th><th class="r">Puestos</th></tr></thead><tbody>' + range(0, F.gs - 1).map(function (k) {
+      return '<tr><td class="n"><b>' + (k + 1) + '° vs ' + (k + 1) + '°</b></td><td class="gt-p">' + pairCell(f, lc.tables[G[0]][k].pi) + '</td><td class="gt-p">' + pairCell(f, lc.tables[G[1]][k].pi) + '</td><td class="r n">' + (2 * k + 1) + '° y ' + (2 * k + 2) + '°</td></tr>';
+    }).join('') + '</tbody></table></div></div><p class="muted small">Con la tabla de hoy. Los cruces quedan firmes con el último resultado de la fase de grupos.</p>';
+    return h;
+  }
+  h += '<div class="sec-row"><h3 class="sec">Cruces</h3><button class="btn sm" data-act="copy-cruces">Copiar cruces para WhatsApp</button></div>';
+  h += '<div class="copas">' + lc.po.map(function (m) {
+    return '<section class="card pad brk" data-k="br-' + m.id + '"><h3 class="copa-h">Puestos ' + (2 * m.ci + 1) + '° y ' + (2 * m.ci + 2) + '°</h3>' + bm(f, lc, m) +
+      (m.w ? '<p class="br-champ"><span class="lab">' + (m.ci ? (2 * m.ci + 1) + '° puesto' : 'Campeones') + '</span> ' + esc(pairText(f, m.w === 'a' ? m.pa : m.pb)) + '</p>' : '') + '</section>';
+  }).join('') + '</div>';
+  if (canEdit && f.status !== 'cerrada' && !lc.complete) h += '<div class="toolbar"><button class="btn primary" data-act="rd-go" data-v="' + curRound(lc) + '">Cargar resultados de la ronda ' + curRound(lc) + '</button></div>';
+  return h;
+}
 function stCopas(f, lc) {
   if (!isReady(f)) return notReady(f);
+  if (lc.F.kind === 'pos') return stCruces(f, lc);
   var F = lc.F, left = lc.gTotal - lc.done;
   var h = '<div class="sec-row"><h3 class="sec">Clasificación a copas</h3>' + (lc.seeds ? '<span class="pill p-cerrada">Definitiva</span>' : '<span class="pill">Provisoria · ' + plural(left, 'partido pendiente', 'partidos pendientes') + '</span>') + '</div>';
   h += '<p class="muted small">' + (F.seed === 'cross'
@@ -1827,7 +1950,7 @@ function champion(f, lc) {
   if (f.status === 'cerrada' && f.results) txt = winnersOf(f).join(' / ');
   else if (lc && lc.places[0] != null) txt = pairText(f, lc.places[0]);
   if (!txt) return '';
-  return '<div class="champ"><span class="lab">Campeones' + (FMT[npOf(f)] ? ' · Copa ORO' : '') + '</span><span class="champ-n">' + esc(txt) + '</span></div>';
+  return '<div class="champ"><span class="lab">Campeones' + (FMT[npOf(f)] && FMT[npOf(f)].copas.length ? ' · Copa ORO' : '') + '</span><span class="champ-n">' + esc(txt) + '</span></div>';
 }
 function closedTools(f, reopenLabel, reopenMsg) {
   var h = '<div class="toolbar"><button class="btn" data-act="copy-res">Copiar resultados para WhatsApp</button>';
@@ -1845,7 +1968,7 @@ function stFinal(f, lc) {
   if (!isReady(f)) return notReady(f);
   if (!lc.complete) {
     var left = (lc.gTotal - lc.done) + (lc.poTotal - lc.poDone), part = results(f, work, lc);
-    return empty('Faltan ' + plural(left, 'partido', 'partidos'), 'La clasificación del 1° al ' + F.np + '° se completa cuando terminen las finales y los 3eros puestos de todas las copas.') +
+    return empty('Faltan ' + plural(left, 'partido', 'partidos'), 'La clasificación del 1° al ' + F.np + '° se completa cuando ' + (F.kind === 'pos' ? 'terminen los ' + F.gs + ' partidos de la final por puestos.' : 'terminen las finales y los 3eros puestos de todas las copas.')) +
       (part.length ? '<h3 class="sec">Puestos ya definidos</h3>' + finalList(f, part, false) : '');
   }
   var rows = results(f, work, lc);
@@ -2058,7 +2181,12 @@ function vStats(f, lc) {
   tiles.push(['Partidos ajustados', close + ' de ' + allM.length, 'Se definieron por 1 game o en tie-break']);
   if (tiles.length % 2) tiles.push(['Sets 6–0', String(allM.filter(function (m) { var a = num(m.s.a), b = num(m.s.b); return (a === 6 && b === 0) || (a === 0 && b === 6); }).length), 'Cada uno suma o resta ' + work.settings.bonus60 + ' pts']);
   h += '<h3 class="sec">Destacados</h3><div class="hl">' + tiles.map(function (x) { return '<div class="sum"><span class="lab">' + esc(x[0]) + '</span><span class="val">' + esc(x[1]) + '</span><span class="sub">' + esc(x[2]) + '</span></div>'; }).join('') + '</div>';
-  if (lc.seeds) {
+  if (lc.seeds && !F.copas.length) {
+    h += '<h3 class="sec">Podio</h3><div class="card pad"><ol class="podio">' + [0, 1, 2].map(function (k) {
+      var pi = lc.places[k];
+      return '<li><b class="n">' + (k + 1) + '°</b><span>' + (pi == null ? '<span class="muted">Por definir</span>' : esc(pairText(f, pi))) + '</span></li>';
+    }).join('') + '</ol></div>';
+  } else if (lc.seeds) {
     h += '<h3 class="sec">Podio de cada copa</h3><div class="copas' + (F.copas.length === 4 ? ' c4' : '') + '">' + F.copas.map(function (C, ci) {
       return '<div class="card pad"><h3 class="copa-h">' + copaChip(C) + ' Puestos ' + (ci * 4 + 1) + '° a ' + (ci * 4 + 4) + '°</h3><ol class="podio">' + [0, 1, 2].map(function (k) {
         var pi = lc.places[ci * 4 + k];
@@ -2071,12 +2199,12 @@ function vStats(f, lc) {
       var pl = lc.places.indexOf(s.pi);
       return '<tr><td class="n"><b>' + (pl >= 0 ? (pl + 1) + '°' : '–') + '</b></td><td class="gt-p">' + pairCell(f, s.pi) + '</td><td class="r n">' + s.pj + '</td><td class="r n">' + s.pg + '</td><td class="r n">' + s.pp + '</td><td class="r n">' + pct(s.pg, s.pj) + '</td><td class="r n">' + s.gf + '</td><td class="r n">' + s.gc + '</td><td class="r n">' + signed(s.gf - s.gc) + '</td><td class="r n">' + (s.w60 || s.l60 ? (s.w60 ? '<span class="up">+' + s.w60 + '</span>' : '') + (s.w60 && s.l60 ? ' ' : '') + (s.l60 ? '<span class="down">−' + s.l60 + '</span>' : '') : '–') + '</td><td class="r n">' + s.close + '</td></tr>';
     }).join('') + '</tbody></table></div></div><p class="muted small">Incluye grupos y copas. 6–0: sets ganados (+) y perdidos (−) por 6–0. Ajust.: partidos definidos por 1 game o en tie-break.</p>';
-  h += '<h3 class="sec">Recorrido ronda a ronda</h3><div class="card"><div class="scroll-x"><table class="st rec"><thead><tr><th>Pareja</th><th>R1</th><th>R2</th><th>R3</th><th class="r">Siembra</th><th>R4</th><th>R5</th><th class="r">Final</th><th class="r">Δ</th></tr></thead><tbody>' +
+  h += '<h3 class="sec">Recorrido ronda a ronda</h3><div class="card"><div class="scroll-x"><table class="st rec"><thead><tr><th>Pareja</th>' + range(1, grOf(F)).map(function (r) { return '<th>R' + r + '</th>'; }).join('') + '<th class="r">Siembra</th>' + range(grOf(F) + 1, 5).map(function (r) { return '<th>R' + r + '</th>'; }).join('') + '<th class="r">Final</th><th class="r">Δ</th></tr></thead><tbody>' +
     order.map(function (s) {
       var by = {}; s.ms.forEach(function (x) { by[x.r] = x; });
       var cell = function (r) { var x = by[r]; return '<td>' + (x ? '<span class="rc ' + (x.win ? 'w' : 'l') + '">' + (x.win ? 'G' : 'P') + ' ' + score(x.gf, x.gc) + '</span>' : '<span class="muted">–</span>') + '</td>'; };
       var o = lc.seeds ? lc.origin[s.pi] : null, pl = lc.places.indexOf(s.pi), d = o && pl >= 0 ? o.overall - (pl + 1) : null;
-      return '<tr><td class="gt-p">' + pairCell(f, s.pi) + '</td>' + cell(1) + cell(2) + cell(3) + '<td class="r n">' + (o ? o.overall + '°' : '–') + '</td>' + cell(4) + cell(5) + '<td class="r n"><b>' + (pl >= 0 ? (pl + 1) + '°' : '–') + '</b></td><td class="r n">' +
+      return '<tr><td class="gt-p">' + pairCell(f, s.pi) + '</td>' + range(1, grOf(F)).map(cell).join('') + '<td class="r n">' + (o ? o.overall + '°' : '–') + '</td>' + range(grOf(F) + 1, 5).map(cell).join('') + '<td class="r n"><b>' + (pl >= 0 ? (pl + 1) + '°' : '–') + '</b></td><td class="r n">' +
         (d == null ? '–' : d > 0 ? '<span class="up">▲' + d + '</span>' : d < 0 ? '<span class="down">▼' + (-d) + '</span>' : '=') + '</td></tr>';
     }).join('') + '</tbody></table></div></div><p class="muted small">G gana, P pierde, con el marcador de la pareja primero. Siembra: puesto con que entró a las copas según la fase de grupos. Δ compara la siembra con el puesto final.</p>';
   return h;
@@ -2179,33 +2307,35 @@ function programText(f) {
   var lc = compute(f), F = lc.F, lines = [headLine(f), cap(fLong(f.date)) + ' · ' + F.np + ' parejas · ' + F.courts + ' canchas', ''];
   F.groups.forEach(function (G, gi) {
     lines.push('*Grupo ' + G + '*');
-    [0, 1, 2, 3].forEach(function (si) { lines.push(G + (si + 1) + ' ' + pairText(f, gi * 4 + si)); });
+    range(0, gsOf(f) - 1).forEach(function (si) { lines.push(G + (si + 1) + ' ' + pairText(f, gi * gsOf(f) + si)); });
     lines.push('');
   });
-  [1, 2, 3].forEach(function (r) {
+  range(1, grOf(F)).forEach(function (r) {
     lines.push('*Ronda ' + r + ' · ' + rStart(f, r) + '*');
-    roundMatches(lc, r).forEach(function (m) { lines.push('Cancha ' + m.court + ': ' + slotName(m.pa) + ' vs ' + slotName(m.pb)); });
+    roundMatches(lc, r).forEach(function (m) { lines.push('Cancha ' + m.court + ': ' + slotName(m.pa, f) + ' vs ' + slotName(m.pb, f)); });
     lines.push('');
   });
-  lines.push('*Ronda 4 · ' + rStart(f, 4) + '* Semifinales de copa', '*Ronda 5 · ' + rStart(f, 5) + '* Finales y 3er puesto', '', 'Partidos a 1 set de ' + slotOf(f) + ' min. Empate en games: tie-break a 5.');
+  if (F.kind === 'pos') lines.push('*Ronda 5 · ' + rStart(f, 5) + '* Final por puestos: 1° A vs 1° B, 2° A vs 2° B … 5° A vs 5° B');
+  else lines.push('*Ronda 4 · ' + rStart(f, 4) + '* Semifinales de copa', '*Ronda 5 · ' + rStart(f, 5) + '* Finales y 3er puesto');
+  lines.push('', 'Partidos a 1 set de ' + slotOf(f) + ' min. Empate en games: tie-break a 5.');
   return lines.join('\n');
 }
 function roundText(f, r) {
-  var lc = compute(f), lines = [headLine(f), '*Ronda ' + r + ' · ' + rTime(f, r) + '* · ' + roundName(r), ''];
+  var lc = compute(f), lines = [headLine(f), '*Ronda ' + r + ' · ' + rTime(f, r) + '* · ' + roundName(r, lc.F), ''];
   roundMatches(lc, r).forEach(function (m) {
-    var who = m.ready ? slotName(m.pa) + ' ' + pairText(f, m.pa) + ' vs ' + slotName(m.pb) + ' ' + pairText(f, m.pb) : m.la + ' vs ' + m.lb;
+    var who = m.ready ? slotName(m.pa, f) + ' ' + pairText(f, m.pa) + ' vs ' + slotName(m.pb, f) + ' ' + pairText(f, m.pb) : m.la + ' vs ' + m.lb;
     lines.push('Cancha ' + m.court + ' · ' + tagOf(m) + ': ' + who + (m.w ? ' (' + score(m.s.a, m.s.b) + ')' : ''));
   });
   return lines.join('\n');
 }
 function crucesText(f) {
   var lc = compute(f), lines = [headLine(f), 'Copas', ''];
-  if (!lc.seeds) return lines.concat(['Las copas se arman cuando terminen los grupos.']).join('\n');
-  [4, 5].forEach(function (r) {
-    lines.push('*Ronda ' + r + ' · ' + rStart(f, r) + (r === 4 ? ' · Semifinales*' : ' · Finales y 3er puesto*'));
+  if (!lc.seeds) return lines.concat([lc.F.kind === 'pos' ? 'La final por puestos se arma cuando terminen los grupos.' : 'Las copas se arman cuando terminen los grupos.']).join('\n');
+  range(grOf(lc.F) + 1, 5).forEach(function (r) {
+    lines.push('*Ronda ' + r + ' · ' + rStart(f, r) + ' · ' + (lc.F.kind === 'pos' ? 'Final por puestos' : r === 4 ? 'Semifinales' : 'Finales y 3er puesto') + '*');
     roundMatches(lc, r).forEach(function (m) {
       var who = m.ready ? pairText(f, m.pa) + ' vs ' + pairText(f, m.pb) : m.la + ' vs ' + m.lb;
-      lines.push('Cancha ' + m.court + ' · ' + COPA_NAME[m.c] + ' ' + m.label.split(' · ')[0] + ': ' + who + (m.w ? ' (' + score(m.s.a, m.s.b) + ')' : ''));
+      lines.push('Cancha ' + m.court + ' · ' + (m.stage === 'P' ? m.label.split(' · ')[0] + ' (' + (2 * m.ci + 1) + '° y ' + (2 * m.ci + 2) + '°)' : COPA_NAME[m.c] + ' ' + m.label.split(' · ')[0]) + ': ' + who + (m.w ? ' (' + score(m.s.a, m.s.b) + ')' : ''));
     });
     lines.push('');
   });
