@@ -75,6 +75,8 @@ Ese teléfono queda en modo organizador hasta que toques *Salir del modo organiz
 5. **Resultados:** carga los games de cada partido, ronda por ronda. Si empatan, aparece el tie-break. Las tablas, la clasificación a copas y los cruces se actualizan solos.
 6. **Final:** revisa la clasificación y toca **Cerrar fecha y sumar al ranking**. Si hay que corregir algo, puedes reabrirla.
 
+Si una fecha no se puede jugar, entra a ella y toca **Suspender fecha**. Queda marcada como suspendida en el calendario, no suma puntos y la página pasa a mostrar la siguiente fecha como próxima. Si se llega a jugar más adelante, toca **Quitar la suspensión** y cambia el día en **Ajustes → Calendario**.
+
 Mientras tanto:
 
 - **Guardado:** cada cambio se guarda solo a los pocos segundos. Abajo a la derecha se ve *Guardando…* y luego *Guardado ✓*.

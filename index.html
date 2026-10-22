@@ -497,6 +497,10 @@ button.fin-nm:hover,.link.tl:hover{text-decoration:underline;text-underline-offs
 .imiss li{display:grid;gap:6px}
 .imiss-a{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .imiss-a select{flex:1 1 200px;min-width:0}
+.pill.p-suspendida{background:var(--warn-soft);color:var(--down);border-color:transparent}
+.fchip.st-suspendida{background:transparent;border-style:dashed;opacity:.65}
+.fchip.st-suspendida b{text-decoration:line-through}
+.fchip.st-suspendida.sel{opacity:1;background:var(--court);border-style:solid}
 </style>
 </head>
 <body>
@@ -1535,10 +1539,14 @@ function view() {
     '<div class="toast" role="status" aria-live="polite">' + esc(ui.toast) + '</div>' + copyModal();
 }
 
+/* Una fecha suspendida se guarda como pendiente con suspendida: true (así las versiones anteriores de la página la ven como pendiente). */
+function stOf(f) { return f.suspendida ? 'suspendida' : f.status; }
+var ST_LABEL = { 'cerrada': 'Cerrada', 'en juego': 'En juego', 'pendiente': 'Pendiente', 'suspendida': 'Suspendida' };
+function isNext(f) { return f.status === 'pendiente' && !f.suspendida; }
 function header() {
   var fs = fechasSorted(work), cl = fs.filter(function (f) { return f.status === 'cerrada'; });
-  var live = fs.filter(function (f) { return f.status === 'en juego'; }), next = fs.find(function (f) { return f.status === 'pendiente'; });
-  var st = cl.length + ' de ' + fs.length + ' fechas jugadas';
+  var live = fs.filter(function (f) { return f.status === 'en juego'; }), next = fs.find(isNext);
+  var st = cl.length + ' de ' + fs.filter(function (f) { return !f.suspendida; }).length + ' fechas jugadas';
   if (live.length) { var l = live[live.length - 1]; st += ' · <b>En juego: F' + l.n + ' ' + esc(l.cat) + '</b>' + (isTorneo(l) ? ' · ' + esc(stageOf(l, lcOf(l))) : ''); }
   else if (next) st += ' · Próxima: <b>F' + next.n + ' ' + esc(next.cat) + '</b> · ' + fShort(next.date);
   return '<header class="band"><div class="wrap band-in"><span class="logo" role="img" aria-label="Logo ' + esc(work.league.name) + '"></span><div class="band-txt"><p class="eyebrow">Ranking y torneos</p><h1>' + esc(work.league.season) + '</h1><p class="status">' + st + '</p></div></div></header>';
@@ -1612,9 +1620,9 @@ function pickFecha() {
 }
 
 function strip(cur) {
-  var fs = fechasSorted(work), next = fs.find(function (x) { return x.status === 'pendiente'; });
+  var fs = fechasSorted(work), next = fs.find(isNext);
   return '<div class="fstrip" aria-label="Fechas de la temporada">' + fs.map(function (x) {
-    return '<button class="fchip st-' + slug(x.status) + (x.n === cur ? ' sel' : '') + (next && x.n === next.n ? ' next' : '') + '" data-k="fc' + x.n + '" data-act="fecha" data-v="' + x.n + '" aria-pressed="' + (x.n === cur) + '"><b>F' + x.n + '</b><span>' + fDM(x.date) + '</span><span>' + esc(x.cat) + '</span></button>';
+    return '<button class="fchip st-' + slug(stOf(x)) + (x.n === cur ? ' sel' : '') + (next && x.n === next.n ? ' next' : '') + '" data-k="fc' + x.n + '" data-act="fecha" data-v="' + x.n + '" aria-pressed="' + (x.n === cur) + '"><b>F' + x.n + '</b><span>' + fDM(x.date) + '</span><span>' + (x.suspendida ? 'Suspendida' : esc(x.cat)) + '</span></button>';
   }).join('') + '</div>';
 }
 
@@ -1625,21 +1633,29 @@ function vFechas() {
 }
 
 function fechaHead(f) {
-  var label = { 'cerrada': 'Cerrada', 'en juego': 'En juego', 'pendiente': 'Pendiente' }[f.status], F = fmtOf(f);
+  var label = ST_LABEL[stOf(f)], F = fmtOf(f);
   var meta = '<b class="fcat">' + esc(f.cat) + '</b> · ' + cap(fLong(f.date));
   if (isTorneo(f)) meta += ' · ' + F.np + ' parejas · ' + F.courts + ' canchas · desde las ' + esc(f.start);
   if (f.note) meta += ' · ' + esc(f.note);
-  return '<div class="fhead"><div><h2>Fecha ' + f.n + '</h2><p class="muted">' + meta + '</p></div><span class="pill p-' + slug(f.status) + '">' + label + '</span></div>';
+  return '<div class="fhead"><div><h2>Fecha ' + f.n + '</h2><p class="muted">' + meta + '</p></div><span class="pill p-' + slug(stOf(f)) + '">' + label + '</span></div>';
 }
 
 function vFecha(f) {
   var h = '<section class="fecha" data-k="fecha-' + f.n + '">' + fechaHead(f);
-  if (f.status === 'pendiente') h += vPending(f);
+  if (f.suspendida) h += vSuspended(f);
+  else if (f.status === 'pendiente') h += vPending(f);
   else if (isTorneo(f)) h += vTorneo(f);
   else if (f.status === 'cerrada') h += vClosedPlain(f);
   else h += vManual(f);
   return h + '</section>';
 }
+
+function vSuspended(f) {
+  var h = empty('Fecha suspendida', 'La fecha del ' + fLong(f.date) + ' no se jugó y no suma puntos al ranking.');
+  if (canEdit) h += '<div class="btns center">' + confirmBtn('unsusp-' + f.n, 'Quitar la suspensión', 'f-unsusp', 'La fecha vuelve a quedar pendiente para jugarla. Si cambia el día, ajústalo en Ajustes → Calendario.', '', 'Sí, quitar la suspensión') + '</div>';
+  return h;
+}
+function suspBtn(f, cls) { return confirmBtn('susp-' + f.n, 'Suspender fecha', 'f-susp', 'La fecha queda suspendida: no se juega y no suma puntos. Se borran las parejas, la tómbola y los resultados que tenga cargados.', cls || 'danger', 'Sí, suspender'); }
 
 function vPending(f) {
   if (!canEdit) return empty('Esta fecha aún no se juega', 'Está programada para el ' + fLong(f.date) + '.');
@@ -1651,7 +1667,8 @@ function vPending(f) {
       ? '2 grupos de 5 parejas. 4 rondas de grupo sin parejas libres: en cada ronda, la pareja libre de un grupo juega contra la libre del otro. Ronda 5, final por puestos en las 5 canchas: 1° A vs 1° B, 2° A vs 2° B … 5° A vs 5° B. Desde las ' + esc(work.settings.start) + '.'
       : F.groups.length + ' grupos de 4 parejas, 3 partidos de grupo por pareja y copas ' + F.copas.map(function (c) { return COPA_NAME[c]; }).join(', ').replace(/, ([^,]+)$/, ' y $1') + ' con semis, final y 3er puesto: 5 rondas desde las ' + esc(work.settings.start) + '.') + '</p>' +
     '<div class="btns"><button class="btn primary" data-act="f-torneo">Armar torneo</button><button class="btn" data-act="f-manual">Cargar puestos directamente</button></div>' +
-    '<p class="muted small">“Armar torneo” abre el registro con tómbola, grupos, canchas y resultados partido a partido; al cerrarlo, los puntos pasan solos al ranking. Usa “Cargar puestos directamente” si solo tienes la clasificación final.</p></div>';
+    '<p class="muted small">“Armar torneo” abre el registro con tómbola, grupos, canchas y resultados partido a partido; al cerrarlo, los puntos pasan solos al ranking. Usa “Cargar puestos directamente” si solo tienes la clasificación final.</p>' +
+    '<div class="toolbar">' + suspBtn(f, 'ghost sm') + '<span class="muted small">Si la fecha no se puede jugar.</span></div></div>';
 }
 
 /* torneo de la fecha, paso a paso */
@@ -1689,7 +1706,7 @@ function vTorneo(f) {
       '<label class="fld inline"><span>Inicio</span><input id="ts-' + f.n + '" type="time" data-f="fstart" value="' + esc(f.start) + '"></label>' +
       '<label class="fld inline"><span>Min. por ronda</span><input id="tl-' + f.n + '" class="ni sm" type="number" inputmode="numeric" min="5" data-f="fslot" value="' + esc(f.slot) + '"></label>' +
       (hasSc ? '' : '<label class="fld inline"><span>Formato</span><select id="tf-' + f.n + '" data-f="fnp" data-v="' + f.np + '"><option value="8">8 parejas</option><option value="10">10 parejas</option><option value="12">12 parejas</option><option value="16">16 parejas</option></select></label>') +
-      '</div>' + (f.results ? '' : confirmBtn('reset-' + f.n, 'Descartar fecha', 'f-reset', 'Se borran las parejas, la tómbola y los resultados, y la fecha queda pendiente.', 'danger sm', 'Sí, descartar')) + '</div>';
+      '</div>' + (f.results ? '' : '<div class="btns">' + confirmBtn('reset-' + f.n, 'Descartar fecha', 'f-reset', 'Se borran las parejas, la tómbola y los resultados, y la fecha queda pendiente.', 'danger sm', 'Sí, descartar') + suspBtn(f, 'danger sm') + '</div>') + '</div>';
     h += tableWarn(f.cat, F.np);
   }
   h += stepNav(f, lc, sub);
@@ -2000,7 +2017,7 @@ function vManual(f) {
   }).join('') + '</ol>';
   var filled = M.rows.reduce(function (s, r) { return s + r.p.filter(Boolean).length; }, 0);
   h += '<div class="toolbar">' + confirmBtn('close-' + f.n, 'Cerrar fecha y sumar al ranking', 'f-close', filled + ' jugadores tienen puesto. Se suman al ranking con la tabla ' + f.cat + '.', 'primary', 'Sí, cerrar y sumar') +
-    (f.results ? '' : confirmBtn('reset-' + f.n, 'Descartar fecha', 'f-reset', 'Se borran los puestos cargados y la fecha queda pendiente.', 'danger', 'Sí, descartar')) + '</div>';
+    (f.results ? '' : confirmBtn('reset-' + f.n, 'Descartar fecha', 'f-reset', 'Se borran los puestos cargados y la fecha queda pendiente.', 'danger', 'Sí, descartar') + suspBtn(f)) + '</div>';
   return h;
 }
 
@@ -2146,6 +2163,7 @@ function vStatsFecha() {
   var f = pickFecha();
   if (!f) return empty('Todavía no hay fechas', 'Las estadísticas aparecen cuando se juegue la primera fecha.');
   var h = strip(f.n) + '<section class="fecha" data-k="st-' + f.n + '">' + fechaHead(f);
+  if (f.suspendida) return h + empty('Fecha suspendida', 'La fecha del ' + fLong(f.date) + ' no se jugó.') + '</section>';
   if (f.status === 'pendiente') return h + empty('Esta fecha aún no se juega', 'Está programada para el ' + fLong(f.date) + '.') + '</section>';
   if (!isTorneo(f)) return h + empty('Esta fecha no tiene partidos cargados', 'Se cargó solo con la clasificación final, sin el detalle de los partidos.') + '</section>';
   var lc = lcOf(f);
@@ -2229,10 +2247,10 @@ function vSettings() {
       }).join('') + '</tr>';
     }).join('') + '</tbody></table></div><p class="muted small">Los cambios aplican a las fechas que cierres desde ahora. Las fechas ya cerradas conservan sus puntos.</p></div>';
   h += '<div class="card pad"><h3 class="gh">Calendario</h3><ul class="cal">' + fechasSorted(d).map(function (f) {
-    var lab = { 'cerrada': 'Cerrada', 'en juego': 'En juego', 'pendiente': 'Pendiente' }[f.status];
+    var lab = ST_LABEL[stOf(f)];
     return '<li class="cal-r" data-k="cal' + f.n + '"><b>F' + f.n + '</b><input type="date" id="cd-' + f.n + '" data-f="cdate" data-n="' + f.n + '" value="' + esc(f.date) + '" aria-label="Día de la fecha ' + f.n + '">' +
       '<select id="cc-' + f.n + '" data-f="fcat" data-n="' + f.n + '" data-v="' + esc(f.cat) + '"' + (f.status === 'cerrada' ? ' disabled' : '') + ' aria-label="Categoría de la fecha ' + f.n + '">' + catOptions() + '</select>' +
-      '<span class="cal-end"><span class="pill p-' + slug(f.status) + '">' + lab + '</span>' + (f.status === 'pendiente' ? '<button class="btn sm ghost" data-act="fdel" data-v="' + f.n + '">Quitar</button>' : '') + '</span></li>';
+      '<span class="cal-end"><span class="pill p-' + slug(stOf(f)) + '">' + lab + '</span>' + (f.status === 'pendiente' ? '<button class="btn sm ghost" data-act="fdel" data-v="' + f.n + '">Quitar</button>' : '') + '</span></li>';
   }).join('') + '</ul><div class="toolbar"><button class="btn" data-act="fadd">Agregar fecha</button><span class="muted small">La categoría de una fecha cerrada se cambia reabriéndola.</span></div></div>';
   h += webCard(true);
   h += '<div class="card pad"><h3 class="gh">Respaldo</h3><p class="muted small">Copia todos los datos de la liga (jugadores, fechas, torneos y puntos) en formato JSON para guardarlos aparte.</p><div class="toolbar"><button class="btn" data-act="copy-json">Copiar datos</button></div></div>';
@@ -2446,6 +2464,8 @@ function act(a, el) {
     }
     case 'f-manual': clearTorneo(f); f.mode = 'manual'; f.status = 'en juego'; f.man = { np: 12, rows: mkRows(12) }; ui.confirm = null; saveDraft(); break;
     case 'f-reset': clearTorneo(f); f.status = 'pendiente'; delete ui.sub[f.n]; delete ui.rd[f.n]; ui.confirm = null; saveDraft(); break;
+    case 'f-susp': if (!f || f.status === 'cerrada') return; clearTorneo(f); f.status = 'pendiente'; f.suspendida = true; delete ui.sub[f.n]; delete ui.rd[f.n]; ui.confirm = null; saveDraft(); toast('Fecha ' + f.n + ' suspendida. No suma puntos al ranking.'); return;
+    case 'f-unsusp': if (!f) return; delete f.suspendida; ui.confirm = null; saveDraft(); toast('La Fecha ' + f.n + ' vuelve a estar pendiente.'); return;
     case 'f-reopen': {
       f.status = 'en juego';
       if (isTorneo(f)) ui.sub[f.n] = 'final';
